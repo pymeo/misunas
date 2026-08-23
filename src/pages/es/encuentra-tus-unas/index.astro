@@ -1,18 +1,8 @@
 ---
 import Recommender from '@/components/Recommender.astro';
-import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-
-<EditorialLayout
-  title="Encuentra tus uñas ideales"
-  description="Recomendador orientativo y explicable para encontrar formatos compatibles con tu estilo, prioridades, lámpara y rutina."
-  canonicalPath="/es/encuentra-tus-unas/"
-  eyebrow="Recomendador"
->
-  <p>
-    El resultado aplica reglas deterministas a atributos del catálogo. No usa IA
-    ni presenta el resultado como una certeza científica.
-  </p>
-  <Recommender />
-</EditorialLayout>
+<BaseLayout title="Encuentra tus uñas ideales" description="Responde cuatro preguntas y descubre hasta tres productos que coinciden con tu estilo, tu opción de lámpara y preferencias verificables." canonicalPath="/es/encuentra-tus-unas/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Herramientas', href: '/es/herramientas/' }, { label: 'Encuentra tus uñas' }]}>
+  <section class="container-page py-10 sm:py-16"><div class="mx-auto max-w-4xl text-center"><p class="eyebrow">Recomendador explicable</p><h1 class="mt-4 text-5xl leading-tight sm:text-6xl">Encuentra tus uñas ideales</h1><p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted">Responde unas preguntas rápidas y te mostraremos qué opciones encajan mejor con lo que buscas.</p><p class="mt-3 text-sm text-muted">No es IA. Son reglas deterministas sobre datos explícitos del catálogo.</p></div><div class="mx-auto mt-10 max-w-4xl"><Recommender /></div><div class="mx-auto mt-10 max-w-3xl rounded-card bg-cream p-6"><h2 class="text-2xl">Qué no influye todavía</h2><p class="mt-3 leading-7 text-muted">No usamos duración, precio, tipo de uña, agua, resistencia, adherencia ni facilidad de retirada. Esas señales solo podrán incorporarse con datos verificados y, en el caso de experiencias, al superar la muestra pública mínima.</p></div></section>
+</BaseLayout>

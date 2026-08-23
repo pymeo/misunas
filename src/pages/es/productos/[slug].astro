@@ -1,0 +1,39 @@
+---
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import AmazonCTA from '@/components/AmazonCTA.astro';
+import MethodologyNotice from '@/components/MethodologyNotice.astro';
+import ProductFacts from '@/components/ProductFacts.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
+import ProductReviews from '@/components/ProductReviews.astro';
+import ProductStatistics from '@/components/ProductStatistics.astro';
+import ProductVisual from '@/components/ProductVisual.astro';
+import ReviewForm from '@/components/ReviewForm.astro';
+import WearReportForm from '@/components/WearReportForm.astro';
+import { productJsonLd } from '@/application/jsonld';
+import { getRelatedProducts, PRODUCTS, PUBLISHED_BRANDS, slugifyBrand } from '@/data/products';
+import type { Product } from '@/domain/product';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+export function getStaticPaths() { return PRODUCTS.filter((product) => product.active && product.editorialStatus === 'approved').map((product) => ({ params: { slug: product.slug }, props: { product } })); }
+interface Props { product: Product }
+const { product } = Astro.props;
+const related = getRelatedProducts(product);
+const brandSlug = slugifyBrand(product.brand);
+const hasBrandPage = (PUBLISHED_BRANDS as readonly string[]).includes(brandSlug);
+---
+<BaseLayout title={`${product.name}: datos y opciones`} description={`${product.summary} Consulta atributos verificados, alternativas y experiencias de la comunidad cuando haya datos suficientes.`} canonicalPath={`/es/productos/${product.slug}/`} breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Uñas semicuradas', href: '/es/unas-semicuradas/' }, { label: product.name }]} jsonLd={[productJsonLd(product)]}>
+  <article>
+    <section class="container-page grid gap-10 pb-14 pt-4 lg:grid-cols-[.85fr_1.15fr] lg:items-center"><ProductVisual name={product.name} brand={product.brand} /><div><p class="eyebrow">{product.brand}</p><h1 class="mt-3 text-4xl leading-tight sm:text-6xl">{product.name}</h1><div class="mt-5 flex flex-wrap gap-2">{product.styleTags.slice(0, 5).map((tag) => <span class="tag">{tag}</span>)}</div><p class="mt-6 max-w-2xl text-lg leading-8 text-muted">{product.summary}</p><div class="mt-7 max-w-xl"><ProductFacts {product} /></div><div class="mt-7"><AmazonCTA {product} sourcePage={`/es/productos/${product.slug}/`} component="product-hero" position={1} /></div><p class="mt-3 text-xs text-muted">El enlace abre Amazon.es en otra pestaña. Consulta allí precio, disponibilidad e instrucciones actuales.</p></div></section>
+
+    <section class="container-page grid gap-8 py-14 lg:grid-cols-[1.15fr_.85fr]"><div><p class="eyebrow">Resumen editorial</p><h2 class="section-heading">Lo que sí sabemos</h2><p class="section-intro">Esta ficha distingue los atributos comprobados de cualquier valoración de rendimiento. No hemos asignado nota ni duración al producto.</p><div class="mt-7 grid gap-4 sm:grid-cols-2"><div class="rounded-card bg-blush p-6"><h3 class="text-2xl">Puede encajar si…</h3><ul class="mt-4 grid gap-2 text-muted">{product.styleTags.slice(0, 4).map((tag) => <li>✓ Buscas un estilo identificado como {tag}.</li>)}{product.includesLamp && <li>✓ Quieres un kit que incluya lámpara.</li>}{!product.requiresLamp && <li>✓ No quieres utilizar lámpara.</li>}</ul></div><div class="rounded-card bg-cream p-6"><h3 class="text-2xl">Aspectos a considerar</h3><ul class="mt-4 grid gap-2 text-muted">{product.considerations.map((item) => <li>• {item}</li>)}</ul></div></div></div><div><ProductStatistics slug={product.slug} /></div></section>
+
+    <section class="container-page py-14"><p class="eyebrow">Experiencias</p><h2 class="section-heading">¿Cuánto te duraron?</h2><p class="section-intro">Una experiencia aislada no define un producto. Recogemos respuestas anónimas y solo mostramos estadísticas cuando alcanzan la muestra pública mínima.</p><details class="mt-7 max-w-2xl rounded-card border border-border bg-surface p-5"><summary class="cursor-pointer font-bold text-primary">Registrar mi experiencia</summary><div class="mt-5"><WearReportForm productId={product.id} requiresLamp={product.requiresLamp} /></div></details></section>
+
+    <section class="container-page py-14"><p class="eyebrow">Opiniones propias</p><h2 class="section-heading">Lo que cuenta la comunidad</h2><div class="mt-7 grid gap-7 lg:grid-cols-[1.1fr_.9fr]"><ProductReviews slug={product.slug} /><details class="rounded-card border border-border bg-background p-5"><summary class="cursor-pointer font-bold text-primary">¿Has probado este producto? Comparte tu opinión</summary><div class="mt-5"><ReviewForm productId={product.id} /></div></details></div></section>
+
+    {related.length > 0 && <section class="container-page py-14"><div class="flex flex-wrap items-end justify-between gap-3"><div><p class="eyebrow">Alternativas</p><h2 class="section-heading">También puedes comparar</h2></div><a class="font-bold text-primary" href="/es/comparar/">Abrir comparador →</a></div><div class="mt-8"><ProductGrid products={related} sourcePage={`/es/productos/${product.slug}/`} /></div></section>}
+
+    <section class="container-page grid gap-7 py-14 lg:grid-cols-2"><div><p class="eyebrow">Transparencia</p><h2 class="section-heading">De dónde sale esta ficha</h2><p class="section-intro">Los atributos comerciales se verificaron en Amazon.es el {product.sourceVerifiedAt}. No implican una prueba de uso propia. {hasBrandPage ? <a href={`/es/marcas/${brandSlug}/`}>Consulta los productos de {product.brand}</a> : `La página de marca se publicará cuando exista suficiente catálogo editorial.`}</p><div class="mt-7"><MethodologyNotice /></div></div><div><p class="eyebrow">Preguntas frecuentes</p><h2 class="section-heading">Antes de comprar</h2><div class="mt-6 grid gap-3"><details class="rounded-xl border border-border bg-surface p-5"><summary class="cursor-pointer font-bold">¿Necesita lámpara?</summary><p class="mt-3 text-muted">{product.requiresLamp ? `Sí. La ficha investigada indica curado con lámpara UV/LED${product.includesLamp ? ' y el kit la incluye' : ', pero no figura incluida'}.` : 'No. El formato investigado se presenta como precured y listo para aplicar sin lámpara.'}</p></details><details class="rounded-xl border border-border bg-surface p-5"><summary class="cursor-pointer font-bold">¿Cuánto dura?</summary><p class="mt-3 text-muted">No publicamos una duración hasta reunir suficientes experiencias reales para este producto.</p></details><details class="rounded-xl border border-border bg-surface p-5"><summary class="cursor-pointer font-bold">¿Está probado por Tus-Uñas?</summary><p class="mt-3 text-muted">No todavía. La ficha actual organiza datos del catálogo investigado; cualquier prueba editorial futura se identificará claramente.</p></details></div></div></section>
+    <section class="container-page py-8"><AffiliateDisclosure /></section>
+  </article>
+</BaseLayout>

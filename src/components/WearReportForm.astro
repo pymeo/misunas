@@ -1,96 +1,23 @@
 ---
-interface Props {
-  productId: string;
-}
-const { productId } = Astro.props;
+interface Props { productId: string; requiresLamp: boolean }
+const { productId, requiresLamp } = Astro.props;
 ---
-
-<form class="card grid gap-4" data-wear-report data-product-id={productId}>
-  <label
-    >Días de duración <input
-      class="ml-2 border p-2"
-      type="number"
-      name="wearDays"
-      min="1"
-      max="90"
-      required
-    /></label
-  >
-  <label
-    >Tipo de uña <select class="ml-2 border p-2" name="nailType" required
-      ><option value="normal">Normal</option><option value="flexible"
-        >Flexible</option
-      ><option value="quebradiza">Quebradiza</option></select
-    ></label
-  >
-  <label
-    >Exposición al agua <select
-      class="ml-2 border p-2"
-      name="waterExposure"
-      required
-      ><option value="baja">Baja</option><option value="media">Media</option
-      ><option value="alta">Alta</option></select
-    ></label
-  >
-  <label
-    ><input type="checkbox" name="manualWork" /> Realizo trabajo manual frecuente</label
-  >
-  <label><input type="checkbox" name="prepUsed" /> Preparé la uña</label>
-  <label><input type="checkbox" name="lampUsed" /> Usé lámpara</label>
-  <label
-    >Motivo de retirada <select
-      class="ml-2 border p-2"
-      name="removalReason"
-      required
-      ><option value="desgaste">Desgaste</option><option value="levantamiento"
-        >Levantamiento</option
-      ><option value="rotura">Rotura</option><option value="cambio"
-        >Cambio de diseño</option
-      ><option value="otro">Otro</option></select
-    ></label
-  >
-  <label class="sr-only" aria-hidden="true"
-    >Sitio web <input
-      type="text"
-      name="website"
-      tabindex="-1"
-      autocomplete="off"
-    /></label
-  >
-  <button class="button-primary justify-self-start" type="submit"
-    >Enviar experiencia anónima</button
-  >
-  <p class="text-sm text-muted" data-status aria-live="polite"></p>
+<form class="grid gap-6 rounded-card border border-border bg-surface p-5 shadow-card sm:p-7" data-wear-report data-product-id={productId}>
+  <div><label class="font-bold" for={`wear-${productId}`}>¿Cuántos días te duraron?</label><input class="input-field mt-2" id={`wear-${productId}`} type="number" name="wearDays" min="1" max="60" inputmode="numeric" required /><p class="mt-1 text-xs text-muted">Entre 1 y 60 días.</p></div>
+  <label class="grid gap-2 font-bold">¿Por qué te las retiraste?<select class="input-field font-normal" name="removalReason" required><option value="">Selecciona una opción</option><option value="despegadas">Se despegaron</option><option value="rotas">Se rompieron</option><option value="crecimiento">Creció demasiado la uña</option><option value="cambio">Quise cambiar el diseño</option><option value="otro">Otro</option></select></label>
+  <fieldset><legend class="font-bold">¿Preparaste la uña antes?</legend><div class="mt-2 grid grid-cols-2 gap-2"><label class="choice"><input type="radio" name="prepUsed" value="true" required />Sí</label><label class="choice"><input type="radio" name="prepUsed" value="false" required />No</label></div></fieldset>
+  <label class="grid gap-2 font-bold">Exposición al agua<select class="input-field font-normal" name="waterExposure" required><option value="poca">Poca</option><option value="normal">Normal</option><option value="mucha">Mucha</option></select></label>
+  <label class="grid gap-2 font-bold">Trabajo manual<select class="input-field font-normal" name="manualWork" required><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option></select></label>
+  {requiresLamp && <fieldset><legend class="font-bold">¿Utilizaste lámpara?</legend><div class="mt-2 grid grid-cols-2 gap-2"><label class="choice"><input type="radio" name="lampUsed" value="true" required />Sí</label><label class="choice"><input type="radio" name="lampUsed" value="false" required />No</label></div></fieldset>}
+  <label class="sr-only" aria-hidden="true">Sitio web<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  <p class="text-xs leading-5 text-muted">Registro anónimo: no pedimos nombre, email ni teléfono. Los datos se agregan cuando existe una muestra suficiente.</p>
+  <button class="button-primary" type="submit">Registrar mi experiencia</button><p class="text-sm font-semibold" data-status aria-live="polite"></p>
 </form>
-
 <script>
-  for (const form of document.querySelectorAll<HTMLFormElement>(
-    '[data-wear-report]',
-  )) {
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const data = new FormData(form);
-      const status = form.querySelector<HTMLElement>('[data-status]');
-      const response = await fetch('/api/wear-reports/', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          productId: form.dataset.productId,
-          wearDays: Number(data.get('wearDays')),
-          nailType: data.get('nailType'),
-          waterExposure: data.get('waterExposure'),
-          manualWork: data.get('manualWork') === 'on',
-          prepUsed: data.get('prepUsed') === 'on',
-          lampUsed: data.get('lampUsed') === 'on',
-          removalReason: data.get('removalReason'),
-          website: data.get('website'),
-        }),
-      });
-      if (status)
-        status.textContent = response.ok
-          ? 'Gracias. Hemos recibido tu experiencia.'
-          : 'No se ha podido enviar. Inténtalo más tarde.';
-      if (response.ok) form.reset();
-    });
-  }
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-wear-report]')) form.addEventListener('submit', async (event) => {
+    event.preventDefault(); if (!form.reportValidity()) return; const data = new FormData(form); const status = form.querySelector<HTMLElement>('[data-status]'); const lampValue = data.get('lampUsed');
+    try { const response = await fetch('/api/wear-reports/', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ productId: form.dataset.productId, wearDays: Number(data.get('wearDays')), waterExposure: data.get('waterExposure'), manualWork: data.get('manualWork'), prepUsed: data.get('prepUsed') === 'true', lampUsed: lampValue === null ? null : lampValue === 'true', removalReason: data.get('removalReason'), website: data.get('website') }) });
+      if (status) status.textContent = response.ok ? 'Gracias por ayudar a mejorar los datos de Tus-Uñas.' : 'No se ha podido enviar. Revisa los datos o inténtalo más tarde.'; if (response.ok) form.reset();
+    } catch { if (status) status.textContent = 'No se ha podido conectar. Inténtalo más tarde.'; }
+  });
 </script>

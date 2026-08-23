@@ -1,0 +1,12 @@
+---
+import MethodologyNotice from '@/components/MethodologyNotice.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
+import { PRODUCTS, PUBLISHED_BRANDS, slugifyBrand } from '@/data/products';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+export function getStaticPaths() { return PUBLISHED_BRANDS.map((brand) => { const products = PRODUCTS.filter((product) => slugifyBrand(product.brand) === brand); return { params: { brand }, props: { brandName: products[0]?.brand ?? brand, products } }; }); }
+const { brandName, products } = Astro.props;
+---
+<BaseLayout title={`${brandName}: productos investigados`} description={`Catálogo estructurado de ${brandName} en Tus-Uñas, con atributos verificables, comparativas y enlaces a las fichas editoriales disponibles.`} canonicalPath={`/es/marcas/${slugifyBrand(brandName)}/`} breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Marcas' }, { label: brandName }]}>
+  <section class="container-page py-10 sm:py-16"><p class="eyebrow">Marca en el catálogo</p><h1 class="mt-4 text-5xl sm:text-6xl">{brandName}</h1><p class="section-intro">Actualmente hemos documentado {products.length} productos de {brandName}. Esta página describe la cobertura de nuestro catálogo; no presupone una valoración de la marca.</p><div class="mt-10"><ProductGrid {products} sourcePage={`/es/marcas/${slugifyBrand(brandName)}/`} commercial /></div><div class="mt-10 max-w-3xl"><MethodologyNotice /></div></section>
+</BaseLayout>

@@ -1,0 +1,7 @@
+---
+interface Props { title: string; description: string; href?: string; icon: string; tone?: 'blush' | 'lavender' | 'cream' }
+const { title, description, href, icon, tone = 'blush' } = Astro.props;
+const classes = { blush: 'bg-blush', lavender: 'bg-lavender', cream: 'bg-cream' };
+const Tag = href ? 'a' : 'div';
+---
+<Tag class:list={['group rounded-card border border-border p-5 no-underline', classes[tone]]} href={href} aria-disabled={!href}><span class="text-2xl" aria-hidden="true">{icon}</span><h3 class="mt-5 text-xl">{title}</h3><p class="mt-2 text-sm leading-6 text-muted">{description}</p>{!href && <span class="mt-4 inline-block text-xs font-bold tracking-wide text-muted uppercase">En preparación</span>}</Tag>

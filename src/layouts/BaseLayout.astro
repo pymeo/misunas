@@ -2,12 +2,9 @@
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Footer from '@/components/Footer.astro';
 import Header from '@/components/Header.astro';
-import {
-  buildHreflangLinks,
-  type TranslationPath,
-} from '@/application/hreflang';
-import { breadcrumbJsonLd, serializeJsonLd } from '@/application/jsonld';
-import { SITE_NAME, SITE_URL } from '@/config/site';
+import SEOHead from '@/components/SEOHead.astro';
+import type { TranslationPath } from '@/application/hreflang';
+import { breadcrumbJsonLd } from '@/application/jsonld';
 import '@/styles/global.css';
 
 interface BreadcrumbItem {
@@ -37,9 +34,6 @@ const {
   jsonLd = [],
   translations = [{ locale: 'es', path: canonicalPath }],
 } = Astro.props;
-const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
-const canonical = new URL(canonicalPath, SITE_URL).toString();
-const socialImage = new URL(image, SITE_URL).toString();
 const breadcrumbData =
   breadcrumbs.length > 1
     ? breadcrumbJsonLd(
@@ -55,47 +49,7 @@ const schemas = breadcrumbData ? [...jsonLd, breadcrumbData] : jsonLd;
 <!doctype html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <link rel="canonical" href={canonical} />
-    {
-      buildHreflangLinks(translations).map((link) => (
-        <link rel="alternate" hreflang={link.hreflang} href={link.href} />
-      ))
-    }
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title={`RSS de ${SITE_NAME}`}
-      href="/es/rss.xml"
-    />
-    <meta property="og:type" content={type} />
-    <meta property="og:site_name" content={SITE_NAME} />
-    <meta property="og:locale" content="es_ES" />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={socialImage} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={socialImage} />
-    <title>{fullTitle}</title>
-    {
-      schemas.map((schema) => (
-        <script
-          is:inline
-          type="application/ld+json"
-          set:html={serializeJsonLd(schema)}
-        />
-      ))
-    }
+    <SEOHead {title} {description} {canonicalPath} {image} {type} {noindex} jsonLd={schemas} {translations} />
   </head>
   <body>
     <a

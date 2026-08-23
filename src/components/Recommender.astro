@@ -1,207 +1,72 @@
 ---
-import { SAMPLE_PRODUCTS } from '@/data/products.sample';
-const products = import.meta.env.DEV ? SAMPLE_PRODUCTS : [];
+import { PRODUCTS } from '@/data/products';
+const questions = [
+  { name: 'style', legend: '¿Qué estilo prefieres?', options: [['natural', 'Natural'], ['francesa', 'Francesa'], ['elegante', 'Elegante'], ['llamativa', 'Llamativa'], ['indiferente', 'Me da igual']] },
+  { name: 'lamp', legend: '¿Qué opción encaja contigo?', options: [['tengo', 'Ya tengo lámpara'], ['quiero-kit', 'No tengo y quiero un kit que la incluya'], ['sin-lampara', 'No quiero utilizar lámpara']] },
+  { name: 'experience', legend: '¿Qué experiencia tienes?', options: [['primera-vez', 'Es mi primera vez'], ['con-experiencia', 'Ya las he utilizado'], ['indiferente', 'Me da igual']] },
+  { name: 'preference', legend: '¿Qué prefieres en este momento?', options: [['kit-completo', 'Kit completo'], ['mas-tiras', 'Más tiras o tamaños disponibles'], ['diseno', 'Diseño'], ['indiferente', 'Me da igual']] },
+] as const;
 ---
-
-<section class="card" data-recommender data-products={JSON.stringify(products)}>
-  {
-    products.length > 0 && (
-      <p class="mb-6 rounded-lg bg-sand p-4 text-sm">
-        <strong>Modo desarrollo:</strong> los resultados usan fixtures SAMPLE,
-        no recomendaciones comerciales reales.
-      </p>
-    )
-  }
-  <form class="grid gap-7">
-    <fieldset>
-      <legend class="font-serif text-xl font-bold"
-        >1. ¿Qué estilo prefieres?</legend
-      >
-      <div class="mt-3 flex flex-wrap gap-3">
-        {
-          ['natural', 'francesa', 'elegante', 'llamativa'].map((value) => (
-            <label class="rounded-full border border-line bg-white px-4 py-2">
-              <input
-                class="mr-2 accent-plum"
-                type="radio"
-                name="style"
-                value={value}
-                required
-              />
-              {value}
-            </label>
-          ))
-        }
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend class="font-serif text-xl font-bold">2. ¿Qué priorizas?</legend>
-      <div class="mt-3 flex flex-wrap gap-3">
-        {
-          [
-            ['duracion', 'Duración'],
-            ['facilidad', 'Facilidad'],
-            ['precio', 'Precio'],
-            ['diseno', 'Diseño'],
-          ].map(([value, label]) => (
-            <label class="rounded-full border border-line bg-white px-4 py-2">
-              <input
-                class="mr-2 accent-plum"
-                type="radio"
-                name="priority"
-                value={value}
-                required
-              />
-              {label}
-            </label>
-          ))
-        }
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend class="font-serif text-xl font-bold"
-        >3. ¿Tienes lámpara UV?</legend
-      >
-      <div class="mt-3 flex flex-wrap gap-3">
-        {
-          [
-            ['si', 'Sí'],
-            ['no', 'No'],
-            ['comprar', 'Quiero comprarla'],
-          ].map(([value, label]) => (
-            <label class="rounded-full border border-line bg-white px-4 py-2">
-              <input
-                class="mr-2 accent-plum"
-                type="radio"
-                name="lamp"
-                value={value}
-                required
-              />
-              {label}
-            </label>
-          ))
-        }
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend class="font-serif text-xl font-bold"
-        >4. ¿Cómo son tus uñas?</legend
-      >
-      <div class="mt-3 flex flex-wrap gap-3">
-        {
-          ['normal', 'flexible', 'quebradiza'].map((value) => (
-            <label class="rounded-full border border-line bg-white px-4 py-2">
-              <input
-                class="mr-2 accent-plum"
-                type="radio"
-                name="nailType"
-                value={value}
-                required
-              />
-              {value}
-            </label>
-          ))
-        }
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend class="font-serif text-xl font-bold"
-        >5. ¿Cuánta exposición al agua tienes?</legend
-      >
-      <div class="mt-3 flex flex-wrap gap-3">
-        {
-          ['baja', 'media', 'alta'].map((value) => (
-            <label class="rounded-full border border-line bg-white px-4 py-2">
-              <input
-                class="mr-2 accent-plum"
-                type="radio"
-                name="waterExposure"
-                value={value}
-                required
-              />
-              {value}
-            </label>
-          ))
-        }
-      </div>
-    </fieldset>
-    <button class="button-primary justify-self-start" type="submit"
-      >Ver compatibilidad orientativa</button
-    >
+<section class="overflow-hidden rounded-[1.6rem] border border-border bg-surface shadow-card" data-recommender data-products={JSON.stringify(PRODUCTS)}>
+  <div class="border-b border-border bg-lavender/60 px-5 py-4 sm:px-8"><div class="flex items-center justify-between text-sm font-semibold"><span data-progress-label>1 de 4</span><span class="text-muted">≈ 1 minuto</span></div><div class="mt-3 h-1.5 overflow-hidden rounded-full bg-white"><span class="block h-full w-1/4 rounded-full bg-primary transition-[width]" data-progress-bar></span></div></div>
+  <form class="p-5 sm:p-8" data-recommender-form>
+    {questions.map((question, questionIndex) => <fieldset data-step={questionIndex} hidden={questionIndex !== 0}>
+      <legend class="max-w-2xl font-editorial text-3xl font-bold leading-tight sm:text-4xl">{question.legend}</legend>
+      <div class="mt-7 grid gap-3 sm:grid-cols-2">{question.options.map(([value, label]) => <label class="choice"><input class="size-5 accent-primary" type="radio" name={question.name} value={value} required />{label}</label>)}</div>
+    </fieldset>)}
+    <div class="mt-8 flex items-center justify-between gap-3"><button class="button-quiet invisible" type="button" data-back>← Atrás</button><button class="button-primary" type="button" data-next>Siguiente</button><button class="button-primary hidden" type="submit" data-submit>Ver mis resultados</button></div>
   </form>
-  <div class="mt-10 hidden" data-recommendation-results aria-live="polite">
-    <h2 class="text-3xl">Compatibilidad orientativa</h2>
-    <div class="mt-5 grid gap-5 md:grid-cols-3" data-result-list></div>
-  </div>
+  <noscript><p class="border-t border-border p-5 text-sm text-muted">El recomendador necesita JavaScript para calcular las coincidencias en tu navegador. El resto del contenido de esta página funciona sin JavaScript.</p></noscript>
+  <div class="hidden border-t border-border bg-background p-5 sm:p-8" data-recommendation-results aria-live="polite"><p class="eyebrow">Resultado explicado</p><h2 class="mt-3 text-3xl">Tus opciones orientativas</h2><p class="mt-3 max-w-2xl text-muted">Solo usamos atributos presentes en el catálogo. No estimamos duración, precio, resistencia ni comportamiento en tus uñas.</p><div class="mt-7 grid gap-5 lg:grid-cols-3" data-result-list></div><button class="button-secondary mt-7" type="button" data-restart>Repetir preguntas</button></div>
 </section>
 
 <script>
-  import {
-    recommendProducts,
-    type RecommendationAnswers,
-  } from '@/application/recommendation';
+  import { buildAmazonAffiliateUrl } from '@/application/affiliate';
+  import { recommendProducts, type RecommendationAnswers } from '@/application/recommendation';
   import type { Product } from '@/domain/product';
-
-  for (const root of document.querySelectorAll<HTMLElement>(
-    '[data-recommender]',
-  )) {
-    const form = root.querySelector('form');
-    const results = root.querySelector<HTMLElement>(
-      '[data-recommendation-results]',
-    );
+  const make = <K extends keyof HTMLElementTagNameMap>(tag: K, className?: string) => { const node = document.createElement(tag); if (className) node.className = className; return node; };
+  for (const root of document.querySelectorAll<HTMLElement>('[data-recommender]')) {
+    const form = root.querySelector<HTMLFormElement>('[data-recommender-form]');
+    const steps = [...root.querySelectorAll<HTMLFieldSetElement>('[data-step]')];
+    const back = root.querySelector<HTMLButtonElement>('[data-back]');
+    const next = root.querySelector<HTMLButtonElement>('[data-next]');
+    const submit = root.querySelector<HTMLButtonElement>('[data-submit]');
+    const results = root.querySelector<HTMLElement>('[data-recommendation-results]');
     const list = root.querySelector<HTMLElement>('[data-result-list]');
-    if (!(form instanceof HTMLFormElement) || !results || !list) continue;
+    const progressLabel = root.querySelector<HTMLElement>('[data-progress-label]');
+    const progressBar = root.querySelector<HTMLElement>('[data-progress-bar]');
+    if (!form || !back || !next || !submit || !results || !list) continue;
+    let current = 0;
+    const showStep = (index: number) => {
+      current = index; steps.forEach((step, stepIndex) => { step.hidden = stepIndex !== index; });
+      back.classList.toggle('invisible', index === 0); next.classList.toggle('hidden', index === steps.length - 1); submit.classList.toggle('hidden', index !== steps.length - 1);
+      if (progressLabel) progressLabel.textContent = `${index + 1} de ${steps.length}`;
+      if (progressBar) progressBar.style.width = `${((index + 1) / steps.length) * 100}%`;
+    };
+    next.addEventListener('click', () => { const checked = steps[current]?.querySelector<HTMLInputElement>('input:checked'); if (!checked) { steps[current]?.querySelector<HTMLInputElement>('input')?.reportValidity(); return; } showStep(Math.min(current + 1, steps.length - 1)); });
+    back.addEventListener('click', () => showStep(Math.max(0, current - 1)));
+    root.querySelector('[data-restart]')?.addEventListener('click', () => { results.classList.add('hidden'); form.classList.remove('hidden'); form.reset(); showStep(0); form.scrollIntoView({ block: 'start' }); });
     const products = JSON.parse(root.dataset.products ?? '[]') as Product[];
     form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      if (!form.reportValidity()) return;
-      const data = new FormData(form);
-      const answers = Object.fromEntries(
-        data.entries(),
-      ) as unknown as RecommendationAnswers;
-      const recommendations = recommendProducts(products, answers);
-      list.replaceChildren();
-      if (recommendations.length === 0) {
-        const message = document.createElement('p');
-        message.className = 'text-muted md:col-span-3';
-        message.textContent =
-          'El catálogo editorial todavía está en preparación. Vuelve pronto para obtener recomendaciones verificadas.';
-        list.appendChild(message);
-      }
-      for (const recommendation of recommendations) {
-        const article = document.createElement('article');
-        article.className = 'rounded-card border border-line bg-white p-5';
-        const heading = document.createElement('h3');
-        heading.className = 'text-xl';
-        heading.textContent = recommendation.product.name;
-        const brand = document.createElement('p');
-        brand.className = 'mt-1 text-sm text-muted';
-        brand.textContent = recommendation.product.brand;
-        const reasons = document.createElement('ul');
-        reasons.className = 'mt-4 list-disc space-y-2 pl-5 text-sm';
-        for (const reason of recommendation.reasons) {
-          const item = document.createElement('li');
-          item.textContent = reason;
-          reasons.appendChild(item);
-        }
-        article.appendChild(heading);
-        article.appendChild(brand);
-        article.appendChild(reasons);
-        list.appendChild(article);
-      }
-      results.classList.remove('hidden');
-      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      if (recommendations.length > 0) {
-        void fetch('/api/recommendations/', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            resultProductIds: recommendations.map(({ product }) => product.id),
-            answers,
-          }),
-          keepalive: true,
-        });
-      }
+      event.preventDefault(); if (!form.reportValidity()) return;
+      const answers = Object.fromEntries(new FormData(form).entries()) as unknown as RecommendationAnswers;
+      const recommendations = recommendProducts(products, answers); list.replaceChildren();
+      if (recommendations.length === 0) { const empty = make('p', 'card text-muted lg:col-span-3'); empty.textContent = 'No hay una coincidencia clara con esos criterios. Prueba el comparador para revisar los atributos disponibles.'; list.appendChild(empty); }
+      recommendations.forEach((recommendation, index) => {
+        const article = make('article', 'card flex flex-col');
+        const label = make('p', 'eyebrow'); label.textContent = index === 0 ? 'Tu mejor coincidencia' : 'También encaja';
+        const title = make('h3', 'mt-2 text-2xl'); title.textContent = `${recommendation.product.brand} · ${recommendation.product.name}`;
+        const level = make('p', 'mt-3 text-sm font-bold text-success'); level.textContent = `Compatibilidad orientativa: ${recommendation.compatibility.toLowerCase()}`;
+        const why = make('p', 'mt-5 font-bold'); why.textContent = '¿Por qué?';
+        const reasons = make('ul', 'mt-2 grid gap-2 text-sm text-muted'); recommendation.reasons.forEach((reason) => { const item = make('li'); item.textContent = `✓ ${reason}`; reasons.appendChild(item); });
+        const warnings = make('ul', 'mt-3 grid gap-2 text-sm text-warning'); recommendation.warnings.forEach((warning) => { const item = make('li'); item.textContent = `Ten en cuenta: ${warning}`; warnings.appendChild(item); });
+        const actions = make('div', 'mt-auto flex flex-wrap gap-2 pt-6');
+        const analysis = make('a', 'button-secondary'); analysis.href = `/es/productos/${recommendation.product.slug}/`; analysis.textContent = 'Ver análisis'; actions.appendChild(analysis);
+        const amazonUrl = buildAmazonAffiliateUrl(recommendation.product); if (amazonUrl) { const amazon = make('a', 'button-primary'); amazon.href = amazonUrl; amazon.target = '_blank'; amazon.rel = 'sponsored nofollow noopener'; amazon.textContent = 'Ver precio en Amazon'; amazon.setAttribute('aria-label', `Ver precio de ${recommendation.product.name} en Amazon, abre en otra pestaña`); amazon.addEventListener('click', () => navigator.sendBeacon('/api/events/amazon-click/', new Blob([JSON.stringify({ productId: recommendation.product.id, sourcePage: '/es/encuentra-tus-unas/', component: 'recommendation-result', position: index + 1 })], { type: 'application/json' }))); actions.appendChild(amazon); }
+        article.append(label, title, level, why, reasons, warnings, actions); list.appendChild(article);
+      });
+      form.classList.add('hidden'); results.classList.remove('hidden'); results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (recommendations.length > 0) void fetch('/api/recommendations/', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ resultProductIds: recommendations.map(({ product }) => product.id), answers }), keepalive: true });
     });
   }
 </script>

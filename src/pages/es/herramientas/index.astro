@@ -1,0 +1,6 @@
+---
+import ArticleCard from '@/components/ArticleCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+---
+<BaseLayout title="Herramientas para elegir tu manicura" description="Recomendador explicable, comparador móvil y calculadora de ahorro para tomar decisiones sobre tu manicura en casa." canonicalPath="/es/herramientas/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Herramientas' }]}><section class="container-page py-10 sm:py-16"><p class="eyebrow">Herramientas</p><h1 class="mt-4 text-5xl sm:text-6xl">Menos dudas, decisiones más claras</h1><p class="section-intro">Las herramientas funcionan con reglas visibles o con tus propios números. No usan IA ni presentan estimaciones como certezas.</p><div class="mt-10 grid gap-5 lg:grid-cols-3"><ArticleCard eyebrow="4 preguntas" title="Encuentra tus uñas ideales" description="Coincidencias según estilo, lámpara, experiencia y preferencia." href="/es/encuentra-tus-unas/" /><ArticleCard eyebrow="2–4 productos" title="Comparador" description="Revisa diferencias reales del catálogo." href="/es/comparar/" /><ArticleCard eyebrow="Cálculo local" title="Salón frente a casa" description="Estima costes anuales con tus cantidades." href="/es/calculadora-ahorro-manicura/" /></div></section></BaseLayout>

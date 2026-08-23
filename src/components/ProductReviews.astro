@@ -1,0 +1,15 @@
+---
+interface Props { slug: string }
+const { slug } = Astro.props;
+---
+<section data-product-reviews data-slug={slug}><div data-review-list><div class="rounded-card border border-dashed border-border bg-surface p-7"><h3 class="text-2xl">Todavía no hay opiniones publicadas</h3><p class="mt-3 text-muted">¿Has probado este producto? Sé la primera en compartir tu experiencia. Todas las opiniones se revisan antes de publicarse.</p></div></div></section>
+<script>
+  interface PublicReview { id: string; rating: number; title: string | null; body: string; recommend: boolean; createdAt: string }
+  for (const root of document.querySelectorAll<HTMLElement>('[data-product-reviews]')) {
+    const list = root.querySelector<HTMLElement>('[data-review-list]'); if (!list) continue;
+    void fetch(`/api/products/${root.dataset.slug ?? ''}/reviews/`).then((response) => response.ok ? response.json() as Promise<{ reviews: PublicReview[] }> : { reviews: [] }).then(({ reviews }) => {
+      if (reviews.length === 0) return; list.replaceChildren();
+      for (const review of reviews) { const article = document.createElement('article'); article.className = 'rounded-card border border-border bg-surface p-6'; const rating = document.createElement('p'); rating.className = 'font-bold text-primary'; rating.textContent = `${review.rating} de 5`; const title = document.createElement('h3'); title.className = 'mt-2 text-xl'; title.textContent = review.title ?? 'Opinión de la comunidad'; const body = document.createElement('p'); body.className = 'mt-3 leading-7 text-muted'; body.textContent = review.body; const author = document.createElement('p'); author.className = 'mt-4 text-xs font-semibold text-muted'; author.textContent = 'Usuaria de Tus-Uñas · opinión aprobada'; article.append(rating, title, body, author); list.appendChild(article); }
+    }).catch(() => undefined);
+  }
+</script>

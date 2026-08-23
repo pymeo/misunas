@@ -1,44 +1,16 @@
 ---
-import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import { PRODUCTS } from '@/data/products';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
+const products = PRODUCTS.filter((product) => product.category === 'unas-semicuradas');
 ---
-
-<EditorialLayout
-  title="Uñas semicuradas"
-  description="Punto de partida para entender, aplicar, retirar y comparar uñas semicuradas sin depender de datos comerciales no verificados."
-  canonicalPath="/es/unas-semicuradas/"
-  eyebrow="Categoría"
->
-  <p>
-    Las uñas semicuradas son tiras de gel parcialmente curado que se adaptan a
-    la uña y, según el producto, se terminan con una lámpara. La preparación,
-    los tiempos y la retirada cambian entre productos: revisa siempre las
-    instrucciones oficiales.
-  </p>
-  <h2>Empieza por aquí</h2>
-  <ul>
-    <li>
-      <a href="/es/que-son-las-unas-semicuradas/"
-        >Qué son las uñas semicuradas</a
-      >
-    </li>
-    <li>
-      <a href="/es/como-poner-unas-semicuradas/"
-        >Cómo ponerlas: estructura de la guía</a
-      >
-    </li>
-    <li>
-      <a href="/es/como-quitar-unas-semicuradas/">Cómo retirarlas con cuidado</a
-      >
-    </li>
-    <li>
-      <a href="/es/mejores-unas-semicuradas/"
-        >Comparativa editorial en preparación</a
-      >
-    </li>
-  </ul>
-  <aside class="mt-10 rounded-card bg-sand p-6 text-base text-ink">
-    <strong>Pendiente editorial:</strong> ampliar esta categoría con fuentes primarias,
-    fichas verificadas y pruebas de uso reales.
-  </aside>
-</EditorialLayout>
+<BaseLayout title="Uñas semicuradas: guía, productos y comparativas" description="Aprende qué son las uñas semicuradas, consulta productos verificados y filtra por lámpara o estilo sin crear URLs duplicadas." canonicalPath="/es/unas-semicuradas/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Uñas semicuradas' }]}>
+  <section class="container-page py-10 sm:py-16"><p class="eyebrow">Categoría</p><h1 class="mt-4 max-w-4xl text-5xl sm:text-6xl">Uñas semicuradas, sin atajos confusos</h1><p class="section-intro">Compara tiras de gel que necesitan curado, kits con lámpara y diseños verificados. La preparación y la retirada dependen siempre de las instrucciones de cada producto.</p><div class="mt-9 flex flex-wrap gap-3"><a class="button-primary" href="/es/mejores-unas-semicuradas/">Ver comparativa</a><a class="button-secondary" href="/es/encuentra-tus-unas/">Encontrar mi opción</a></div></section>
+  <section class="container-page py-12" data-product-filters><div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p class="eyebrow">Catálogo investigado</p><h2 class="section-heading">Explora {products.length} opciones</h2></div><fieldset><legend class="sr-only">Filtrar productos</legend><div class="flex flex-wrap gap-2">{[['all','Todos'],['lamp','Con lámpara'],['kit','Lámpara incluida'],['francesa','Francesa'],['llamativa','Llamativa']].map(([value,label]) => <label class="choice min-h-10 rounded-full px-4 py-2 text-sm"><input type="radio" name="catalog-filter" value={value} checked={value === 'all'} />{label}</label>)}</div></fieldset></div><p class="mt-4 text-sm text-muted" data-filter-count>{products.length} productos visibles. Los filtros no crean URLs indexables.</p><div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{products.map((product, index) => <div data-filter-product data-requires-lamp={String(product.requiresLamp)} data-includes-lamp={String(product.includesLamp)} data-tags={product.styleTags.join(' ')}><ProductCard {product} sourcePage="/es/unas-semicuradas/" position={index + 1} commercial /></div>)}</div></section>
+  <section class="container-page py-14"><p class="eyebrow">Guías esenciales</p><h2 class="section-heading">Antes de colocarlas</h2><div class="mt-8 grid gap-5 lg:grid-cols-3"><ArticleCard title="Qué son" description="Entiende el formato y sus requisitos." href="/es/que-son-las-unas-semicuradas/" /><ArticleCard title="Cómo ponerlas" description="Secuencia general y puntos que dependen del fabricante." href="/es/como-poner-unas-semicuradas/" /><ArticleCard title="Cómo quitarlas" description="Principios de retirada cuidadosa." href="/es/como-quitar-unas-semicuradas/" /></div></section>
+</BaseLayout>
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-product-filters]')) { const cards = [...root.querySelectorAll<HTMLElement>('[data-filter-product]')]; const count = root.querySelector<HTMLElement>('[data-filter-count]'); for (const input of root.querySelectorAll<HTMLInputElement>('input[name="catalog-filter"]')) input.addEventListener('change', () => { const filter = input.value; let visible = 0; cards.forEach((card) => { const tags = card.dataset.tags ?? ''; const show = filter === 'all' || (filter === 'lamp' && card.dataset.requiresLamp === 'true') || (filter === 'kit' && card.dataset.includesLamp === 'true') || tags.includes(filter); card.hidden = !show; if (show) visible += 1; }); if (count) count.textContent = `${visible} productos visibles. Los filtros no crean URLs indexables.`; }); }
+</script>

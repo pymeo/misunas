@@ -1,0 +1,8 @@
+---
+interface Props { name: string; brand: string; compact?: boolean }
+const { name, brand, compact = false } = Astro.props;
+---
+<div class:list={['product-placeholder relative overflow-hidden rounded-2xl', compact ? 'aspect-[4/3]' : 'aspect-square']} role="img" aria-label={`Placeholder editorial para ${name}. No es una imagen del producto.`}>
+  <div class="absolute inset-x-[16%] top-[14%] flex justify-center gap-[7%]" aria-hidden="true"><span class="h-28 w-10 -rotate-12 rounded-full bg-white/85 shadow-soft"></span><span class="h-32 w-11 rounded-full bg-primary/70 shadow-soft"></span><span class="h-28 w-10 rotate-12 rounded-full bg-white/70 shadow-soft"></span></div>
+  <p class="absolute right-4 bottom-4 left-4 text-center text-xs font-bold tracking-wider text-primary uppercase">{brand}</p>
+</div>

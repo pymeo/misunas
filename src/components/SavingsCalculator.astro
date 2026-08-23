@@ -1,9 +1,10 @@
-<section class="card max-w-3xl" data-savings-calculator>
+<section class="rounded-[1.6rem] border border-border bg-surface p-5 shadow-card sm:p-8" data-savings-calculator>
+  <p class="mb-6 rounded-xl bg-cream p-4 text-sm text-muted"><strong class="text-text">Valores de ejemplo editables.</strong> No representan precios de Amazon ni una recomendación comercial.</p>
   <form class="grid gap-5 sm:grid-cols-2">
     <label class="grid gap-2 font-semibold">
       Precio por manicura en salón (€)
       <input
-        class="rounded-lg border border-line bg-white px-4 py-3 font-normal"
+        class="input-field font-normal"
         type="number"
         name="salonPrice"
         min="1"
@@ -16,7 +17,7 @@
     <label class="grid gap-2 font-semibold">
       Frecuencia (semanas)
       <input
-        class="rounded-lg border border-line bg-white px-4 py-3 font-normal"
+        class="input-field font-normal"
         type="number"
         name="frequencyWeeks"
         min="1"
@@ -29,7 +30,7 @@
     <label class="grid gap-2 font-semibold">
       Coste del producto doméstico (€)
       <input
-        class="rounded-lg border border-line bg-white px-4 py-3 font-normal"
+        class="input-field font-normal"
         type="number"
         name="homeProductCost"
         min="0"
@@ -42,7 +43,7 @@
     <label class="grid gap-2 font-semibold">
       Manicuras estimadas por paquete
       <input
-        class="rounded-lg border border-line bg-white px-4 py-3 font-normal"
+        class="input-field font-normal"
         type="number"
         name="manicuresPerPack"
         min="1"
@@ -58,35 +59,35 @@
     >
   </form>
   <div
-    class="mt-8 hidden rounded-card bg-blush p-6"
+    class="mt-8 hidden rounded-card bg-primary p-6 text-white"
     aria-live="polite"
     data-results
   >
-    <p class="eyebrow">Estimación anual</p>
+    <p class="text-xs font-bold tracking-[.18em] text-blush uppercase">Estimación anual</p>
     <dl class="mt-4 grid gap-4 sm:grid-cols-3">
       <div>
         <dt class="text-sm text-muted">Salón</dt><dd
-          class="mt-1 text-2xl font-bold"
+          class="mt-1 text-3xl font-bold"
           data-salon
         >
         </dd>
       </div>
       <div>
         <dt class="text-sm text-muted">En casa</dt><dd
-          class="mt-1 text-2xl font-bold"
+          class="mt-1 text-3xl font-bold"
           data-home
         >
         </dd>
       </div>
       <div>
         <dt class="text-sm text-muted">Ahorro</dt><dd
-          class="mt-1 text-2xl font-bold text-plum"
+          class="mt-1 text-3xl font-bold text-blush"
           data-savings
         >
         </dd>
       </div>
     </dl>
-    <p class="mt-4 text-xs text-muted">
+    <p class="mt-5 border-t border-white/20 pt-4 text-xs text-white/70">
       Estimación orientativa. No incluye lámpara, accesorios, retiradas ni
       variaciones de uso.
     </p>

@@ -12,20 +12,19 @@ import { anonymousRateLimitKey } from '@/infrastructure/rate-limit/rate-limiter'
 
 export const wearReportInputSchema = z.object({
   productId: z.string().min(1).max(64),
-  wearDays: z.number().int().min(1).max(90),
-  nailType: z.enum(['normal', 'flexible', 'quebradiza']),
-  waterExposure: z.enum(['baja', 'media', 'alta']),
-  manualWork: z.boolean(),
+  wearDays: z.number().int().min(1).max(60),
+  waterExposure: z.enum(['poca', 'normal', 'mucha']),
+  manualWork: z.enum(['bajo', 'medio', 'alto']),
   prepUsed: z.boolean(),
-  lampUsed: z.boolean(),
+  lampUsed: z.boolean().nullable(),
   removalReason: z.enum([
-    'desgaste',
-    'levantamiento',
-    'rotura',
+    'despegadas',
+    'rotas',
+    'crecimiento',
     'cambio',
     'otro',
   ]),
-  website: z.string().max(0).optional(),
+  website: z.string().max(200).optional(),
 });
 
 export async function handleWearReportRequest(
@@ -49,7 +48,7 @@ export async function handleWearReportRequest(
       id: crypto.randomUUID(),
       productId: input.productId,
       wearDays: input.wearDays,
-      nailType: input.nailType,
+      nailType: null,
       waterExposure: input.waterExposure,
       manualWork: input.manualWork,
       prepUsed: input.prepUsed,

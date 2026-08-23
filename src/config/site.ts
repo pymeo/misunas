@@ -10,4 +10,6 @@ export const AMAZON_CONFIG = {
   marketplace: 'es',
 } as const;
 
-export const MINIMUM_STATISTICS_SAMPLE_SIZE = 10;
+export const MIN_PUBLIC_SAMPLE_SIZE = 5;
+/** @deprecated Use MIN_PUBLIC_SAMPLE_SIZE. */
+export const MINIMUM_STATISTICS_SAMPLE_SIZE = MIN_PUBLIC_SAMPLE_SIZE;

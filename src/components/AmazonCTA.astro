@@ -9,7 +9,9 @@ interface Props {
   position?: number;
 }
 const { product, sourcePage, component = 'amazon-cta', position } = Astro.props;
-const href = buildAmazonAffiliateUrl(product);
+const href = product.active && product.affiliateEligible && product.editorialStatus === 'approved'
+  ? buildAmazonAffiliateUrl(product)
+  : null;
 ---
 
 {

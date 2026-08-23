@@ -1,0 +1,7 @@
+---
+import ProductCard from '@/components/ProductCard.astro';
+import type { Product } from '@/domain/product';
+interface Props { products: Product[]; sourcePage: string; commercial?: boolean }
+const { products, sourcePage, commercial = false } = Astro.props;
+---
+<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{products.map((product, index) => <ProductCard {product} {sourcePage} position={index + 1} {commercial} />)}</div>

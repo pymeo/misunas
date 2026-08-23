@@ -1,112 +1,27 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import CategoryCard from '@/components/CategoryCard.astro';
+import EmptyState from '@/components/EmptyState.astro';
+import ProductComparison from '@/components/ProductComparison.astro';
 import { organizationJsonLd, websiteJsonLd } from '@/application/jsonld';
+import { FEATURED_PRODUCTS } from '@/data/products';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-
-<BaseLayout
-  title="Uñas semicuradas, comparativas y herramientas"
-  description="Guías, comparativas y herramientas para elegir uñas semicuradas y preparar tu manicura en casa con criterios claros."
-  canonicalPath="/es/"
-  jsonLd={[websiteJsonLd(), organizationJsonLd()]}
->
-  <section
-    class="container-page grid min-h-[70vh] items-center gap-12 py-16 lg:grid-cols-[1.15fr_.85fr] lg:py-24"
-  >
-    <div>
-      <p class="eyebrow">Manicura en casa, con criterio</p>
-      <h1 class="mt-5 max-w-4xl text-5xl leading-[1.05] sm:text-7xl">
-        Encuentra las uñas que mejor encajan contigo
-      </h1>
-      <p class="mt-7 max-w-2xl text-xl leading-8 text-muted">
-        Comparativas claras, guías prácticas y experiencias reales para ayudarte
-        a elegir sin depender de promesas vagas.
-      </p>
-      <div class="mt-9 flex flex-wrap gap-4">
-        <a class="button-primary" href="/es/encuentra-tus-unas/"
-          >Encuentra tus uñas</a
-        >
-        <a class="button-secondary" href="/es/mejores-unas-semicuradas/"
-          >Ver comparativa</a
-        >
-      </div>
-    </div>
-    <div
-      class="relative mx-auto aspect-square w-full max-w-lg overflow-hidden rounded-[2rem] bg-blush"
-      aria-hidden="true"
-    >
-      <div
-        class="absolute top-[14%] left-[16%] h-[58%] w-[20%] rotate-[-18deg] rounded-full bg-white shadow-card"
-      >
-      </div>
-      <div
-        class="absolute top-[19%] left-[40%] h-[58%] w-[20%] rotate-[-4deg] rounded-full bg-plum/75 shadow-card"
-      >
-      </div>
-      <div
-        class="absolute top-[12%] right-[15%] h-[58%] w-[20%] rotate-[13deg] rounded-full bg-sand shadow-card"
-      >
-      </div>
-      <p
-        class="absolute right-0 bottom-8 left-0 text-center font-serif text-xl text-plum"
-      >
-        Elige · compara · aprende
-      </p>
-    </div>
+<BaseLayout title="Uñas y manicura en casa: compara y elige mejor" description="Comparativas, guías, herramientas y experiencias reales para elegir productos de uñas y manicura en casa con datos claros." canonicalPath="/es/" jsonLd={[websiteJsonLd(), organizationJsonLd()]}>
+  <section class="container-page grid items-center gap-12 py-14 sm:py-20 lg:grid-cols-[1.08fr_.92fr] lg:py-24">
+    <div><p class="eyebrow">Tu guía para la manicura en casa</p><h1 class="mt-5 max-w-4xl text-5xl leading-[.98] sm:text-7xl">Encuentra las uñas que mejor encajan contigo</h1><p class="mt-7 max-w-2xl text-lg leading-8 text-muted sm:text-xl">Comparativas, guías y experiencias reales para elegir productos de manicura en casa sin perderte entre cientos de opciones.</p><div class="mt-9 flex flex-col gap-3 min-[430px]:flex-row"><a class="button-primary" href="/es/encuentra-tus-unas/">Encuentra tus uñas</a><a class="button-secondary" href="/es/comparar/">Ver comparativa</a></div><p class="mt-6 text-xs text-muted">Sin precios copiados · Sin estrellas inventadas · Recomendaciones explicadas</p></div>
+    <div class="relative mx-auto aspect-[4/5] w-full max-w-lg overflow-hidden rounded-[2.5rem] bg-lavender" aria-label="Ilustración editorial abstracta de una manicura"><div class="absolute -top-14 -right-14 size-56 rounded-full bg-cream"></div><div class="absolute -bottom-16 -left-16 size-64 rounded-full bg-blush"></div><div class="absolute inset-x-[12%] top-[13%] flex justify-center gap-[7%]" aria-hidden="true"><span class="h-56 w-[18%] -rotate-12 rounded-[999px] bg-white shadow-card"></span><span class="h-64 w-[19%] -rotate-2 rounded-[999px] bg-accent/80 shadow-card"></span><span class="h-60 w-[18%] rotate-8 rounded-[999px] bg-primary shadow-card"></span></div><div class="absolute right-6 bottom-7 left-6 rounded-2xl bg-white/85 p-5 backdrop-blur"><p class="font-editorial text-xl font-bold text-primary">Elegir también puede ser sencillo.</p><p class="mt-1 text-sm text-muted">Primero el formato. Después el diseño.</p></div></div>
   </section>
 
-  <section class="container-page py-16">
-    <p class="eyebrow">Explora</p>
-    <h2 class="mt-3 text-4xl sm:text-5xl">
-      Todo lo necesario para decidir mejor
-    </h2>
-    <div class="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      <a
-        class="card no-underline transition hover:-translate-y-1"
-        href="/es/unas-semicuradas/"
-        ><h3 class="text-2xl">Uñas semicuradas</h3><p class="mt-3 text-muted">
-          Conceptos, aplicación y retirada.
-        </p></a
-      >
-      <a
-        class="card no-underline transition hover:-translate-y-1"
-        href="/es/que-son-las-unas-semicuradas/"
-        ><h3 class="text-2xl">Guías</h3><p class="mt-3 text-muted">
-          Información práctica con revisión editorial pendiente donde
-          corresponda.
-        </p></a
-      >
-      <a
-        class="card no-underline transition hover:-translate-y-1"
-        href="/es/mejores-unas-semicuradas/"
-        ><h3 class="text-2xl">Comparativas</h3><p class="mt-3 text-muted">
-          Solo atributos comprobados, sin precios ni estrellas inventadas.
-        </p></a
-      >
-      <a
-        class="card no-underline transition hover:-translate-y-1"
-        href="/es/calculadora-ahorro-manicura/"
-        ><h3 class="text-2xl">Herramientas</h3><p class="mt-3 text-muted">
-          Calcula costes y encuentra opciones compatibles.
-        </p></a
-      >
-    </div>
-  </section>
+  <section class="container-page py-14"><p class="eyebrow">Explora por categoría</p><h2 class="section-heading">Todo un mundo para tus uñas</h2><div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"><CategoryCard title="Uñas semicuradas" description="Tiras de gel, kits, aplicación y retirada." href="/es/unas-semicuradas/" icon="◒" /><CategoryCard title="Con lámpara" description="Formatos UV/LED y kits que ya incluyen lámpara." href="/es/unas-semicuradas/" icon="✦" tone="lavender" /><CategoryCard title="Sin lámpara" description="Formatos precured y wraps que no requieren curado." href="/es/comparar/" icon="◇" tone="cream" /><CategoryCard title="Press-on" description="Catálogo y guías cuando exista investigación suficiente." icon="◉" tone="cream" /><CategoryCard title="Lámparas UV" description="Comparativas cuando incorporemos fichas verificadas." icon="☼" tone="lavender" /><CategoryCard title="Cuidado de uñas" description="Rutinas y productos con contenido editorial responsable." icon="❋" /></div></section>
 
-  <section class="container-page py-16">
-    <div class="rounded-[2rem] bg-plum p-8 text-white sm:p-12">
-      <p class="text-xs font-bold tracking-[.18em] uppercase text-blush">
-        Último artículo
-      </p>
-      <h2 class="mt-3 text-4xl">Cómo elegir un formato de manicura en casa</h2>
-      <p class="mt-4 max-w-2xl text-lg text-white/80">
-        Cuatro criterios comparables para empezar sin confundir marketing con
-        evidencia.
-      </p>
-      <a
-        class="mt-7 inline-block font-bold text-white"
-        href="/es/articulos/elegir-formato-manicura-casa/">Leer artículo →</a
-      >
-    </div>
-  </section>
+  <section class="container-page py-14"><p class="eyebrow">Empieza por aquí</p><h2 class="section-heading">Tres caminos, una decisión más clara</h2><div class="mt-8 grid gap-5 lg:grid-cols-3"><a class="rounded-[1.5rem] bg-primary p-7 text-white no-underline" href="/es/encuentra-tus-unas/"><span class="text-sm font-bold text-blush">01 · RECOMENDADOR</span><h3 class="mt-8 text-3xl">Encuentra tus uñas</h3><p class="mt-3 text-white/75">Cuatro preguntas y razones concretas basadas en el catálogo.</p><span class="mt-7 inline-block font-bold">Empezar →</span></a><a class="rounded-[1.5rem] bg-lavender p-7 text-text no-underline" href="/es/comparar/"><span class="text-sm font-bold text-secondary">02 · COMPARADOR</span><h3 class="mt-8 text-3xl">Comparar productos</h3><p class="mt-3 text-muted">Pon 2–4 opciones frente a frente sin datos comerciales inventados.</p><span class="mt-7 inline-block font-bold text-primary">Comparar →</span></a><a class="rounded-[1.5rem] bg-cream p-7 text-text no-underline" href="/es/calculadora-ahorro-manicura/"><span class="text-sm font-bold text-warning">03 · CALCULADORA</span><h3 class="mt-8 text-3xl">¿Cuánto ahorrarías?</h3><p class="mt-3 text-muted">Usa tus propias cifras para comparar salón y manicura en casa.</p><span class="mt-7 inline-block font-bold text-primary">Calcular →</span></a></div></section>
+
+  <section class="container-page py-14"><div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p class="eyebrow">Comparativa destacada</p><h2 class="section-heading">Cuatro formatos para empezar</h2></div><a class="font-bold text-primary" href="/es/comparar/">Abrir comparador completo →</a></div><div class="mt-8"><ProductComparison products={FEATURED_PRODUCTS} sourcePage="/es/" /></div></section>
+
+  <section class="my-14 bg-primary py-16 text-white"><div class="container-page"><p class="text-xs font-bold tracking-[.18em] text-blush uppercase">Por qué Tus-Uñas</p><h2 class="mt-3 max-w-3xl text-4xl sm:text-5xl">La claridad es parte del producto</h2><div class="mt-9 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">{[['Comparativas claras','Atributos equivalentes, pensados para móvil.'],['Datos reales de usuarias','Solo se agregan cuando hay muestra suficiente.'],['Sin precios inventados','El precio se consulta siempre en la tienda.'],['Recomendaciones explicadas','Cada resultado indica qué dato lo ha provocado.']].map(([title, description], index) => <div class="border-t border-white/25 pt-5"><span class="text-sm text-blush">0{index + 1}</span><h3 class="mt-5 text-xl">{title}</h3><p class="mt-2 text-sm leading-6 text-white/70">{description}</p></div>)}</div></div></section>
+
+  <section class="container-page py-14"><p class="eyebrow">Últimas guías</p><h2 class="section-heading">Aprende antes de elegir</h2><div class="mt-8 grid gap-5 lg:grid-cols-3"><ArticleCard title="Qué son las uñas semicuradas" description="Qué distingue este formato y qué conviene comprobar antes de usarlo." href="/es/que-son-las-unas-semicuradas/" /><ArticleCard title="Cómo poner uñas semicuradas" description="Una secuencia prudente de preparación, ajuste y curado." href="/es/como-poner-unas-semicuradas/" /><ArticleCard title="Cómo quitar uñas semicuradas" description="Principios para una retirada paciente siguiendo las instrucciones." href="/es/como-quitar-unas-semicuradas/" /></div></section>
+  <section class="container-page py-14"><p class="eyebrow">Experiencias reales</p><h2 class="section-heading">La comunidad empieza desde cero</h2><div class="mt-8"><EmptyState title="Estamos recopilando las primeras experiencias" description="No vamos a inventar testimonios para llenar este espacio. Cuando haya datos suficientes, aquí aparecerán opiniones aprobadas y estadísticas agregadas." href="/es/opiniones/" cta="Cómo funciona" /></div></section>
 </BaseLayout>

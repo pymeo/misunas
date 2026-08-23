@@ -1,4 +1,6 @@
 import { SITE_NAME, SITE_URL } from '@/config/site';
+import type { Product } from '@/domain/product';
+import type { ProductReview } from '@/domain/review';
 
 type JsonLd = Record<string, unknown>;
 
@@ -61,4 +63,26 @@ export function articleJsonLd(input: {
 
 export function serializeJsonLd(data: JsonLd): string {
   return JSON.stringify(data).replace(/</g, '\\u003c');
+}
+
+export function productJsonLd(product: Product, approvedReviews: ProductReview[] = []): JsonLd {
+  const publicReviews = approvedReviews.filter((review) => review.status === 'approved');
+  const data: JsonLd = {
+    '@context': context,
+    '@type': 'Product',
+    name: product.name,
+    brand: { '@type': 'Brand', name: product.brand },
+    category: product.category,
+    url: new URL(`/es/productos/${product.slug}/`, SITE_URL).toString(),
+  };
+  if (publicReviews.length > 0) {
+    const average = publicReviews.reduce((sum, review) => sum + review.rating, 0) / publicReviews.length;
+    data.aggregateRating = { '@type': 'AggregateRating', ratingValue: Math.round(average * 10) / 10, reviewCount: publicReviews.length, bestRating: 5, worstRating: 1 };
+    data.review = publicReviews.map((review) => ({
+      '@type': 'Review', reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5, worstRating: 1 },
+      ...(review.title ? { name: review.title } : {}), reviewBody: review.body,
+      author: { '@type': 'Person', name: 'Usuaria de Tus-Uñas' }, datePublished: review.createdAt.toISOString(),
+    }));
+  }
+  return data;
 }

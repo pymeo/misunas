@@ -1,39 +1,23 @@
 ---
 import { SITE_NAME } from '@/config/site';
+const links = [
+  ['/es/unas-semicuradas/', 'Semicuradas'], ['/es/comparativas/', 'Comparativas'],
+  ['/es/guias/', 'Guías'], ['/es/herramientas/', 'Herramientas'], ['/es/opiniones/', 'Opiniones'],
+];
 ---
-
-<header class="border-b border-line bg-surface/95">
-  <div
-    class="container-page flex min-h-18 items-center justify-between gap-5 py-3"
-  >
-    <a
-      class="font-serif text-2xl font-bold text-plum no-underline"
-      href="/es/"
-      aria-label={`${SITE_NAME}, inicio`}
-    >
-      {SITE_NAME}
-    </a>
-    <nav aria-label="Navegación principal">
-      <ul
-        class="flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm font-semibold"
-      >
-        <li>
-          <a class="no-underline hover:text-plum" href="/es/unas-semicuradas/"
-            >Semicuradas</a
-          >
-        </li>
-        <li>
-          <a
-            class="no-underline hover:text-plum"
-            href="/es/mejores-unas-semicuradas/">Comparativas</a
-          >
-        </li>
-        <li>
-          <a class="no-underline hover:text-plum" href="/es/encuentra-tus-unas/"
-            >Recomendador</a
-          >
-        </li>
-      </ul>
+<header class="site-header">
+  <div class="container-page flex min-h-18 items-center justify-between gap-5 py-3">
+    <a class="brand-mark" href="/es/" aria-label={`${SITE_NAME}, inicio`}><span aria-hidden="true">T</span>{SITE_NAME}</a>
+    <nav aria-label="Navegación principal" class="hidden items-center gap-7 lg:flex">
+      <ul class="flex items-center gap-6 text-sm font-semibold">{links.map(([href, label]) => <li><a class="nav-link" href={href}>{label}</a></li>)}</ul>
+      <a class="button-primary text-sm" href="/es/encuentra-tus-unas/">Encuentra tus uñas</a>
     </nav>
+    <details class="mobile-menu lg:hidden">
+      <summary aria-label="Abrir navegación"><span></span><span></span><span></span><span class="sr-only">Menú</span></summary>
+      <nav aria-label="Navegación móvil" class="absolute right-4 left-4 top-[4.6rem] z-40 rounded-2xl border border-border bg-surface p-4 shadow-card">
+        <ul class="grid gap-1">{links.map(([href, label]) => <li><a class="block rounded-xl px-4 py-3 font-semibold no-underline" href={href}>{label}</a></li>)}</ul>
+        <a class="button-primary mt-3 w-full" href="/es/encuentra-tus-unas/">Encuentra tus uñas</a>
+      </nav>
+    </details>
   </div>
 </header>
