@@ -1,0 +1,9 @@
+{
+  "name": "Tus-Uñas",
+  "short_name": "Tus-Uñas",
+  "start_url": "/es/",
+  "display": "standalone",
+  "background_color": "#fcfaf8",
+  "theme_color": "#6e3c5c",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

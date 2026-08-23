@@ -1,0 +1,18 @@
+---
+import Recommender from '@/components/Recommender.astro';
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+export const prerender = true;
+---
+
+<EditorialLayout
+  title="Encuentra tus uñas ideales"
+  description="Recomendador orientativo y explicable para encontrar formatos compatibles con tu estilo, prioridades, lámpara y rutina."
+  canonicalPath="/es/encuentra-tus-unas/"
+  eyebrow="Recomendador"
+>
+  <p>
+    El resultado aplica reglas deterministas a atributos del catálogo. No usa IA
+    ni presenta el resultado como una certeza científica.
+  </p>
+  <Recommender />
+</EditorialLayout>

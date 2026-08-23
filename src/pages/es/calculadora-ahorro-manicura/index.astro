@@ -1,0 +1,24 @@
+---
+import SavingsCalculator from '@/components/SavingsCalculator.astro';
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+export const prerender = true;
+---
+
+<EditorialLayout
+  title="Calculadora de ahorro en manicura"
+  description="Estima cuánto podrías ahorrar al año con manicura en casa frente al salón usando tus propios precios y frecuencia."
+  canonicalPath="/es/calculadora-ahorro-manicura/"
+  eyebrow="Herramienta"
+>
+  <p>
+    Introduce tus cifras para comparar el gasto anual estimado. El cálculo se
+    realiza en tu navegador y no envía estos datos al servidor.
+  </p>
+  <SavingsCalculator />
+  <h2>Cómo se calcula</h2>
+  <p>
+    Estimamos las manicuras anuales dividiendo 52 entre tu frecuencia en
+    semanas. El coste doméstico reparte cada paquete entre el número de
+    aplicaciones que indiques. Es una orientación, no una promesa de ahorro.
+  </p>
+</EditorialLayout>

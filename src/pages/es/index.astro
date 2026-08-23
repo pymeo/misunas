@@ -1,0 +1,112 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { organizationJsonLd, websiteJsonLd } from '@/application/jsonld';
+export const prerender = true;
+---
+
+<BaseLayout
+  title="Uñas semicuradas, comparativas y herramientas"
+  description="Guías, comparativas y herramientas para elegir uñas semicuradas y preparar tu manicura en casa con criterios claros."
+  canonicalPath="/es/"
+  jsonLd={[websiteJsonLd(), organizationJsonLd()]}
+>
+  <section
+    class="container-page grid min-h-[70vh] items-center gap-12 py-16 lg:grid-cols-[1.15fr_.85fr] lg:py-24"
+  >
+    <div>
+      <p class="eyebrow">Manicura en casa, con criterio</p>
+      <h1 class="mt-5 max-w-4xl text-5xl leading-[1.05] sm:text-7xl">
+        Encuentra las uñas que mejor encajan contigo
+      </h1>
+      <p class="mt-7 max-w-2xl text-xl leading-8 text-muted">
+        Comparativas claras, guías prácticas y experiencias reales para ayudarte
+        a elegir sin depender de promesas vagas.
+      </p>
+      <div class="mt-9 flex flex-wrap gap-4">
+        <a class="button-primary" href="/es/encuentra-tus-unas/"
+          >Encuentra tus uñas</a
+        >
+        <a class="button-secondary" href="/es/mejores-unas-semicuradas/"
+          >Ver comparativa</a
+        >
+      </div>
+    </div>
+    <div
+      class="relative mx-auto aspect-square w-full max-w-lg overflow-hidden rounded-[2rem] bg-blush"
+      aria-hidden="true"
+    >
+      <div
+        class="absolute top-[14%] left-[16%] h-[58%] w-[20%] rotate-[-18deg] rounded-full bg-white shadow-card"
+      >
+      </div>
+      <div
+        class="absolute top-[19%] left-[40%] h-[58%] w-[20%] rotate-[-4deg] rounded-full bg-plum/75 shadow-card"
+      >
+      </div>
+      <div
+        class="absolute top-[12%] right-[15%] h-[58%] w-[20%] rotate-[13deg] rounded-full bg-sand shadow-card"
+      >
+      </div>
+      <p
+        class="absolute right-0 bottom-8 left-0 text-center font-serif text-xl text-plum"
+      >
+        Elige · compara · aprende
+      </p>
+    </div>
+  </section>
+
+  <section class="container-page py-16">
+    <p class="eyebrow">Explora</p>
+    <h2 class="mt-3 text-4xl sm:text-5xl">
+      Todo lo necesario para decidir mejor
+    </h2>
+    <div class="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <a
+        class="card no-underline transition hover:-translate-y-1"
+        href="/es/unas-semicuradas/"
+        ><h3 class="text-2xl">Uñas semicuradas</h3><p class="mt-3 text-muted">
+          Conceptos, aplicación y retirada.
+        </p></a
+      >
+      <a
+        class="card no-underline transition hover:-translate-y-1"
+        href="/es/que-son-las-unas-semicuradas/"
+        ><h3 class="text-2xl">Guías</h3><p class="mt-3 text-muted">
+          Información práctica con revisión editorial pendiente donde
+          corresponda.
+        </p></a
+      >
+      <a
+        class="card no-underline transition hover:-translate-y-1"
+        href="/es/mejores-unas-semicuradas/"
+        ><h3 class="text-2xl">Comparativas</h3><p class="mt-3 text-muted">
+          Solo atributos comprobados, sin precios ni estrellas inventadas.
+        </p></a
+      >
+      <a
+        class="card no-underline transition hover:-translate-y-1"
+        href="/es/calculadora-ahorro-manicura/"
+        ><h3 class="text-2xl">Herramientas</h3><p class="mt-3 text-muted">
+          Calcula costes y encuentra opciones compatibles.
+        </p></a
+      >
+    </div>
+  </section>
+
+  <section class="container-page py-16">
+    <div class="rounded-[2rem] bg-plum p-8 text-white sm:p-12">
+      <p class="text-xs font-bold tracking-[.18em] uppercase text-blush">
+        Último artículo
+      </p>
+      <h2 class="mt-3 text-4xl">Cómo elegir un formato de manicura en casa</h2>
+      <p class="mt-4 max-w-2xl text-lg text-white/80">
+        Cuatro criterios comparables para empezar sin confundir marketing con
+        evidencia.
+      </p>
+      <a
+        class="mt-7 inline-block font-bold text-white"
+        href="/es/articulos/elegir-formato-manicura-casa/">Leer artículo →</a
+      >
+    </div>
+  </section>
+</BaseLayout>

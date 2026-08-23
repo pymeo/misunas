@@ -1,0 +1,39 @@
+---
+import { SITE_NAME } from '@/config/site';
+---
+
+<header class="border-b border-line bg-surface/95">
+  <div
+    class="container-page flex min-h-18 items-center justify-between gap-5 py-3"
+  >
+    <a
+      class="font-serif text-2xl font-bold text-plum no-underline"
+      href="/es/"
+      aria-label={`${SITE_NAME}, inicio`}
+    >
+      {SITE_NAME}
+    </a>
+    <nav aria-label="Navegación principal">
+      <ul
+        class="flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm font-semibold"
+      >
+        <li>
+          <a class="no-underline hover:text-plum" href="/es/unas-semicuradas/"
+            >Semicuradas</a
+          >
+        </li>
+        <li>
+          <a
+            class="no-underline hover:text-plum"
+            href="/es/mejores-unas-semicuradas/">Comparativas</a
+          >
+        </li>
+        <li>
+          <a class="no-underline hover:text-plum" href="/es/encuentra-tus-unas/"
+            >Recomendador</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

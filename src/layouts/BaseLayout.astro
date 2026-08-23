@@ -1,0 +1,118 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Footer from '@/components/Footer.astro';
+import Header from '@/components/Header.astro';
+import {
+  buildHreflangLinks,
+  type TranslationPath,
+} from '@/application/hreflang';
+import { breadcrumbJsonLd, serializeJsonLd } from '@/application/jsonld';
+import { SITE_NAME, SITE_URL } from '@/config/site';
+import '@/styles/global.css';
+
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  breadcrumbs?: BreadcrumbItem[];
+  jsonLd?: Record<string, unknown>[];
+  translations?: TranslationPath[];
+}
+
+const {
+  title,
+  description,
+  canonicalPath,
+  image = '/social-card.svg',
+  type = 'website',
+  noindex = false,
+  breadcrumbs = [],
+  jsonLd = [],
+  translations = [{ locale: 'es', path: canonicalPath }],
+} = Astro.props;
+const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
+const canonical = new URL(canonicalPath, SITE_URL).toString();
+const socialImage = new URL(image, SITE_URL).toString();
+const breadcrumbData =
+  breadcrumbs.length > 1
+    ? breadcrumbJsonLd(
+        breadcrumbs.map((item) => ({
+          name: item.label,
+          path: item.href ?? canonicalPath,
+        })),
+      )
+    : null;
+const schemas = breadcrumbData ? [...jsonLd, breadcrumbData] : jsonLd;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    {
+      buildHreflangLinks(translations).map((link) => (
+        <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+      ))
+    }
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`RSS de ${SITE_NAME}`}
+      href="/es/rss.xml"
+    />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <title>{fullTitle}</title>
+    {
+      schemas.map((schema) => (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={serializeJsonLd(schema)}
+        />
+      ))
+    }
+  </head>
+  <body>
+    <a
+      class="sr-only z-50 bg-white p-3 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+      href="#contenido">Saltar al contenido</a
+    >
+    <Header />
+    <main id="contenido">
+      {
+        breadcrumbs.length > 0 && (
+          <div class="container-page pt-8">
+            <Breadcrumbs items={breadcrumbs} />
+          </div>
+        )
+      }
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

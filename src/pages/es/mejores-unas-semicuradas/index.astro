@@ -1,0 +1,43 @@
+---
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import ProductComparison from '@/components/ProductComparison.astro';
+import { SAMPLE_PRODUCTS } from '@/data/products.sample';
+import { PRODUCTS } from '@/data/products';
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+export const prerender = true;
+const products = import.meta.env.DEV ? SAMPLE_PRODUCTS : PRODUCTS;
+---
+
+<EditorialLayout
+  title="Comparativa de uñas semicuradas"
+  description="Estructura de comparación de uñas semicuradas basada en atributos verificables, sin precios manuales, ratings ni promesas inventadas."
+  canonicalPath="/es/mejores-unas-semicuradas/"
+  eyebrow="Comparativa"
+>
+  <AffiliateDisclosure />
+  <p>
+    Esta página está preparada para comparar de dos a cuatro opciones mediante
+    datos editoriales comprobados. El catálogo de producción aún no contiene
+    fichas verificadas.
+  </p>
+  {
+    import.meta.env.DEV && (
+      <p class="rounded-card bg-sand p-5 text-base text-ink">
+        <strong>Modo desarrollo:</strong> la tabla usa productos SAMPLE para
+        probar la interfaz.
+      </p>
+    )
+  }
+  <ProductComparison {products} />
+  <h2>Cómo se elaborará la comparativa</h2>
+  <p>
+    Separaremos los datos declarados por cada fabricante de nuestras pruebas
+    editoriales y, cuando exista una muestra suficiente, de las experiencias
+    anónimas agregadas. No publicaremos AggregateRating ni precios sin una
+    fuente oficial válida.
+  </p>
+  <aside class="rounded-card bg-sand p-6 text-base text-ink">
+    <strong>Pendiente editorial:</strong> investigar productos, verificar fichas oficiales
+    y documentar el protocolo antes de recomendar compras.
+  </aside>
+</EditorialLayout>

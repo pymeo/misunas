@@ -1,0 +1,25 @@
+---
+import { SITE_NAME } from '@/config/site';
+const year = new Date().getUTCFullYear();
+---
+
+<footer class="mt-24 border-t border-line bg-white py-12">
+  <div class="container-page grid gap-8 md:grid-cols-2">
+    <div>
+      <p class="font-serif text-xl font-bold text-plum">{SITE_NAME}</p>
+      <p class="mt-2 max-w-md text-sm text-muted">
+        Comparativas, guías y herramientas para elegir tu manicura en casa con
+        criterios claros.
+      </p>
+    </div>
+    <nav aria-label="Información legal" class="md:text-right">
+      <ul class="flex flex-wrap gap-x-5 gap-y-3 text-sm md:justify-end">
+        <li><a href="/es/aviso-afiliados/">Afiliación</a></li>
+        <li><a href="/es/privacidad/">Privacidad</a></li>
+        <li><a href="/es/cookies/">Cookies</a></li>
+        <li><a href="/es/aviso-legal/">Aviso legal</a></li>
+      </ul>
+      <p class="mt-5 text-xs text-muted">© {year} {SITE_NAME}</p>
+    </nav>
+  </div>
+</footer>

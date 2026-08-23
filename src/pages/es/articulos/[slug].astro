@@ -1,0 +1,57 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { articleJsonLd } from '@/application/jsonld';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export const prerender = true;
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({
+    params: { slug: article.data.slug },
+    props: { article },
+  }));
+}
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+const { article } = Astro.props;
+const { Content } = await render(article);
+const path = `/es/articulos/${article.data.slug}/`;
+---
+
+<BaseLayout
+  title={article.data.seoTitle ?? article.data.title}
+  description={article.data.seoDescription ?? article.data.description}
+  canonicalPath={path}
+  type="article"
+  noindex={article.data.draft}
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Artículos', href: '/es/' },
+    { label: article.data.title },
+  ]}
+  jsonLd={[
+    articleJsonLd({
+      headline: article.data.title,
+      description: article.data.description,
+      path,
+      publishedAt: article.data.publishedAt,
+      ...(article.data.updatedAt ? { updatedAt: article.data.updatedAt } : {}),
+      author: article.data.author,
+      ...(article.data.heroImage ? { image: article.data.heroImage } : {}),
+    }),
+  ]}
+>
+  <article class="container-page py-12 sm:py-16">
+    <header class="max-w-4xl">
+      <p class="eyebrow">{article.data.category}</p><h1
+        class="mt-4 text-4xl sm:text-6xl"
+      >
+        {article.data.title}
+      </h1><p class="mt-6 text-xl leading-8 text-muted">
+        {article.data.description}
+      </p>
+    </header>
+    <div class="prose-editorial mt-12"><Content /></div>
+  </article>
+</BaseLayout>

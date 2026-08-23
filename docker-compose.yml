@@ -1,0 +1,30 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run dev
+    init: true
+    ports:
+      - '4321:4321'
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    environment:
+      AMAZON_AFFILIATE_TAG: tusunas-21
+      AMAZON_MARKETPLACE: es
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:4321/es/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  node_modules:

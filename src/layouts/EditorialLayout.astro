@@ -1,0 +1,37 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  eyebrow?: string;
+  noindex?: boolean;
+}
+const {
+  title,
+  description,
+  canonicalPath,
+  eyebrow = 'Guía editorial',
+  noindex = false,
+} = Astro.props;
+---
+
+<BaseLayout
+  {title}
+  {description}
+  {canonicalPath}
+  {noindex}
+  breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: title }]}
+>
+  <article class="container-page py-10 sm:py-16">
+    <header class="max-w-4xl">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1 class="mt-4 text-4xl leading-tight sm:text-6xl">{title}</h1>
+      <p class="mt-6 max-w-3xl text-xl leading-8 text-muted">{description}</p>
+    </header>
+    <div class="prose-editorial mt-12">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

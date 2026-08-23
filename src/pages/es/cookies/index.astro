@@ -1,0 +1,21 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+export const prerender = true;
+---
+
+<EditorialLayout
+  title="Política de cookies"
+  description="Información inicial sobre cookies y analítica de Tus-Uñas, pendiente de completar antes del lanzamiento público."
+  canonicalPath="/es/cookies/"
+  eyebrow="Legal"
+>
+  <p>
+    El MVP no implementa cuentas de usuario ni cookies publicitarias propias.
+    Está previsto utilizar Cloudflare Web Analytics para métricas generales sin
+    escribir una fila de base de datos por cada visita.
+  </p>
+  <p>
+    <strong>TODO legal:</strong> auditar las tecnologías efectivamente activadas en
+    producción y completar esta política y, si fuera necesario, el mecanismo de consentimiento.
+  </p>
+</EditorialLayout>

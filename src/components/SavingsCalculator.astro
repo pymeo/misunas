@@ -1,0 +1,129 @@
+<section class="card max-w-3xl" data-savings-calculator>
+  <form class="grid gap-5 sm:grid-cols-2">
+    <label class="grid gap-2 font-semibold">
+      Precio por manicura en salón (€)
+      <input
+        class="rounded-lg border border-line bg-white px-4 py-3 font-normal"
+        type="number"
+        name="salonPrice"
+        min="1"
+        max="1000"
+        step="0.01"
+        value="30"
+        required
+      />
+    </label>
+    <label class="grid gap-2 font-semibold">
+      Frecuencia (semanas)
+      <input
+        class="rounded-lg border border-line bg-white px-4 py-3 font-normal"
+        type="number"
+        name="frequencyWeeks"
+        min="1"
+        max="52"
+        step="0.5"
+        value="3"
+        required
+      />
+    </label>
+    <label class="grid gap-2 font-semibold">
+      Coste del producto doméstico (€)
+      <input
+        class="rounded-lg border border-line bg-white px-4 py-3 font-normal"
+        type="number"
+        name="homeProductCost"
+        min="0"
+        max="1000"
+        step="0.01"
+        value="20"
+        required
+      />
+    </label>
+    <label class="grid gap-2 font-semibold">
+      Manicuras estimadas por paquete
+      <input
+        class="rounded-lg border border-line bg-white px-4 py-3 font-normal"
+        type="number"
+        name="manicuresPerPack"
+        min="1"
+        max="100"
+        step="1"
+        value="2"
+        required
+      />
+    </label>
+    <button
+      class="button-primary sm:col-span-2 sm:justify-self-start"
+      type="submit">Calcular ahorro</button
+    >
+  </form>
+  <div
+    class="mt-8 hidden rounded-card bg-blush p-6"
+    aria-live="polite"
+    data-results
+  >
+    <p class="eyebrow">Estimación anual</p>
+    <dl class="mt-4 grid gap-4 sm:grid-cols-3">
+      <div>
+        <dt class="text-sm text-muted">Salón</dt><dd
+          class="mt-1 text-2xl font-bold"
+          data-salon
+        >
+        </dd>
+      </div>
+      <div>
+        <dt class="text-sm text-muted">En casa</dt><dd
+          class="mt-1 text-2xl font-bold"
+          data-home
+        >
+        </dd>
+      </div>
+      <div>
+        <dt class="text-sm text-muted">Ahorro</dt><dd
+          class="mt-1 text-2xl font-bold text-plum"
+          data-savings
+        >
+        </dd>
+      </div>
+    </dl>
+    <p class="mt-4 text-xs text-muted">
+      Estimación orientativa. No incluye lámpara, accesorios, retiradas ni
+      variaciones de uso.
+    </p>
+  </div>
+</section>
+
+<script>
+  import { calculateAnnualSavings } from '@/application/savings';
+
+  const currency = new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency: 'EUR',
+  });
+  for (const root of document.querySelectorAll<HTMLElement>(
+    '[data-savings-calculator]',
+  )) {
+    const form = root.querySelector('form');
+    const results = root.querySelector<HTMLElement>('[data-results]');
+    if (!(form instanceof HTMLFormElement) || !results) continue;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      const calculated = calculateAnnualSavings({
+        salonPrice: Number(data.get('salonPrice')),
+        frequencyWeeks: Number(data.get('frequencyWeeks')),
+        homeProductCost: Number(data.get('homeProductCost')),
+        manicuresPerPack: Number(data.get('manicuresPerPack')),
+      });
+      const assign = (selector: string, value: number) => {
+        const element = root.querySelector(selector);
+        if (element) element.textContent = currency.format(value);
+      };
+      assign('[data-salon]', calculated.annualSalonCost);
+      assign('[data-home]', calculated.annualHomeCost);
+      assign('[data-savings]', calculated.annualSavings);
+      results.classList.remove('hidden');
+    });
+  }
+</script>

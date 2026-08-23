@@ -1,0 +1,96 @@
+---
+interface Props {
+  productId: string;
+}
+const { productId } = Astro.props;
+---
+
+<form class="card grid gap-4" data-wear-report data-product-id={productId}>
+  <label
+    >Días de duración <input
+      class="ml-2 border p-2"
+      type="number"
+      name="wearDays"
+      min="1"
+      max="90"
+      required
+    /></label
+  >
+  <label
+    >Tipo de uña <select class="ml-2 border p-2" name="nailType" required
+      ><option value="normal">Normal</option><option value="flexible"
+        >Flexible</option
+      ><option value="quebradiza">Quebradiza</option></select
+    ></label
+  >
+  <label
+    >Exposición al agua <select
+      class="ml-2 border p-2"
+      name="waterExposure"
+      required
+      ><option value="baja">Baja</option><option value="media">Media</option
+      ><option value="alta">Alta</option></select
+    ></label
+  >
+  <label
+    ><input type="checkbox" name="manualWork" /> Realizo trabajo manual frecuente</label
+  >
+  <label><input type="checkbox" name="prepUsed" /> Preparé la uña</label>
+  <label><input type="checkbox" name="lampUsed" /> Usé lámpara</label>
+  <label
+    >Motivo de retirada <select
+      class="ml-2 border p-2"
+      name="removalReason"
+      required
+      ><option value="desgaste">Desgaste</option><option value="levantamiento"
+        >Levantamiento</option
+      ><option value="rotura">Rotura</option><option value="cambio"
+        >Cambio de diseño</option
+      ><option value="otro">Otro</option></select
+    ></label
+  >
+  <label class="sr-only" aria-hidden="true"
+    >Sitio web <input
+      type="text"
+      name="website"
+      tabindex="-1"
+      autocomplete="off"
+    /></label
+  >
+  <button class="button-primary justify-self-start" type="submit"
+    >Enviar experiencia anónima</button
+  >
+  <p class="text-sm text-muted" data-status aria-live="polite"></p>
+</form>
+
+<script>
+  for (const form of document.querySelectorAll<HTMLFormElement>(
+    '[data-wear-report]',
+  )) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const status = form.querySelector<HTMLElement>('[data-status]');
+      const response = await fetch('/api/wear-reports/', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          productId: form.dataset.productId,
+          wearDays: Number(data.get('wearDays')),
+          nailType: data.get('nailType'),
+          waterExposure: data.get('waterExposure'),
+          manualWork: data.get('manualWork') === 'on',
+          prepUsed: data.get('prepUsed') === 'on',
+          lampUsed: data.get('lampUsed') === 'on',
+          removalReason: data.get('removalReason'),
+          website: data.get('website'),
+        }),
+      });
+      if (status)
+        status.textContent = response.ok
+          ? 'Gracias. Hemos recibido tu experiencia.'
+          : 'No se ha podido enviar. Inténtalo más tarde.';
+      if (response.ok) form.reset();
+    });
+  }
+</script>

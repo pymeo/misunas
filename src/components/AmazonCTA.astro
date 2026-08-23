@@ -1,0 +1,59 @@
+---
+import { buildAmazonAffiliateUrl } from '@/application/affiliate';
+import type { Product } from '@/domain/product';
+
+interface Props {
+  product: Product;
+  sourcePage: string;
+  component?: string;
+  position?: number;
+}
+const { product, sourcePage, component = 'amazon-cta', position } = Astro.props;
+const href = buildAmazonAffiliateUrl(product);
+---
+
+{
+  href ? (
+    <a
+      class="amazon-cta button-primary"
+      href={href}
+      rel="sponsored nofollow noopener"
+      target="_blank"
+      data-product-id={product.id}
+      data-source-page={sourcePage}
+      data-component={component}
+      data-position={position}
+      aria-label={`Ver precio de ${product.name} en Amazon (abre en una pestaña nueva)`}
+    >
+      Ver precio en Amazon{' '}
+      <span class="ml-2" aria-hidden="true">
+        ↗
+      </span>
+    </a>
+  ) : (
+    <span class="inline-flex min-h-11 items-center rounded-full bg-line px-6 py-3 text-sm text-muted">
+      Enlace pendiente de verificación
+    </span>
+  )
+}
+
+<script>
+  for (const link of document.querySelectorAll<HTMLAnchorElement>(
+    '.amazon-cta',
+  )) {
+    link.addEventListener('click', () => {
+      const payload = JSON.stringify({
+        productId: link.dataset.productId,
+        sourcePage: link.dataset.sourcePage,
+        component: link.dataset.component,
+        ...(link.dataset.position
+          ? { position: Number(link.dataset.position) }
+          : {}),
+      });
+      navigator.sendBeacon(
+        '/api/events/amazon-click/',
+        new Blob([payload], { type: 'application/json' }),
+      );
+    });
+  }
+</script>

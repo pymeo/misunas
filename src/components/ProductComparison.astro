@@ -1,0 +1,72 @@
+---
+import type { Product } from '@/domain/product';
+interface Props {
+  products: Product[];
+}
+const { products } = Astro.props;
+const visible = products.slice(0, 4);
+const yesNo = (value: boolean) => (value ? 'Sí' : 'No');
+---
+
+{
+  visible.length >= 2 ? (
+    <div class="overflow-x-auto rounded-card border border-line bg-white">
+      <table class="w-full min-w-2xl border-collapse text-left">
+        <caption class="sr-only">
+          Comparación de productos por atributos verificados
+        </caption>
+        <thead>
+          <tr>
+            <th class="p-4">Atributo</th>
+            {visible.map((product) => (
+              <th class="p-4">{product.name}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-line">
+          <tr>
+            <th class="p-4">Marca</th>
+            {visible.map((product) => (
+              <td class="p-4">{product.brand}</td>
+            ))}
+          </tr>
+          <tr>
+            <th class="p-4">Tipo</th>
+            {visible.map((product) => (
+              <td class="p-4">{product.productType}</td>
+            ))}
+          </tr>
+          <tr>
+            <th class="p-4">Estilo</th>
+            {visible.map((product) => (
+              <td class="p-4">{product.design}</td>
+            ))}
+          </tr>
+          <tr>
+            <th class="p-4">Requiere UV</th>
+            {visible.map((product) => (
+              <td class="p-4">{yesNo(product.uvRequired)}</td>
+            ))}
+          </tr>
+          <tr>
+            <th class="p-4">Incluye lámpara</th>
+            {visible.map((product) => (
+              <td class="p-4">{yesNo(product.lampIncluded)}</td>
+            ))}
+          </tr>
+          <tr>
+            <th class="p-4">Apta para principiantes</th>
+            {visible.map((product) => (
+              <td class="p-4">{yesNo(product.beginnerFriendly)}</td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <div class="rounded-card border border-dashed border-line bg-white p-8 text-muted">
+      La comparativa se publicará cuando haya al menos dos fichas de producto
+      verificadas. No mostramos precios, estrellas ni datos inventados.
+    </div>
+  )
+}

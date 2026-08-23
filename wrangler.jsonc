@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tus-unas",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-08-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "STATIC_ASSETS",
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*", "/"],
+  },
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "invocation_logs": true },
+  },
+  // After `npx wrangler d1 create tus-unas`, add:
+  // "d1_databases": [{
+  //   "binding": "DB",
+  //   "database_name": "tus-unas",
+  //   "database_id": "<REAL_ID_RETURNED_BY_WRANGLER>",
+  //   "migrations_dir": "migrations"
+  // }]
+}

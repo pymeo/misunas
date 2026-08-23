@@ -1,0 +1,20 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+---
+
+<BaseLayout
+  title="Página no encontrada"
+  description="No hemos encontrado la página que buscas en Tus-Uñas."
+  canonicalPath="/404/"
+  noindex
+>
+  <section class="container-page py-24 text-center">
+    <p class="eyebrow">Error 404</p>
+    <h1 class="mt-4 text-5xl">Esta página no está aquí</h1>
+    <p class="mt-5 text-lg text-muted">
+      Puede que el enlace haya cambiado o que la dirección no sea correcta.
+    </p>
+    <a class="button-primary mt-8" href="/es/">Volver al inicio</a>
+  </section>
+</BaseLayout>
