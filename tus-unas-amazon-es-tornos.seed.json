@@ -27,12 +27,7 @@
         "pedalIncluded": false,
         "bidirectional": true
       },
-      "useCases": [
-        "gel",
-        "acrilico",
-        "manicura",
-        "pedicura"
-      ],
+      "useCases": ["gel", "acrilico", "manicura", "pedicura"],
       "editorialAngles": [
         "35000-rpm",
         "pantalla-led",
@@ -59,17 +54,8 @@
         "pedalIncluded": true,
         "bidirectional": true
       },
-      "useCases": [
-        "gel",
-        "acrilico",
-        "manicura",
-        "pedicura"
-      ],
-      "editorialAngles": [
-        "35000-rpm",
-        "pedal",
-        "11-en-1"
-      ],
+      "useCases": ["gel", "acrilico", "manicura", "pedicura"],
+      "editorialAngles": ["35000-rpm", "pedal", "11-en-1"],
       "amazonUrl": "https://www.amazon.es/dp/B09YY52SX1",
       "affiliateUrl": "https://www.amazon.es/dp/B09YY52SX1/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -91,17 +77,8 @@
         "pedalIncluded": false,
         "bidirectional": true
       },
-      "useCases": [
-        "manicura",
-        "pedicura",
-        "portatil",
-        "salon"
-      ],
-      "editorialAngles": [
-        "inalambrico",
-        "35000-rpm",
-        "portabilidad"
-      ],
+      "useCases": ["manicura", "pedicura", "portatil", "salon"],
+      "editorialAngles": ["inalambrico", "35000-rpm", "portabilidad"],
       "amazonUrl": "https://www.amazon.es/dp/B09Q835VM5",
       "affiliateUrl": "https://www.amazon.es/dp/B09Q835VM5/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -124,16 +101,8 @@
         "bidirectional": true,
         "integratedLight": true
       },
-      "useCases": [
-        "manicura",
-        "pedicura",
-        "cuidado-de-unas"
-      ],
-      "editorialAngles": [
-        "marca-conocida",
-        "10-accesorios",
-        "uso-domestico"
-      ],
+      "useCases": ["manicura", "pedicura", "cuidado-de-unas"],
+      "editorialAngles": ["marca-conocida", "10-accesorios", "uso-domestico"],
       "amazonUrl": "https://www.amazon.es/dp/B00N9BOOZ4",
       "affiliateUrl": "https://www.amazon.es/dp/B00N9BOOZ4/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -156,16 +125,8 @@
         "bidirectional": true,
         "ceramicBitIncluded": true
       },
-      "useCases": [
-        "manicura-en-casa",
-        "gel",
-        "portatil"
-      ],
-      "editorialAngles": [
-        "25000-rpm",
-        "usb",
-        "12-en-1"
-      ],
+      "useCases": ["manicura-en-casa", "gel", "portatil"],
+      "editorialAngles": ["25000-rpm", "usb", "12-en-1"],
       "amazonUrl": "https://www.amazon.es/dp/B0B3Y81RN2",
       "affiliateUrl": "https://www.amazon.es/dp/B0B3Y81RN2/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -187,16 +148,8 @@
         "pedalIncluded": false,
         "bidirectional": true
       },
-      "useCases": [
-        "principiantes",
-        "manicura-en-casa",
-        "portatil"
-      ],
-      "editorialAngles": [
-        "20000-rpm",
-        "usb",
-        "entrada"
-      ],
+      "useCases": ["principiantes", "manicura-en-casa", "portatil"],
+      "editorialAngles": ["20000-rpm", "usb", "entrada"],
       "amazonUrl": "https://www.amazon.es/dp/B0C2YSF13V",
       "affiliateUrl": "https://www.amazon.es/dp/B0C2YSF13V/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -218,16 +171,8 @@
         "pedalIncluded": false,
         "bidirectional": true
       },
-      "useCases": [
-        "manicura-en-casa",
-        "pedicura",
-        "portatil"
-      ],
-      "editorialAngles": [
-        "usb",
-        "11-puntas",
-        "compacto"
-      ],
+      "useCases": ["manicura-en-casa", "pedicura", "portatil"],
+      "editorialAngles": ["usb", "11-puntas", "compacto"],
       "amazonUrl": "https://www.amazon.es/dp/B0BP23VS93",
       "affiliateUrl": "https://www.amazon.es/dp/B0BP23VS93/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -249,16 +194,8 @@
         "pedalIncluded": false,
         "bidirectional": null
       },
-      "useCases": [
-        "portatil",
-        "manicura",
-        "pedicura"
-      ],
-      "editorialAngles": [
-        "portabilidad",
-        "recargable",
-        "alternativa"
-      ],
+      "useCases": ["portatil", "manicura", "pedicura"],
+      "editorialAngles": ["portabilidad", "recargable", "alternativa"],
       "amazonUrl": "https://www.amazon.es/dp/B09WQRY572",
       "affiliateUrl": "https://www.amazon.es/dp/B09WQRY572/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",

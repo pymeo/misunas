@@ -14,6 +14,15 @@ export interface Recommendation {
   warnings: string[];
 }
 
+/**
+ * El recomendador solo entiende semicuradas: tornos y aspiradores no tienen
+ * lámpara/estilo/tiras que puntuar y deben quedar fuera aunque sus campos
+ * opcionales queden `undefined` (lo que, sin este filtro, colaría en la rama
+ * "sin lámpara" al tratar `undefined` como "no requiere lámpara").
+ */
+export const RECOMMENDER_ELIGIBLE_PRODUCT_TYPES: readonly Product['productType'][] =
+  ['semi_cured_uv', 'starter_kit_uv', 'pre_cured_no_lamp'];
+
 /** Pesos editoriales centralizados: miden coincidencias observables, nunca rendimiento. */
 export const RECOMMENDATION_RULES = {
   styleMatch: 4,
@@ -58,7 +67,8 @@ export function recommendProducts(
     (product) =>
       product.active &&
       product.editorialStatus === 'approved' &&
-      !product.sample,
+      !product.sample &&
+      RECOMMENDER_ELIGIBLE_PRODUCT_TYPES.includes(product.productType),
   );
   const knownCounts = eligible.flatMap((product) =>
     product.stripCount === undefined ? [] : [product.stripCount],

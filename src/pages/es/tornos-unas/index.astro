@@ -1,0 +1,175 @@
+---
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import MethodologyNotice from '@/components/MethodologyNotice.astro';
+import ProductComparison from '@/components/ProductComparison.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
+import { PRODUCTS } from '@/data/products';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+const tornos = PRODUCTS.filter((product) => product.category === 'tornos');
+const featured = tornos.filter((product) =>
+  [
+    'kredioo-torno-profesional-35000-rpm',
+    'nailgirls-torno-35000-rpm-pedal',
+    'xoali-torno-25000-rpm-12-en-1',
+    'bickon-torno-20000-rpm-6-en-1',
+  ].includes(product.id),
+);
+---
+
+<BaseLayout
+  title="Tornos para uñas: comparativa y guía para elegir"
+  description="Comparativa editorial de tornos eléctricos para uñas por RPM, alimentación, accesorios y pedal, con atributos verificados en Amazon.es y sin puntuaciones inventadas."
+  canonicalPath="/es/tornos-unas/"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Tornos para uñas' },
+  ]}
+>
+  <section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Equipamiento para manicura</p><h1
+      class="mt-4 max-w-5xl text-5xl leading-tight sm:text-6xl"
+    >
+      Tornos para uñas: comparativa y guía para elegir
+    </h1><p class="section-intro">
+      Compara velocidad máxima, accesorios incluidos, alimentación y pedal antes
+      de decidir. Ningún dato de rendimiento está inventado: procede de la ficha
+      investigada de cada producto en Amazon.es.
+    </p><div class="mt-8"><AffiliateDisclosure /></div>
+  </section>
+
+  <section class="container-page pb-14">
+    <div class="rounded-[1.5rem] bg-primary p-7 text-white sm:p-9">
+      <p class="text-xs font-bold tracking-wider text-blush uppercase">
+        Respuesta rápida
+      </p><h2 class="mt-3 text-3xl sm:text-4xl">Elige primero el uso</h2><div
+        class="mt-7 grid gap-5 md:grid-cols-3"
+      >
+        <div class="border-t border-white/25 pt-4">
+          <h3 class="text-xl">Buscas máxima velocidad</h3><p
+            class="mt-2 text-sm text-white/75"
+          >
+            Compara los modelos de 35000 RPM con pantalla y varios accesorios.
+          </p>
+        </div><div class="border-t border-white/25 pt-4">
+          <h3 class="text-xl">Quieres controlar con el pie</h3><p
+            class="mt-2 text-sm text-white/75"
+          >
+            Filtra los modelos que incluyen pedal para tener las manos libres.
+          </p>
+        </div><div class="border-t border-white/25 pt-4">
+          <h3 class="text-xl">Priorizas que sea portátil</h3><p
+            class="mt-2 text-sm text-white/75"
+          >
+            Mira los modelos recargables o con alimentación USB.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-14">
+    <p class="eyebrow">Comparación esencial</p><h2 class="section-heading">
+      Cuatro tornos, atributos equivalentes
+    </h2><p class="section-intro">
+      Compara velocidad, accesorios, pedal, alimentación y pantalla en cuatro
+      formatos distintos.
+    </p><div class="mt-8">
+      <ProductComparison products={featured} sourcePage="/es/tornos-unas/" />
+    </div>
+  </section>
+
+  <section class="container-page py-14">
+    <p class="eyebrow">Selección completa</p><h2 class="section-heading">
+      Los {tornos.length} tornos investigados
+    </h2><div class="mt-8">
+      <ProductGrid products={tornos} sourcePage="/es/tornos-unas/" commercial />
+    </div>
+  </section>
+
+  <section class="container-page grid gap-10 py-14 lg:grid-cols-[1fr_.8fr]">
+    <div>
+      <p class="eyebrow">Cómo elegir</p><h2 class="section-heading">
+        Cinco datos que importan
+      </h2><ol class="mt-7 grid gap-5">
+        <li class="card">
+          <strong>1. Velocidad máxima (RPM)</strong><p class="mt-2 text-muted">
+            Más RPM da más margen de trabajo, pero también exige más cuidado con
+            la presión y el ángulo de la fresa.
+          </p>
+        </li><li class="card">
+          <strong>2. Alimentación</strong><p class="mt-2 text-muted">
+            Recargable, con cable o por USB: cambia dónde y cuánto tiempo puedes
+            usarlo sin interrupciones.
+          </p>
+        </li><li class="card">
+          <strong>3. Accesorios incluidos</strong><p class="mt-2 text-muted">
+            El número de fresas o puntas condiciona cuántos trabajos distintos
+            puedes hacer sin comprar accesorios aparte.
+          </p>
+        </li><li class="card">
+          <strong>4. Pedal</strong><p class="mt-2 text-muted">
+            Un pedal libera las manos para controlar la velocidad mientras
+            trabajas, algo habitual en equipos de salón.
+          </p>
+        </li><li class="card">
+          <strong>5. Portabilidad</strong><p class="mt-2 text-muted">
+            Si vas a moverlo entre casa y salón, un modelo recargable o USB
+            compacto pesa y estorba menos que uno con base fija.
+          </p>
+        </li>
+      </ol>
+    </div><div>
+      <p class="eyebrow">Relacionado</p><h2 class="section-heading">
+        Completa tu equipo
+      </h2><div class="mt-7 grid gap-4">
+        <a class="card no-underline" href="/es/aspiradores-polvo-unas/"
+          ><h3 class="text-2xl">Aspiradores de polvo</h3><p
+            class="mt-2 text-muted"
+          >
+            El polvo que genera un torno se controla mejor con un aspirador de
+            sobremesa cerca de la mano.
+          </p></a
+        ><a class="card no-underline" href="/es/encuentra-tus-unas/"
+          ><h3 class="text-2xl">Encuentra tus uñas</h3><p
+            class="mt-2 text-muted"
+          >
+            Si buscas tiras semicuradas en vez de maquinaria, empieza aquí.
+          </p></a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-14">
+    <p class="eyebrow">Preguntas frecuentes</p><h2 class="section-heading">
+      Lo que no cabe en una tarjeta
+    </h2><div class="mt-7 grid gap-3">
+      {
+        [
+          [
+            '¿Necesito un torno si ya limo a mano?',
+            'No es imprescindible. Un torno acelera el rebajado de gel o acrílico y el pulido, pero una lima manual sigue siendo válida para uñas naturales o retoques puntuales.',
+          ],
+          [
+            '¿Es seguro usar un torno en casa?',
+            'Sí, siguiendo las instrucciones del fabricante: velocidad baja al principio, ángulo suave y descansos. Si tienes dudas sobre tu técnica, un curso corto o un profesional pueden ayudarte a empezar.',
+          ],
+          [
+            '¿Sirve el mismo torno para gel y acrílico?',
+            'La mayoría de los modelos de esta comparativa indican uso para gel, acrílico, manicura y pedicura, pero conviene revisar los accesorios recomendados para cada material en la ficha del producto.',
+          ],
+          [
+            '¿Dónde consulto el precio?',
+            'El botón de cada producto abre su ficha de Amazon.es para consultar el precio y la disponibilidad actuales.',
+          ],
+        ].map(([question, answer]) => (
+          <details class="rounded-xl border border-border bg-surface p-5">
+            <summary class="cursor-pointer font-bold">{question}</summary>
+            <p class="mt-3 text-muted">{answer}</p>
+          </details>
+        ))
+      }
+    </div><div class="mt-8"><MethodologyNotice /></div>
+  </section>
+</BaseLayout>

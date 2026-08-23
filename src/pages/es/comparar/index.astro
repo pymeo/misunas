@@ -4,11 +4,20 @@ import ProductComparison from '@/components/ProductComparison.astro';
 import { PRODUCTS } from '@/data/products';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
+const semicuradas = PRODUCTS.filter(
+  (product) =>
+    product.category === 'unas-semicuradas' ||
+    product.category === 'gel-nail-wraps',
+);
+const tornos = PRODUCTS.filter((product) => product.category === 'tornos');
+const dustCollectors = PRODUCTS.filter(
+  (product) => product.category === 'aspiradores-polvo-unas',
+);
 ---
 
 <BaseLayout
   title="Comparar productos para uñas"
-  description="Compara entre dos y cuatro productos para uñas por tipo, número de tiras, lámpara y estilo desde cualquier dispositivo."
+  description="Compara entre dos y cuatro productos para uñas por categoría: semicuradas, tornos o aspiradores de polvo, desde cualquier dispositivo."
   canonicalPath="/es/comparar/"
   breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Comparar' }]}
 >
@@ -18,11 +27,40 @@ export const prerender = true;
     >
       Compara tus opciones de un vistazo
     </h1><p class="section-intro">
-      Elige entre 2 y 4 productos y revisa formato, número de tiras, lámpara y
-      estilo en una vista cómoda también desde el móvil.
-    </p><div class="mt-8"><AffiliateDisclosure /></div><div class="mt-10">
+      Elige entre 2 y 4 productos de la misma categoría y revisa sus atributos
+      en una vista cómoda también desde el móvil.
+    </p><div class="mt-8"><AffiliateDisclosure /></div>
+  </section>
+
+  <section class="container-page py-10">
+    <p class="eyebrow">Semicuradas</p><h2 class="section-heading">
+      Tiras de gel semicurado
+    </h2><div class="mt-8">
       <ProductComparison
-        products={PRODUCTS}
+        products={semicuradas}
+        sourcePage="/es/comparar/"
+        interactive
+      />
+    </div>
+  </section>
+
+  <section class="container-page py-10">
+    <p class="eyebrow">Maquinaria</p><h2 class="section-heading">Tornos</h2>
+    <div class="mt-8">
+      <ProductComparison
+        products={tornos}
+        sourcePage="/es/comparar/"
+        interactive
+      />
+    </div>
+  </section>
+
+  <section class="container-page py-10">
+    <p class="eyebrow">Maquinaria</p><h2 class="section-heading">
+      Aspiradores de polvo
+    </h2><div class="mt-8">
+      <ProductComparison
+        products={dustCollectors}
         sourcePage="/es/comparar/"
         interactive
       />

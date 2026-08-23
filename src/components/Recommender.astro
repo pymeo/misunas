@@ -1,5 +1,9 @@
 ---
+import { RECOMMENDER_ELIGIBLE_PRODUCT_TYPES } from '@/application/recommendation';
 import { PRODUCTS } from '@/data/products';
+const recommendableProducts = PRODUCTS.filter((product) =>
+  RECOMMENDER_ELIGIBLE_PRODUCT_TYPES.includes(product.productType),
+);
 const questions = [
   {
     name: 'style',
@@ -46,7 +50,7 @@ const questions = [
 <section
   class="overflow-hidden rounded-[1.6rem] border border-border bg-surface shadow-card"
   data-recommender
-  data-products={JSON.stringify(PRODUCTS)}
+  data-products={JSON.stringify(recommendableProducts)}
 >
   <div class="border-b border-border bg-lavender/60 px-5 py-4 sm:px-8">
     <div class="flex items-center justify-between text-sm font-semibold">

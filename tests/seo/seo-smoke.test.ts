@@ -14,6 +14,8 @@ const launchPages = [
   'es/que-son-las-unas-semicuradas/index.html',
   'es/como-poner-unas-semicuradas/index.html',
   'es/como-quitar-unas-semicuradas/index.html',
+  'es/tornos-unas/index.html',
+  'es/aspiradores-polvo-unas/index.html',
   'es/calculadora-ahorro-manicura/index.html',
   'es/encuentra-tus-unas/index.html',
   'es/metodologia/index.html',
@@ -59,6 +61,8 @@ describe('SEO production smoke tests', () => {
     const robots = readFileSync(resolve(clientRoot, 'robots.txt'), 'utf8');
     expect(sitemap).toContain('https://xn--tus-uas-8za.com/es/');
     expect(sitemap).toContain('/es/unas-semicuradas-francesas/');
+    expect(sitemap).toContain('/es/tornos-unas/');
+    expect(sitemap).toContain('/es/aspiradores-polvo-unas/');
     expect(sitemap).not.toContain('tus-uñas.com');
     expect(sitemap).not.toMatch(
       /plantilla-review|protocolo-pruebas|\/productos\/|\/api\/|\/privacidad\//,
@@ -86,6 +90,8 @@ describe('SEO production smoke tests', () => {
       'es/herramientas/index.html',
       'es/opiniones/index.html',
       'es/productos/jmeowio-francesa-rosa/index.html',
+      'es/productos/kredioo-torno-profesional-35000-rpm/index.html',
+      'es/productos/anbeistee-colector-polvo-2000pa/index.html',
     ]) {
       expect(readFileSync(resolve(clientRoot, relativePath), 'utf8')).toContain(
         '<meta name="robots" content="noindex, nofollow">',
@@ -97,6 +103,9 @@ describe('SEO production smoke tests', () => {
     for (const relativePath of [
       'es/index.html',
       'es/productos/jmeowio-francesa-rosa/index.html',
+      'es/productos/kredioo-torno-profesional-35000-rpm/index.html',
+      'es/tornos-unas/index.html',
+      'es/aspiradores-polvo-unas/index.html',
     ]) {
       const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
       const scripts = [
@@ -129,6 +138,25 @@ describe('SEO production smoke tests', () => {
     expect(comparison).toContain('?tag=tusunas-21');
     expect(comparison).toContain('rel="sponsored nofollow noopener"');
     expect(comparison).toContain('Ver precio actualizado en Amazon');
+  });
+
+  it('keeps machinery (tornos, aspiradores) out of the semicuradas recommender', () => {
+    const recommender = readFileSync(
+      resolve(clientRoot, 'es/encuentra-tus-unas/index.html'),
+      'utf8',
+    );
+    expect(recommender).not.toMatch(/nail_drill|nail_dust_collector/);
+  });
+
+  it('ships working tornos and aspiradores landing pages with real CTAs', () => {
+    for (const relativePath of [
+      'es/tornos-unas/index.html',
+      'es/aspiradores-polvo-unas/index.html',
+    ]) {
+      const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
+      expect(html).toContain('?tag=tusunas-21');
+      expect(html).toContain('rel="sponsored nofollow noopener"');
+    }
   });
 
   it('uses the mandatory Amazon disclosure near commercial content', () => {

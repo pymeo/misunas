@@ -1,9 +1,9 @@
 ---
 interface Props {
   productId: string;
-  requiresLamp: boolean;
+  requiresLamp?: boolean;
 }
-const { productId, requiresLamp } = Astro.props;
+const { productId, requiresLamp = false } = Astro.props;
 ---
 
 <form

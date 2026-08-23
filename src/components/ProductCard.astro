@@ -1,6 +1,6 @@
 ---
 import AmazonCTA from '@/components/AmazonCTA.astro';
-import NailStylePreview from '@/components/NailStylePreview.astro';
+import ProductVisual from '@/components/ProductVisual.astro';
 import type { Product } from '@/domain/product';
 interface Props {
   product: Product;
@@ -14,10 +14,10 @@ const { product, sourcePage, position, commercial = false } = Astro.props;
 <article
   class="card flex h-full flex-col p-4 sm:p-5"
   data-product-card
-  data-requires-lamp={String(product.requiresLamp)}
+  data-requires-lamp={String(product.requiresLamp ?? false)}
   data-style-tags={product.styleTags.join(' ')}
 >
-  <NailStylePreview {product} compact />
+  <ProductVisual {product} compact />
   <div class="flex flex-1 flex-col px-1 pt-5">
     <p class="text-xs font-bold tracking-[.14em] text-primary uppercase">
       {product.brand}

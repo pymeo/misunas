@@ -13,6 +13,7 @@ export const productCategories = [
   'kits-manicura',
   'limas',
   'tornos',
+  'aspiradores-polvo-unas',
   'nail-art',
   'cuidado-de-unas',
   'accesorios',
@@ -32,10 +33,50 @@ export const productTypes = [
   'manicure_kit',
   'file_buffer',
   'nail_drill',
+  'nail_dust_collector',
   'nail_art',
   'nail_care',
   'accessory',
 ] as const;
+
+const MACHINERY_PRODUCT_TYPES = ['nail_drill', 'nail_dust_collector'] as const;
+
+const nailDrillTechnicalSpecsSchema = z
+  .object({
+    kind: z.literal('nail_drill'),
+    maxRpm: z.number().int().positive().nullable().optional(),
+    accessoryCount: z.number().int().positive().nullable().optional(),
+    display: z.enum(['LED', 'LCD']).nullable().optional(),
+    rechargeable: z.boolean().nullable().optional(),
+    usbPowered: z.boolean().nullable().optional(),
+    pedalIncluded: z.boolean().nullable().optional(),
+    bidirectional: z.boolean().nullable().optional(),
+    integratedLight: z.boolean().nullable().optional(),
+    ceramicBitIncluded: z.boolean().nullable().optional(),
+  })
+  .strict();
+
+const nailDustCollectorTechnicalSpecsSchema = z
+  .object({
+    kind: z.literal('nail_dust_collector'),
+    powerWatts: z.number().int().positive().nullable().optional(),
+    suctionPa: z.number().int().positive().nullable().optional(),
+    fanCount: z.number().int().positive().nullable().optional(),
+    suctionLevels: z.number().int().positive().nullable().optional(),
+    reusableFilter: z.boolean().nullable().optional(),
+    disposableFilterCount: z.number().int().positive().nullable().optional(),
+    rechargeable: z.boolean().nullable().optional(),
+    integratedLight: z.boolean().nullable().optional(),
+    brushlessMotor: z.boolean().nullable().optional(),
+  })
+  .strict();
+
+export const technicalSpecsSchema = z.discriminatedUnion('kind', [
+  nailDrillTechnicalSpecsSchema,
+  nailDustCollectorTechnicalSpecsSchema,
+]);
+
+export type TechnicalSpecs = z.infer<typeof technicalSpecsSchema>;
 
 export const productSchema = z
   .object({
@@ -49,9 +90,10 @@ export const productSchema = z
       .optional(),
     category: z.enum(productCategories),
     productType: z.enum(productTypes),
-    requiresLamp: z.boolean(),
-    includesLamp: z.boolean(),
+    requiresLamp: z.boolean().optional(),
+    includesLamp: z.boolean().optional(),
     stripCount: z.number().int().positive().optional(),
+    technicalSpecs: technicalSpecsSchema.optional(),
     styleTags: z.array(z.string().min(1).max(50)).max(16),
     colorFamily: z.string().min(1).max(50).optional(),
     useCases: z.array(z.string().min(1).max(80)).max(12),
@@ -79,7 +121,11 @@ export const productSchema = z
         path: ['amazonUrl'],
         message: 'Usa asin o amazonUrl, no ambos.',
       });
-    if (!product.requiresLamp && product.includesLamp)
+    if (
+      product.requiresLamp !== undefined &&
+      !product.requiresLamp &&
+      product.includesLamp
+    )
       context.addIssue({
         code: 'custom',
         path: ['includesLamp'],
@@ -91,6 +137,37 @@ export const productSchema = z
         code: 'custom',
         path: ['affiliateEligible'],
         message: 'Un producto afiliable necesita un ASIN o una URL verificada.',
+      });
+    const isMachinery = (MACHINERY_PRODUCT_TYPES as readonly string[]).includes(
+      product.productType,
+    );
+    if (isMachinery) {
+      if (
+        product.requiresLamp !== undefined ||
+        product.includesLamp !== undefined ||
+        product.stripCount !== undefined
+      )
+        context.addIssue({
+          code: 'custom',
+          path: ['requiresLamp'],
+          message:
+            'La maquinaria (tornos, aspiradores) no debe declarar campos de lámpara ni número de tiras.',
+        });
+    } else if (product.technicalSpecs) {
+      context.addIssue({
+        code: 'custom',
+        path: ['technicalSpecs'],
+        message: 'technicalSpecs solo aplica a tornos y aspiradores.',
+      });
+    }
+    if (
+      product.technicalSpecs &&
+      product.technicalSpecs.kind !== product.productType
+    )
+      context.addIssue({
+        code: 'custom',
+        path: ['technicalSpecs'],
+        message: 'technicalSpecs.kind debe coincidir con productType.',
       });
   });
 

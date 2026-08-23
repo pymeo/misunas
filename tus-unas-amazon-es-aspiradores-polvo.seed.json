@@ -26,11 +26,7 @@
         "rechargeable": null,
         "integratedLight": false
       },
-      "useCases": [
-        "manicura-en-casa",
-        "pedicura",
-        "sobremesa"
-      ],
+      "useCases": ["manicura-en-casa", "pedicura", "sobremesa"],
       "editorialAngles": [
         "entrada-calidad-precio",
         "3-ventiladores",
@@ -56,11 +52,7 @@
         "rechargeable": null,
         "integratedLight": false
       },
-      "useCases": [
-        "manicura",
-        "salon",
-        "sobremesa"
-      ],
+      "useCases": ["manicura", "salon", "sobremesa"],
       "editorialAngles": [
         "marca-especializada",
         "filtro-reutilizable",
@@ -86,16 +78,8 @@
         "rechargeable": false,
         "integratedLight": false
       },
-      "useCases": [
-        "manicura-en-casa",
-        "salon",
-        "unas-acrilicas"
-      ],
-      "editorialAngles": [
-        "80w",
-        "2-niveles",
-        "filtro-reutilizable"
-      ],
+      "useCases": ["manicura-en-casa", "salon", "unas-acrilicas"],
+      "editorialAngles": ["80w", "2-niveles", "filtro-reutilizable"],
       "amazonUrl": "https://www.amazon.es/dp/B09V84SXD2",
       "affiliateUrl": "https://www.amazon.es/dp/B09V84SXD2/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -116,16 +100,8 @@
         "rechargeable": false,
         "integratedLight": false
       },
-      "useCases": [
-        "salon",
-        "manicura-en-casa",
-        "uso-intensivo"
-      ],
-      "editorialAngles": [
-        "120w",
-        "gama-alta",
-        "potencia"
-      ],
+      "useCases": ["salon", "manicura-en-casa", "uso-intensivo"],
+      "editorialAngles": ["120w", "gama-alta", "potencia"],
       "amazonUrl": "https://www.amazon.es/dp/B0F1D2RJR9",
       "affiliateUrl": "https://www.amazon.es/dp/B0F1D2RJR9/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -148,16 +124,8 @@
         "rechargeable": null,
         "integratedLight": false
       },
-      "useCases": [
-        "unas-acrilicas",
-        "manicura",
-        "sobremesa"
-      ],
-      "editorialAngles": [
-        "2000pa",
-        "filtros-incluidos",
-        "mantenimiento"
-      ],
+      "useCases": ["unas-acrilicas", "manicura", "sobremesa"],
+      "editorialAngles": ["2000pa", "filtros-incluidos", "mantenimiento"],
       "amazonUrl": "https://www.amazon.es/dp/B0GJS9C6T8",
       "affiliateUrl": "https://www.amazon.es/dp/B0GJS9C6T8/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -178,16 +146,8 @@
         "rechargeable": false,
         "integratedLight": false
       },
-      "useCases": [
-        "manicura",
-        "pedicura",
-        "sobremesa"
-      ],
-      "editorialAngles": [
-        "opcion-sencilla",
-        "manicura-y-pedicura",
-        "entrada"
-      ],
+      "useCases": ["manicura", "pedicura", "sobremesa"],
+      "editorialAngles": ["opcion-sencilla", "manicura-y-pedicura", "entrada"],
       "amazonUrl": "https://www.amazon.es/dp/B01HBH2Y0S",
       "affiliateUrl": "https://www.amazon.es/dp/B01HBH2Y0S/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",
@@ -209,11 +169,7 @@
         "integratedLight": true,
         "brushlessMotor": true
       },
-      "useCases": [
-        "salon",
-        "manicura-de-precision",
-        "sobremesa"
-      ],
+      "useCases": ["salon", "manicura-de-precision", "sobremesa"],
       "editorialAngles": [
         "lampara-led-integrada",
         "filtro-reutilizable",
@@ -239,16 +195,8 @@
         "rechargeable": false,
         "integratedLight": false
       },
-      "useCases": [
-        "salon",
-        "manicura-en-casa",
-        "sobremesa"
-      ],
-      "editorialAngles": [
-        "120w",
-        "3-niveles",
-        "filtro-reutilizable"
-      ],
+      "useCases": ["salon", "manicura-en-casa", "sobremesa"],
+      "editorialAngles": ["120w", "3-niveles", "filtro-reutilizable"],
       "amazonUrl": "https://www.amazon.es/dp/B0DZNRMRSJ",
       "affiliateUrl": "https://www.amazon.es/dp/B0DZNRMRSJ/ref=nosim?tag=tusunas-21",
       "researchStatus": "verified_amazon_es",

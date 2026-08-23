@@ -1,6 +1,7 @@
 ---
 import AmazonCTA from '@/components/AmazonCTA.astro';
-import NailStylePreview from '@/components/NailStylePreview.astro';
+import ProductVisual from '@/components/ProductVisual.astro';
+import { getProductFactRows } from '@/application/product-facts';
 import type { Product } from '@/domain/product';
 interface Props {
   products: Product[];
@@ -13,13 +14,6 @@ const {
   interactive = false,
 } = Astro.props;
 const visible = products.slice(0, interactive ? products.length : 4);
-const typeLabels: Partial<Record<Product['productType'], string>> = {
-  semi_cured_uv: 'Gel semicurado',
-  starter_kit_uv: 'Kit semicurado',
-  pre_cured_no_lamp: 'Gel sin lámpara',
-};
-const typeLabel = (type: Product['productType']) =>
-  typeLabels[type] ?? type.replaceAll('_', ' ');
 ---
 
 <section data-comparison data-interactive={String(interactive)}>
@@ -80,7 +74,7 @@ const typeLabel = (type: Product['productType']) =>
           >
             <div class="sticky top-18 z-10 bg-surface p-4 pb-3">
               <>
-                <NailStylePreview {product} compact />
+                <ProductVisual {product} compact />
                 <p class="mt-4 text-xs font-bold tracking-wider text-primary uppercase">
                   {product.brand}
                 </p>
@@ -95,40 +89,24 @@ const typeLabel = (type: Product['productType']) =>
               </>
             </div>
             <dl class="divide-y divide-border border-y border-border text-sm">
-              <div class="p-4">
-                <>
-                  <dt class="text-xs font-bold text-muted uppercase">Tipo</dt>
-                  <dd class="mt-1 font-semibold">
-                    {typeLabel(product.productType)}
-                  </dd>
-                </>
-              </div>
-              {product.stripCount !== undefined && (
+              {getProductFactRows(product).map((row) => (
                 <div class="p-4">
-                  <dt class="text-xs font-bold text-muted uppercase">Tiras</dt>
-                  <dd class="mt-1 font-semibold">{product.stripCount}</dd>
-                </div>
-              )}
-              <div class="p-4">
-                <>
                   <dt class="text-xs font-bold text-muted uppercase">
-                    Lámpara
+                    {row.label}
                   </dt>
-                  <dd class="mt-1 font-semibold">
-                    {product.requiresLamp ? 'Necesaria' : 'No necesaria'}
-                  </dd>
-                </>
-              </div>
-              <div class="p-4">
-                <>
+                  <dd class="mt-1 font-semibold">{row.value}</dd>
+                </div>
+              ))}
+              {product.styleTags.length > 0 && (
+                <div class="p-4">
                   <dt class="text-xs font-bold text-muted uppercase">Estilo</dt>
                   <dd class="mt-2 flex flex-wrap gap-1">
                     {product.styleTags.slice(0, 3).map((tag) => (
                       <span class="tag">{tag}</span>
                     ))}
                   </dd>
-                </>
-              </div>
+                </div>
+              )}
               {product.useCases.length > 0 && (
                 <div class="p-4">
                   <dt class="text-xs font-bold text-muted uppercase">

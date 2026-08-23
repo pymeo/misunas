@@ -2,6 +2,8 @@
 import { SITE_NAME } from '@/config/site';
 const links = [
   ['/es/unas-semicuradas/', 'Semicuradas'],
+  ['/es/tornos-unas/', 'Tornos'],
+  ['/es/aspiradores-polvo-unas/', 'Aspiradores'],
   ['/es/comparativas/', 'Comparativas'],
   ['/es/guias/', 'Guías'],
   ['/es/herramientas/', 'Herramientas'],
@@ -18,9 +20,11 @@ const links = [
     >
     <nav
       aria-label="Navegación principal"
-      class="hidden items-center gap-7 lg:flex"
+      class="hidden min-w-0 items-center gap-5 lg:flex xl:gap-7"
     >
-      <ul class="flex items-center gap-6 text-sm font-semibold">
+      <ul
+        class="flex min-w-0 flex-wrap items-center gap-x-5 gap-y-1 text-sm font-semibold xl:gap-x-6"
+      >
         {
           links.map(([href, label]) => (
             <li>

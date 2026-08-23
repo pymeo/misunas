@@ -1,9 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import { PRODUCTS } from '@/data/products';
-import { productSchema, productTypes } from '@/domain/product';
+import {
+  productSchema,
+  productTypes,
+  productCategories,
+} from '@/domain/product';
+
+const findProduct = (id: string) => {
+  const product = PRODUCTS.find((candidate) => candidate.id === id);
+  if (!product) throw new Error(`Producto de prueba no encontrado: ${id}`);
+  return product;
+};
+
 describe('catálogo de producto', () => {
-  it('valida las diez fichas reales sin precios ni ratings', () => {
-    expect(PRODUCTS).toHaveLength(10);
+  it('valida las fichas reales sin precios ni ratings', () => {
+    expect(PRODUCTS).toHaveLength(26);
     for (const product of PRODUCTS) {
       expect(productSchema.parse(product)).toEqual(product);
       expect(JSON.stringify(product)).not.toMatch(/price|rating|reviewCount/iu);
@@ -28,5 +39,75 @@ describe('catálogo de producto', () => {
       editorialStatus: 'inactive' as const,
     };
     expect(productSchema.parse(inactive).active).toBe(false);
+  });
+  it('incluye tornos y aspiradores como categorías/tipos reales', () => {
+    expect(productCategories).toContain('tornos');
+    expect(productCategories).toContain('aspiradores-polvo-unas');
+    expect(productTypes).toContain('nail_drill');
+    expect(productTypes).toContain('nail_dust_collector');
+    expect(
+      PRODUCTS.filter((product) => product.productType === 'nail_drill'),
+    ).toHaveLength(8);
+    expect(
+      PRODUCTS.filter(
+        (product) => product.productType === 'nail_dust_collector',
+      ),
+    ).toHaveLength(8);
+  });
+  it('no exige (ni inventa) campos de lámpara o tiras en maquinaria', () => {
+    const machinery = PRODUCTS.filter(
+      (product) =>
+        product.productType === 'nail_drill' ||
+        product.productType === 'nail_dust_collector',
+    );
+    expect(machinery.length).toBeGreaterThan(0);
+    for (const product of machinery) {
+      expect(product.requiresLamp).toBeUndefined();
+      expect(product.includesLamp).toBeUndefined();
+      expect(product.stripCount).toBeUndefined();
+      expect(product.styleTags).toEqual([]);
+    }
+  });
+  it('acepta technicalSpecs con campos opcionales ausentes (sin inventar datos)', () => {
+    const drillWithoutDisplay = findProduct(
+      'kredioo-torno-profesional-35000-rpm',
+    );
+    expect(
+      drillWithoutDisplay.technicalSpecs?.kind === 'nail_drill' &&
+        drillWithoutDisplay.technicalSpecs.display,
+    ).toBe('LED');
+    const drillWithNulls = findProduct('ponoseu-torno-profesional-portatil');
+    expect(
+      drillWithNulls.technicalSpecs?.kind === 'nail_drill' &&
+        drillWithNulls.technicalSpecs.maxRpm,
+    ).toBeNull();
+    const dustWithoutPower = findProduct(
+      'melodysusie-colector-polvo-profesional',
+    );
+    expect(
+      dustWithoutPower.technicalSpecs?.kind === 'nail_dust_collector' &&
+        dustWithoutPower.technicalSpecs.powerWatts,
+    ).toBeNull();
+  });
+  it('rechaza technicalSpecs cuyo kind no coincide con productType', () => {
+    const drill = findProduct('kredioo-torno-profesional-35000-rpm');
+    const mismatched = {
+      ...drill,
+      technicalSpecs: { kind: 'nail_dust_collector' as const, powerWatts: 60 },
+    };
+    expect(() => productSchema.parse(mismatched)).toThrow();
+  });
+  it('rechaza technicalSpecs en un producto que no es maquinaria', () => {
+    const semicurada = findProduct('ohora-n-cream-cotton');
+    const withSpecs = {
+      ...semicurada,
+      technicalSpecs: { kind: 'nail_drill' as const, maxRpm: 20000 },
+    };
+    expect(() => productSchema.parse(withSpecs)).toThrow();
+  });
+  it('rechaza campos de lámpara/tiras declarados en maquinaria', () => {
+    const drill = findProduct('kredioo-torno-profesional-35000-rpm');
+    const withFakeLamp = { ...drill, requiresLamp: false };
+    expect(() => productSchema.parse(withFakeLamp)).toThrow();
   });
 });

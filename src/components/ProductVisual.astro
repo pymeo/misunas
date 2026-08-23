@@ -1,0 +1,23 @@
+---
+import NailStylePreview from '@/components/NailStylePreview.astro';
+import ToolIllustration from '@/components/ToolIllustration.astro';
+import type { Product } from '@/domain/product';
+interface Props {
+  product: Product;
+  compact?: boolean;
+}
+const { product, compact = false } = Astro.props;
+---
+
+{
+  product.productType === 'nail_drill' ||
+  product.productType === 'nail_dust_collector' ? (
+    <ToolIllustration
+      kind={product.productType}
+      brand={product.brand}
+      compact={compact}
+    />
+  ) : (
+    <NailStylePreview product={product} compact={compact} />
+  )
+}

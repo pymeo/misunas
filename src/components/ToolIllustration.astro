@@ -1,0 +1,70 @@
+---
+interface Props {
+  kind: 'nail_drill' | 'nail_dust_collector';
+  brand: string;
+  compact?: boolean;
+}
+const { kind, brand, compact = false } = Astro.props;
+const label = kind === 'nail_drill' ? 'torno' : 'aspirador de polvo';
+---
+
+<div
+  class:list={[
+    'relative overflow-hidden rounded-2xl bg-lavender',
+    compact ? 'aspect-[4/3]' : 'aspect-square',
+  ]}
+  role="img"
+  aria-label={`Ilustración editorial de un ${label} para uñas de ${brand}.`}
+>
+  <div class="absolute -top-10 -right-8 size-32 rounded-full bg-cream/90">
+  </div><div class="absolute -bottom-12 -left-8 size-36 rounded-full bg-blush">
+  </div>
+  {
+    kind === 'nail_drill' ? (
+      <div
+        class="absolute inset-0 flex items-center justify-center"
+        aria-hidden="true"
+      >
+        <div
+          class:list={[
+            'relative -rotate-45',
+            compact ? 'h-28 w-8' : 'h-48 w-13',
+          ]}
+        >
+          <span class="absolute inset-x-0 top-0 h-[58%] rounded-t-[999px] bg-secondary shadow-soft" />
+          <span class="absolute inset-x-[-15%] top-[52%] h-[14%] rounded-full bg-primary shadow-soft" />
+          <span class="absolute inset-x-[20%] bottom-0 h-[34%] rounded-b-full bg-text/70" />
+        </div>
+      </div>
+    ) : (
+      <div
+        class="absolute inset-0 flex items-center justify-center"
+        aria-hidden="true"
+      >
+        <div
+          class:list={[
+            'relative rounded-[1.4rem] bg-secondary shadow-soft',
+            compact ? 'h-24 w-20' : 'h-40 w-32',
+          ]}
+        >
+          <div class="absolute inset-x-[16%] top-[18%] grid grid-cols-3 gap-1.5">
+            {[0, 1, 2, 3, 4, 5].map(() => (
+              <span class="block aspect-square rounded-full bg-white/70" />
+            ))}
+          </div>
+          <span
+            class:list={[
+              'absolute top-1/2 -right-[16%] -translate-y-1/2 rounded-full bg-primary',
+              compact ? 'h-3 w-9' : 'h-4 w-14',
+            ]}
+          />
+        </div>
+      </div>
+    )
+  }
+  <p
+    class="absolute right-4 bottom-4 left-4 text-center text-[.65rem] font-bold tracking-[.16em] text-primary uppercase"
+  >
+    Vista editorial · {brand}
+  </p>
+</div>

@@ -8,6 +8,21 @@ describe('buildAmazonAffiliateUrl', () => {
     ).toBe('https://www.amazon.es/dp/B0ABC12345?tag=tusunas-21');
   });
 
+  it('builds clean URLs for tornos and aspiradores from their real ASIN', () => {
+    expect(
+      buildAmazonAffiliateUrl({
+        asin: 'B0CQLMQXDK',
+        amazonMarketplace: 'es',
+      }),
+    ).toBe('https://www.amazon.es/dp/B0CQLMQXDK?tag=tusunas-21');
+    expect(
+      buildAmazonAffiliateUrl({
+        asin: 'B0976W294Y',
+        amazonMarketplace: 'es',
+      }),
+    ).toBe('https://www.amazon.es/dp/B0976W294Y?tag=tusunas-21');
+  });
+
   it('removes incoming query parameters and rejects untrusted hosts', () => {
     expect(
       buildAmazonAffiliateUrl({

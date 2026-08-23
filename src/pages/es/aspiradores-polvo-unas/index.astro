@@ -1,0 +1,179 @@
+---
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import MethodologyNotice from '@/components/MethodologyNotice.astro';
+import ProductComparison from '@/components/ProductComparison.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
+import { PRODUCTS } from '@/data/products';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+const dustCollectors = PRODUCTS.filter(
+  (product) => product.category === 'aspiradores-polvo-unas',
+);
+const featured = dustCollectors.filter((product) =>
+  [
+    'retoo-aspirador-unas-60w-3-ventiladores',
+    'layhou-aspirador-unas-80w',
+    'anbeistee-colector-polvo-2000pa',
+    'freeup-aspirador-polvo-filtro-luz-led',
+  ].includes(product.id),
+);
+---
+
+<BaseLayout
+  title="Aspiradores de polvo para uñas: comparativa y guía para elegir"
+  description="Comparativa editorial de aspiradores y colectores de polvo para uñas por potencia, succión, niveles y filtro, con atributos verificados en Amazon.es y sin puntuaciones inventadas."
+  canonicalPath="/es/aspiradores-polvo-unas/"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Aspiradores de polvo' },
+  ]}
+>
+  <section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Equipamiento para manicura</p><h1
+      class="mt-4 max-w-5xl text-5xl leading-tight sm:text-6xl"
+    >
+      Aspiradores de polvo para uñas: comparativa y guía para elegir
+    </h1><p class="section-intro">
+      Compara potencia, succión, niveles de velocidad y tipo de filtro antes de
+      decidir. Ningún dato de rendimiento está inventado: procede de la ficha
+      investigada de cada producto en Amazon.es.
+    </p><div class="mt-8"><AffiliateDisclosure /></div>
+  </section>
+
+  <section class="container-page pb-14">
+    <div class="rounded-[1.5rem] bg-primary p-7 text-white sm:p-9">
+      <p class="text-xs font-bold tracking-wider text-blush uppercase">
+        Respuesta rápida
+      </p><h2 class="mt-3 text-3xl sm:text-4xl">Elige primero el uso</h2><div
+        class="mt-7 grid gap-5 md:grid-cols-3"
+      >
+        <div class="border-t border-white/25 pt-4">
+          <h3 class="text-xl">Uso doméstico ocasional</h3><p
+            class="mt-2 text-sm text-white/75"
+          >
+            Un modelo de entrada con un único nivel suele bastar para manicura
+            propia esporádica.
+          </p>
+        </div><div class="border-t border-white/25 pt-4">
+          <h3 class="text-xl">Uso frecuente o acrílico</h3><p
+            class="mt-2 text-sm text-white/75"
+          >
+            Prioriza más vatios o Pa de succión y varios niveles de velocidad.
+          </p>
+        </div><div class="border-t border-white/25 pt-4">
+          <h3 class="text-xl">Te importa el mantenimiento</h3><p
+            class="mt-2 text-sm text-white/75"
+          >
+            Compara filtro reutilizable frente a filtros desechables y su coste
+            de reposición.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-14">
+    <p class="eyebrow">Comparación esencial</p><h2 class="section-heading">
+      Cuatro aspiradores, atributos equivalentes
+    </h2><p class="section-intro">
+      Compara potencia, succión, niveles, filtro, recarga y luz integrada en
+      cuatro formatos distintos.
+    </p><div class="mt-8">
+      <ProductComparison
+        products={featured}
+        sourcePage="/es/aspiradores-polvo-unas/"
+      />
+    </div>
+  </section>
+
+  <section class="container-page py-14">
+    <p class="eyebrow">Selección completa</p><h2 class="section-heading">
+      Los {dustCollectors.length} aspiradores investigados
+    </h2><div class="mt-8">
+      <ProductGrid
+        products={dustCollectors}
+        sourcePage="/es/aspiradores-polvo-unas/"
+        commercial
+      />
+    </div>
+  </section>
+
+  <section class="container-page grid gap-10 py-14 lg:grid-cols-[1fr_.8fr]">
+    <div>
+      <p class="eyebrow">Cómo elegir</p><h2 class="section-heading">
+        Cuatro datos que importan
+      </h2><ol class="mt-7 grid gap-5">
+        <li class="card">
+          <strong>1. Potencia y succión</strong><p class="mt-2 text-muted">
+            Más vatios o más Pa retiran mejor el polvo fino de gel y acrílico,
+            especialmente en sesiones largas.
+          </p>
+        </li><li class="card">
+          <strong>2. Filtro</strong><p class="mt-2 text-muted">
+            Un filtro reutilizable reduce el gasto continuo; uno desechable
+            suele ser más cómodo de limpiar pero exige reponerlo.
+          </p>
+        </li><li class="card">
+          <strong>3. Sobremesa o portátil</strong><p class="mt-2 text-muted">
+            La mayoría de estos aspiradores están pensados para sobremesa;
+            revisa el peso y el tamaño si necesitas moverlo entre puestos.
+          </p>
+        </li><li class="card">
+          <strong>4. Mantenimiento</strong><p class="mt-2 text-muted">
+            Vaciar el depósito y limpiar o cambiar el filtro con regularidad
+            mantiene la succión constante con el uso.
+          </p>
+        </li>
+      </ol>
+    </div><div>
+      <p class="eyebrow">Relacionado</p><h2 class="section-heading">
+        Completa tu equipo
+      </h2><div class="mt-7 grid gap-4">
+        <a class="card no-underline" href="/es/tornos-unas/"
+          ><h3 class="text-2xl">Tornos para uñas</h3><p class="mt-2 text-muted">
+            Un aspirador cerca de la mano controla mejor el polvo que genera un
+            torno al limar gel o acrílico.
+          </p></a
+        ><a class="card no-underline" href="/es/encuentra-tus-unas/"
+          ><h3 class="text-2xl">Encuentra tus uñas</h3><p
+            class="mt-2 text-muted"
+          >
+            Si buscas tiras semicuradas en vez de maquinaria, empieza aquí.
+          </p></a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-14">
+    <p class="eyebrow">Preguntas frecuentes</p><h2 class="section-heading">
+      Lo que no cabe en una tarjeta
+    </h2><div class="mt-7 grid gap-3">
+      {
+        [
+          [
+            '¿Cuánta potencia necesito?',
+            'Depende de la frecuencia de uso: para manicura propia ocasional, un modelo de menos de 80W suele bastar; para uso frecuente o uñas acrílicas conviene más potencia o más Pa de succión.',
+          ],
+          [
+            '¿Filtro reutilizable o desechable?',
+            'El filtro reutilizable reduce el gasto continuo pero hay que limpiarlo; el desechable es más cómodo pero exige comprar recambios periódicamente.',
+          ],
+          [
+            '¿Hace mucho ruido?',
+            'El nivel de ruido no figura de forma verificable en las fichas investigadas de este catálogo; si te preocupa, consulta las valoraciones y preguntas de compradores en la ficha de Amazon.es.',
+          ],
+          [
+            '¿Dónde consulto el precio?',
+            'El botón de cada producto abre su ficha de Amazon.es para consultar el precio y la disponibilidad actuales.',
+          ],
+        ].map(([question, answer]) => (
+          <details class="rounded-xl border border-border bg-surface p-5">
+            <summary class="cursor-pointer font-bold">{question}</summary>
+            <p class="mt-3 text-muted">{answer}</p>
+          </details>
+        ))
+      }
+    </div><div class="mt-8"><MethodologyNotice /></div>
+  </section>
+</BaseLayout>

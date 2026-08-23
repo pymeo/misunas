@@ -1,4 +1,6 @@
 import rawCatalog from '../../tus-unas-amazon-es-products.seed.json';
+import tornosCatalog from '../../tus-unas-amazon-es-tornos.seed.json';
+import dustCollectorCatalog from '../../tus-unas-amazon-es-aspiradores-polvo.seed.json';
 import { productSchema, type Product } from '@/domain/product';
 
 interface EditorialProductData {
@@ -101,7 +103,7 @@ const EDITORIAL: Record<string, EditorialProductData> = {
   },
 };
 
-export const PRODUCTS: Product[] = rawCatalog.products.map((raw) => {
+const SEMICURADAS_PRODUCTS: Product[] = rawCatalog.products.map((raw) => {
   const editorial = EDITORIAL[raw.asin];
   if (!editorial)
     throw new Error(`Falta información editorial para ${raw.asin}`);
@@ -133,6 +135,192 @@ export const PRODUCTS: Product[] = rawCatalog.products.map((raw) => {
     sample: false,
   });
 });
+
+interface ToolEditorialData {
+  summary: string;
+  considerations: string[];
+}
+
+const TORNO_EDITORIAL: Record<string, ToolEditorialData> = {
+  'kredioo-torno-profesional-35000-rpm': {
+    summary:
+      'Torno profesional Kredioo de 35000 RPM con 11 fresas intercambiables, pantalla LED y giro bidireccional, pensado para gel, acrílico, manicura y pedicura.',
+    considerations: [
+      'Los datos de RPM y accesorios proceden de la ficha investigada en Amazon.es; no hemos probado este torno personalmente.',
+    ],
+  },
+  'nailgirls-torno-35000-rpm-pedal': {
+    summary:
+      'Torno profesional NAILGIRLS de 35000 RPM con 11 accesorios, pantalla LCD y pedal incluido para controlar la velocidad con el pie.',
+    considerations: [
+      'El pedal y la pantalla figuran en la ficha investigada en Amazon.es; conviene revisar el contenido exacto del kit antes de comprar.',
+    ],
+  },
+  'engerwall-torno-portatil-35000-rpm': {
+    summary:
+      'Torno ENGERWALL portátil y recargable de 35000 RPM con 6 accesorios y pantalla LCD, pensado para manicura y pedicura sin depender de un cable permanente.',
+    considerations: [
+      'La ficha investigada no confirma si se alimenta también por USB; verifícalo en Amazon.es antes de comprar.',
+    ],
+  },
+  'beurer-mp62-set-manicura-pedicura': {
+    summary:
+      'Set de manicura y pedicura Beurer MP 62 con 10 accesorios y luz LED integrada, de una marca de electrónica de consumo conocida en España.',
+    considerations: [
+      'Su velocidad máxima (5400 RPM) es notablemente inferior a la de los tornos profesionales de esta comparativa; pensado para uso doméstico ocasional.',
+    ],
+  },
+  'xoali-torno-25000-rpm-12-en-1': {
+    summary:
+      'Torno Xoali de 25000 RPM con 12 accesorios, alimentación USB y una broca de cerámica incluida, orientado a manicura en casa y gel.',
+    considerations: [
+      'Los datos proceden de la ficha investigada en Amazon.es; no hemos probado este torno personalmente.',
+    ],
+  },
+  'bickon-torno-20000-rpm-6-en-1': {
+    summary:
+      'Torno BICKON de entrada, 20000 RPM con 6 accesorios y alimentación USB, pensado para quien empieza con manicura en casa.',
+    considerations: [
+      'Tiene menos accesorios y RPM que los modelos profesionales de esta comparativa; adecuado como primera toma de contacto.',
+    ],
+  },
+  'weiyi-torno-usb-20000-rpm': {
+    summary:
+      'Torno WEIYI de 20000 RPM con 11 puntas incluidas y alimentación USB, en un formato compacto para manicura y pedicura portátil.',
+    considerations: [
+      'Los datos proceden de la ficha investigada en Amazon.es; no hemos probado este torno personalmente.',
+    ],
+  },
+  'ponoseu-torno-profesional-portatil': {
+    summary:
+      'Torno Ponoseu portátil y recargable pensado para manicura y pedicura sin cable, como alternativa cuando priorizas la portabilidad.',
+    considerations: [
+      'La ficha investigada no confirma la velocidad máxima ni el número de accesorios; consulta los datos actualizados en Amazon.es antes de comprar.',
+    ],
+  },
+};
+
+const DUST_COLLECTOR_EDITORIAL: Record<string, ToolEditorialData> = {
+  'retoo-aspirador-unas-60w-3-ventiladores': {
+    summary:
+      'Aspirador de polvo Retoo de 60W con 3 ventiladores, una opción de entrada para manicura y pedicura de sobremesa en casa.',
+    considerations: [
+      'La ficha investigada no confirma si el filtro es reutilizable ni si el aparato es recargable.',
+    ],
+  },
+  'melodysusie-colector-polvo-profesional': {
+    summary:
+      'Colector de polvo MelodySusie, de una marca especializada en equipamiento de manicura, con filtro reutilizable y 2 modos de aspiración.',
+    considerations: [
+      'La ficha investigada no confirma la potencia en vatios; consulta el dato actualizado en Amazon.es.',
+    ],
+  },
+  'layhou-aspirador-unas-80w': {
+    summary:
+      'Aspirador de uñas Layhou de 80W con 2 niveles de velocidad y filtro reutilizable, pensado para manicura en casa, salón y uñas acrílicas.',
+    considerations: [
+      'Los datos proceden de la ficha investigada en Amazon.es; no hemos probado este aspirador personalmente.',
+    ],
+  },
+  'adonafy-extractor-polvo-unas-120w': {
+    summary:
+      'Extractor de polvo Adonafy de 120W con filtro reutilizable, orientado a uso intensivo en salón y manicura en casa.',
+    considerations: [
+      'La ficha investigada no confirma el número de niveles de velocidad ni de ventiladores.',
+    ],
+  },
+  'anbeistee-colector-polvo-2000pa': {
+    summary:
+      'Colector de polvo ANBEISTEE con 2000 Pa de succión y 45 filtros desechables incluidos, pensado para uñas acrílicas y manicura de sobremesa.',
+    considerations: [
+      'Usa filtros desechables en vez de un filtro reutilizable; conviene revisar el coste de reposición antes de comprar.',
+    ],
+  },
+  'cris-nails-aspirador-polvo-manicura': {
+    summary:
+      'Aspirador de polvo CRIS NAILS, una opción sencilla para manicura y pedicura de sobremesa.',
+    considerations: [
+      'La ficha investigada no confirma potencia, niveles de velocidad ni tipo de filtro; consulta los datos actualizados en Amazon.es.',
+    ],
+  },
+  'freeup-aspirador-polvo-filtro-luz-led': {
+    summary:
+      'Aspirador de polvo FREEUP con filtro reutilizable, lámpara LED integrada y motor sin escobillas, pensado para manicura de precisión en salón.',
+    considerations: [
+      'La ficha investigada no confirma la potencia en vatios ni el número de niveles de velocidad.',
+    ],
+  },
+  'jodsone-colector-polvo-120w-3-niveles': {
+    summary:
+      'Colector de polvo JODSONE de 120W con 3 niveles de velocidad y filtro reutilizable, pensado para salón y manicura en casa.',
+    considerations: [
+      'Los datos proceden de la ficha investigada en Amazon.es; no hemos probado este aspirador personalmente.',
+    ],
+  },
+};
+
+const TORNO_PRODUCTS: Product[] = tornosCatalog.products.map((raw) => {
+  const editorial = TORNO_EDITORIAL[raw.id];
+  if (!editorial) throw new Error(`Falta información editorial para ${raw.id}`);
+  return productSchema.parse({
+    id: raw.id,
+    slug: raw.id,
+    brand: raw.brand,
+    name: raw.name,
+    asin: raw.asin,
+    category: tornosCatalog.category,
+    productType: 'nail_drill',
+    technicalSpecs: { kind: 'nail_drill', ...raw.technicalSpecs },
+    styleTags: [],
+    useCases: raw.useCases,
+    editorialAngles: raw.editorialAngles,
+    summary: editorial.summary,
+    considerations: editorial.considerations,
+    amazonMarketplace: 'es',
+    affiliateEligible: true,
+    editorialStatus: 'approved',
+    researchStatus: 'verified-amazon-es',
+    sourceVerifiedAt: tornosCatalog.verifiedAt,
+    active: true,
+    sample: false,
+  });
+});
+
+const DUST_COLLECTOR_PRODUCTS: Product[] = dustCollectorCatalog.products.map(
+  (raw) => {
+    const editorial = DUST_COLLECTOR_EDITORIAL[raw.id];
+    if (!editorial)
+      throw new Error(`Falta información editorial para ${raw.id}`);
+    return productSchema.parse({
+      id: raw.id,
+      slug: raw.id,
+      brand: raw.brand,
+      name: raw.name,
+      asin: raw.asin,
+      category: dustCollectorCatalog.category,
+      productType: 'nail_dust_collector',
+      technicalSpecs: { kind: 'nail_dust_collector', ...raw.technicalSpecs },
+      styleTags: [],
+      useCases: raw.useCases,
+      editorialAngles: raw.editorialAngles,
+      summary: editorial.summary,
+      considerations: editorial.considerations,
+      amazonMarketplace: 'es',
+      affiliateEligible: true,
+      editorialStatus: 'approved',
+      researchStatus: 'verified-amazon-es',
+      sourceVerifiedAt: dustCollectorCatalog.verifiedAt,
+      active: true,
+      sample: false,
+    });
+  },
+);
+
+export const PRODUCTS: Product[] = [
+  ...SEMICURADAS_PRODUCTS,
+  ...TORNO_PRODUCTS,
+  ...DUST_COLLECTOR_PRODUCTS,
+];
 
 export const FEATURED_PRODUCTS = PRODUCTS.filter((product) =>
   [

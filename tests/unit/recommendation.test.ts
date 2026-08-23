@@ -63,6 +63,25 @@ describe('recommendProducts', () => {
     expect(result[0]?.product.stripCount).toBe(34);
     expect(result[0]?.reasons.join(' ')).toContain('34 tiras');
   });
+  it('nunca recomienda maquinaria (tornos ni aspiradores), aunque no tengan lámpara definida', () => {
+    const scenarios: RecommendationAnswers[] = [
+      { ...base, lamp: 'sin-lampara' },
+      { ...base, lamp: 'quiero-kit', experience: 'primera-vez' },
+      { ...base, style: 'llamativa', preference: 'diseno' },
+      { ...base, preference: 'mas-tiras' },
+      { ...base },
+    ];
+    for (const answers of scenarios) {
+      const result = recommendProducts(PRODUCTS, answers);
+      expect(
+        result.every(
+          ({ product }) =>
+            product.productType !== 'nail_drill' &&
+            product.productType !== 'nail_dust_collector',
+        ),
+      ).toBe(true);
+    }
+  });
   it('es determinista, no devuelve porcentajes y centraliza las reglas', () => {
     const answers = { ...base, style: 'natural' } as const;
     expect(recommendProducts(PRODUCTS, answers)).toEqual(
