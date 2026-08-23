@@ -1,0 +1,258 @@
+{
+  "affiliateTag": "tusunas-21",
+  "marketplace": "amazon.es",
+  "verifiedAt": "2026-08-23",
+  "category": "aspiradores-polvo-unas",
+  "suggestedProductType": "nail_dust_collector",
+  "notes": [
+    "Investigación orientada a Amazon España. Revalidar disponibilidad del ASIN antes de publicar.",
+    "No persistir precio, rating, número de reseñas, stock ni Prime como datos estáticos.",
+    "Las características técnicas incluidas proceden de títulos/fichas localizadas durante la investigación; no equivalen a pruebas propias.",
+    "No descargar ni copiar manualmente imágenes de Amazon."
+  ],
+  "products": [
+    {
+      "id": "retoo-aspirador-unas-60w-3-ventiladores",
+      "brand": "Retoo",
+      "name": "Aspirador Uñas, Collector de Polvo de uñas, Extractor 60W con 3 Ventiladores",
+      "asin": "B0976W294Y",
+      "marketplace": "amazon_es",
+      "productType": "nail_dust_collector",
+      "technicalSpecs": {
+        "powerWatts": 60,
+        "fanCount": 3,
+        "suctionLevels": null,
+        "reusableFilter": null,
+        "rechargeable": null,
+        "integratedLight": false
+      },
+      "useCases": [
+        "manicura-en-casa",
+        "pedicura",
+        "sobremesa"
+      ],
+      "editorialAngles": [
+        "entrada-calidad-precio",
+        "3-ventiladores",
+        "uso-domestico"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0976W294Y",
+      "affiliateUrl": "https://www.amazon.es/dp/B0976W294Y/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "melodysusie-colector-polvo-profesional",
+      "brand": "MelodySusie",
+      "name": "Aspirador de polvo de uñas profesional con filtro y 2 modos de aspiración",
+      "asin": "B0919Q74BF",
+      "marketplace": "amazon_es",
+      "productType": "nail_dust_collector",
+      "technicalSpecs": {
+        "powerWatts": null,
+        "fanCount": null,
+        "suctionLevels": 2,
+        "reusableFilter": true,
+        "rechargeable": null,
+        "integratedLight": false
+      },
+      "useCases": [
+        "manicura",
+        "salon",
+        "sobremesa"
+      ],
+      "editorialAngles": [
+        "marca-especializada",
+        "filtro-reutilizable",
+        "2-modos"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0919Q74BF",
+      "affiliateUrl": "https://www.amazon.es/dp/B0919Q74BF/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "layhou-aspirador-unas-80w",
+      "brand": "Layhou",
+      "name": "Aspirador de uñas profesional 80W con 2 niveles de velocidad",
+      "asin": "B09V84SXD2",
+      "marketplace": "amazon_es",
+      "productType": "nail_dust_collector",
+      "technicalSpecs": {
+        "powerWatts": 80,
+        "fanCount": null,
+        "suctionLevels": 2,
+        "reusableFilter": true,
+        "rechargeable": false,
+        "integratedLight": false
+      },
+      "useCases": [
+        "manicura-en-casa",
+        "salon",
+        "unas-acrilicas"
+      ],
+      "editorialAngles": [
+        "80w",
+        "2-niveles",
+        "filtro-reutilizable"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B09V84SXD2",
+      "affiliateUrl": "https://www.amazon.es/dp/B09V84SXD2/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "adonafy-extractor-polvo-unas-120w",
+      "brand": "Adonafy",
+      "name": "Extractor de Polvo para Uñas Profesional 120W",
+      "asin": "B0F1D2RJR9",
+      "marketplace": "amazon_es",
+      "productType": "nail_dust_collector",
+      "technicalSpecs": {
+        "powerWatts": 120,
+        "fanCount": null,
+        "suctionLevels": null,
+        "reusableFilter": true,
+        "rechargeable": false,
+        "integratedLight": false
+      },
+      "useCases": [
+        "salon",
+        "manicura-en-casa",
+        "uso-intensivo"
+      ],
+      "editorialAngles": [
+        "120w",
+        "gama-alta",
+        "potencia"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0F1D2RJR9",
+      "affiliateUrl": "https://www.amazon.es/dp/B0F1D2RJR9/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "anbeistee-colector-polvo-2000pa",
+      "brand": "ANBEISTEE",
+      "name": "Colector de Polvo de Uñas Profesional 2000Pa con 45 filtros",
+      "asin": "B0GJS9C6T8",
+      "marketplace": "amazon_es",
+      "productType": "nail_dust_collector",
+      "technicalSpecs": {
+        "powerWatts": null,
+        "suctionPa": 2000,
+        "fanCount": null,
+        "suctionLevels": null,
+        "reusableFilter": false,
+        "disposableFilterCount": 45,
+        "rechargeable": null,
+        "integratedLight": false
+      },
+      "useCases": [
+        "unas-acrilicas",
+        "manicura",
+        "sobremesa"
+      ],
+      "editorialAngles": [
+        "2000pa",
+        "filtros-incluidos",
+        "mantenimiento"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0GJS9C6T8",
+      "affiliateUrl": "https://www.amazon.es/dp/B0GJS9C6T8/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "cris-nails-aspirador-polvo-manicura",
+      "brand": "CRIS NAILS",
+      "name": "Aspirador de Polvo para Uñas para Manicura y Pedicura",
+      "asin": "B01HBH2Y0S",
+      "marketplace": "amazon_es",
+      "productType": "nail_dust_collector",
+      "technicalSpecs": {
+        "powerWatts": null,
+        "fanCount": null,
+        "suctionLevels": null,
+        "reusableFilter": null,
+        "rechargeable": false,
+        "integratedLight": false
+      },
+      "useCases": [
+        "manicura",
+        "pedicura",
+        "sobremesa"
+      ],
+      "editorialAngles": [
+        "opcion-sencilla",
+        "manicura-y-pedicura",
+        "entrada"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B01HBH2Y0S",
+      "affiliateUrl": "https://www.amazon.es/dp/B01HBH2Y0S/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "freeup-aspirador-polvo-filtro-luz-led",
+      "brand": "FREEUP",
+      "name": "Aspirador de Polvo para Uñas Profesional con Filtro Reutilizable y Lámpara LED",
+      "asin": "B0D9Y29Z7J",
+      "marketplace": "amazon_es",
+      "productType": "nail_dust_collector",
+      "technicalSpecs": {
+        "powerWatts": null,
+        "fanCount": null,
+        "suctionLevels": null,
+        "reusableFilter": true,
+        "rechargeable": false,
+        "integratedLight": true,
+        "brushlessMotor": true
+      },
+      "useCases": [
+        "salon",
+        "manicura-de-precision",
+        "sobremesa"
+      ],
+      "editorialAngles": [
+        "lampara-led-integrada",
+        "filtro-reutilizable",
+        "motor-sin-escobillas"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0D9Y29Z7J",
+      "affiliateUrl": "https://www.amazon.es/dp/B0D9Y29Z7J/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "jodsone-colector-polvo-120w-3-niveles",
+      "brand": "JODSONE",
+      "name": "Colector de Polvo de Uñas 120W con 3 niveles y filtro reutilizable",
+      "asin": "B0DZNRMRSJ",
+      "marketplace": "amazon_es",
+      "productType": "nail_dust_collector",
+      "technicalSpecs": {
+        "powerWatts": 120,
+        "fanCount": null,
+        "suctionLevels": 3,
+        "reusableFilter": true,
+        "rechargeable": false,
+        "integratedLight": false
+      },
+      "useCases": [
+        "salon",
+        "manicura-en-casa",
+        "sobremesa"
+      ],
+      "editorialAngles": [
+        "120w",
+        "3-niveles",
+        "filtro-reutilizable"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0DZNRMRSJ",
+      "affiliateUrl": "https://www.amazon.es/dp/B0DZNRMRSJ/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    }
+  ]
+}

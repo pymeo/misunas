@@ -1,0 +1,268 @@
+{
+  "affiliateTag": "tusunas-21",
+  "marketplace": "amazon.es",
+  "verifiedAt": "2026-08-23",
+  "category": "tornos",
+  "suggestedProductType": "nail_drill",
+  "notes": [
+    "Investigación orientada a Amazon España. Revalidar disponibilidad del ASIN antes de publicar.",
+    "No persistir precio, rating, número de reseñas, stock ni Prime como datos estáticos.",
+    "Las RPM, accesorios y funciones incluidas son datos de ficha/título localizados durante la investigación; no equivalen a pruebas propias.",
+    "No descargar ni copiar manualmente imágenes de Amazon."
+  ],
+  "products": [
+    {
+      "id": "kredioo-torno-profesional-35000-rpm",
+      "brand": "Kredioo",
+      "name": "Torno para Uñas Profesional 35000 RPM con 11 fresas y pantalla LED",
+      "asin": "B0CQLMQXDK",
+      "marketplace": "amazon_es",
+      "productType": "nail_drill",
+      "technicalSpecs": {
+        "maxRpm": 35000,
+        "accessoryCount": 11,
+        "display": "LED",
+        "rechargeable": false,
+        "usbPowered": false,
+        "pedalIncluded": false,
+        "bidirectional": true
+      },
+      "useCases": [
+        "gel",
+        "acrilico",
+        "manicura",
+        "pedicura"
+      ],
+      "editorialAngles": [
+        "35000-rpm",
+        "pantalla-led",
+        "comparativa-profesional"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0CQLMQXDK",
+      "affiliateUrl": "https://www.amazon.es/dp/B0CQLMQXDK/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "nailgirls-torno-35000-rpm-pedal",
+      "brand": "NAILGIRLS",
+      "name": "Torno para Uñas Profesional 35000 RPM 11 en 1 con pantalla y pedal",
+      "asin": "B09YY52SX1",
+      "marketplace": "amazon_es",
+      "productType": "nail_drill",
+      "technicalSpecs": {
+        "maxRpm": 35000,
+        "accessoryCount": 11,
+        "display": "LCD",
+        "rechargeable": false,
+        "usbPowered": false,
+        "pedalIncluded": true,
+        "bidirectional": true
+      },
+      "useCases": [
+        "gel",
+        "acrilico",
+        "manicura",
+        "pedicura"
+      ],
+      "editorialAngles": [
+        "35000-rpm",
+        "pedal",
+        "11-en-1"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B09YY52SX1",
+      "affiliateUrl": "https://www.amazon.es/dp/B09YY52SX1/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "engerwall-torno-portatil-35000-rpm",
+      "brand": "ENGERWALL",
+      "name": "Torno para Uñas Profesional 35000 RPM Portátil Recargable con pantalla LCD",
+      "asin": "B09Q835VM5",
+      "marketplace": "amazon_es",
+      "productType": "nail_drill",
+      "technicalSpecs": {
+        "maxRpm": 35000,
+        "accessoryCount": 6,
+        "display": "LCD",
+        "rechargeable": true,
+        "usbPowered": null,
+        "pedalIncluded": false,
+        "bidirectional": true
+      },
+      "useCases": [
+        "manicura",
+        "pedicura",
+        "portatil",
+        "salon"
+      ],
+      "editorialAngles": [
+        "inalambrico",
+        "35000-rpm",
+        "portabilidad"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B09Q835VM5",
+      "affiliateUrl": "https://www.amazon.es/dp/B09Q835VM5/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "beurer-mp62-set-manicura-pedicura",
+      "brand": "Beurer",
+      "name": "MP 62 Set de manicura y pedicura con 10 accesorios y luz LED",
+      "asin": "B00N9BOOZ4",
+      "marketplace": "amazon_es",
+      "productType": "nail_drill",
+      "technicalSpecs": {
+        "maxRpm": 5400,
+        "accessoryCount": 10,
+        "display": null,
+        "rechargeable": false,
+        "usbPowered": false,
+        "pedalIncluded": false,
+        "bidirectional": true,
+        "integratedLight": true
+      },
+      "useCases": [
+        "manicura",
+        "pedicura",
+        "cuidado-de-unas"
+      ],
+      "editorialAngles": [
+        "marca-conocida",
+        "10-accesorios",
+        "uso-domestico"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B00N9BOOZ4",
+      "affiliateUrl": "https://www.amazon.es/dp/B00N9BOOZ4/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "xoali-torno-25000-rpm-12-en-1",
+      "brand": "Xoali",
+      "name": "Torno para Uñas 25000 RPM 12 en 1 USB con broca de cerámica",
+      "asin": "B0B3Y81RN2",
+      "marketplace": "amazon_es",
+      "productType": "nail_drill",
+      "technicalSpecs": {
+        "maxRpm": 25000,
+        "accessoryCount": 12,
+        "display": null,
+        "rechargeable": false,
+        "usbPowered": true,
+        "pedalIncluded": false,
+        "bidirectional": true,
+        "ceramicBitIncluded": true
+      },
+      "useCases": [
+        "manicura-en-casa",
+        "gel",
+        "portatil"
+      ],
+      "editorialAngles": [
+        "25000-rpm",
+        "usb",
+        "12-en-1"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0B3Y81RN2",
+      "affiliateUrl": "https://www.amazon.es/dp/B0B3Y81RN2/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "bickon-torno-20000-rpm-6-en-1",
+      "brand": "BICKON",
+      "name": "Torno para Uñas 6 en 1 20000 RPM USB",
+      "asin": "B0C2YSF13V",
+      "marketplace": "amazon_es",
+      "productType": "nail_drill",
+      "technicalSpecs": {
+        "maxRpm": 20000,
+        "accessoryCount": 6,
+        "display": null,
+        "rechargeable": false,
+        "usbPowered": true,
+        "pedalIncluded": false,
+        "bidirectional": true
+      },
+      "useCases": [
+        "principiantes",
+        "manicura-en-casa",
+        "portatil"
+      ],
+      "editorialAngles": [
+        "20000-rpm",
+        "usb",
+        "entrada"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0C2YSF13V",
+      "affiliateUrl": "https://www.amazon.es/dp/B0C2YSF13V/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "weiyi-torno-usb-20000-rpm",
+      "brand": "WEIYI",
+      "name": "Torno de uñas USB profesional 20000 RPM con 11 puntas",
+      "asin": "B0BP23VS93",
+      "marketplace": "amazon_es",
+      "productType": "nail_drill",
+      "technicalSpecs": {
+        "maxRpm": 20000,
+        "accessoryCount": 11,
+        "display": null,
+        "rechargeable": false,
+        "usbPowered": true,
+        "pedalIncluded": false,
+        "bidirectional": true
+      },
+      "useCases": [
+        "manicura-en-casa",
+        "pedicura",
+        "portatil"
+      ],
+      "editorialAngles": [
+        "usb",
+        "11-puntas",
+        "compacto"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0BP23VS93",
+      "affiliateUrl": "https://www.amazon.es/dp/B0BP23VS93/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    },
+    {
+      "id": "ponoseu-torno-profesional-portatil",
+      "brand": "Ponoseu",
+      "name": "Torno para Uñas Profesional Eléctrico Portátil",
+      "asin": "B09WQRY572",
+      "marketplace": "amazon_es",
+      "productType": "nail_drill",
+      "technicalSpecs": {
+        "maxRpm": null,
+        "accessoryCount": null,
+        "display": null,
+        "rechargeable": true,
+        "usbPowered": null,
+        "pedalIncluded": false,
+        "bidirectional": null
+      },
+      "useCases": [
+        "portatil",
+        "manicura",
+        "pedicura"
+      ],
+      "editorialAngles": [
+        "portabilidad",
+        "recargable",
+        "alternativa"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B09WQRY572",
+      "affiliateUrl": "https://www.amazon.es/dp/B09WQRY572/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-23"
+    }
+  ]
+}

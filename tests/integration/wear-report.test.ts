@@ -70,4 +70,18 @@ describe('wear report endpoint handler', () => {
     expect(response.status).toBe(202);
     expect(create).not.toHaveBeenCalled();
   });
+  it('falla de forma controlada si D1 no está disponible', async () => {
+    const create = vi.fn().mockRejectedValue(new Error('D1 unavailable'));
+    const response = await handleWearReportRequest(
+      new Request('https://example.test/api/wear-reports', {
+        method: 'POST',
+        body: JSON.stringify(valid),
+      }),
+      dependencies(create),
+    );
+    expect(response.status).toBe(500);
+    await expect(response.json()).resolves.toEqual({
+      error: 'No se pudo procesar la solicitud.',
+    });
+  });
 });

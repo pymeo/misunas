@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: npm run dev
+    command: npm run dev -- --ignore-lock
     init: true
     ports:
       - '4321:4321'
