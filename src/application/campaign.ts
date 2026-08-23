@@ -49,6 +49,12 @@ export function readCampaignAttribution(search: string): CampaignAttribution {
   return campaignSchema.parse(candidate);
 }
 
-export function campaignToMetadata(campaign?: CampaignAttribution): Record<string, string> {
-  return Object.fromEntries(Object.entries(campaign ?? {}).filter((entry): entry is [string, string] => typeof entry[1] === 'string'));
+export function campaignToMetadata(
+  campaign?: CampaignAttribution,
+): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(campaign ?? {}).filter(
+      (entry): entry is [string, string] => typeof entry[1] === 'string',
+    ),
+  );
 }

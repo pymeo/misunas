@@ -77,17 +77,23 @@ export function recommendProducts(
         if (matchedTags.length > 0) {
           score += RECOMMENDATION_RULES.styleMatch;
           reasons.push(
-            `El catálogo identifica su estilo como ${matchedTags[0]}.`,
+            answers.style === 'francesa'
+              ? 'Buscas una manicura francesa.'
+              : answers.style === 'natural'
+                ? 'Buscas un acabado natural.'
+                : answers.style === 'elegante'
+                  ? 'Buscas un estilo elegante.'
+                  : 'Buscas un diseño llamativo.',
           );
         }
       }
       if (answers.lamp === 'tengo' && product.requiresLamp) {
         score += RECOMMENDATION_RULES.lampMatch;
-        reasons.push('Requiere lámpara UV/LED y ya indicas que tienes una.');
+        reasons.push('Ya tienes lámpara UV/LED.');
       } else if (answers.lamp === 'quiero-kit') {
         if (product.requiresLamp && product.includesLamp) {
           score += RECOMMENDATION_RULES.includedLampMatch;
-          reasons.push('Incluye la lámpara necesaria dentro del kit.');
+          reasons.push('Buscas un kit que incluya lámpara.');
         } else if (product.requiresLamp) {
           score -= RECOMMENDATION_RULES.incompatibleLampPenalty;
           warnings.push('Necesita lámpara, pero no figura incluida.');
@@ -95,7 +101,7 @@ export function recommendProducts(
       } else if (answers.lamp === 'sin-lampara') {
         if (!product.requiresLamp) {
           score += RECOMMENDATION_RULES.includedLampMatch;
-          reasons.push('El formato verificado no necesita lámpara.');
+          reasons.push('Prefieres una opción sin lámpara.');
         } else {
           score -= RECOMMENDATION_RULES.incompatibleLampPenalty;
           warnings.push('Este producto necesita curado con lámpara UV/LED.');
@@ -107,11 +113,11 @@ export function recommendProducts(
           product.beginnerFriendly === true)
       ) {
         score += RECOMMENDATION_RULES.firstKitMatch;
-        reasons.push('Está clasificado explícitamente como kit de inicio.');
+        reasons.push('Es un kit pensado para empezar.');
       }
       if (answers.preference === 'kit-completo' && product.includesLamp) {
         score += RECOMMENDATION_RULES.completeKitMatch;
-        reasons.push('El catálogo confirma que incluye lámpara.');
+        reasons.push('Prefieres un kit completo con lámpara incluida.');
       }
       if (
         answers.preference === 'mas-tiras' &&
@@ -120,7 +126,7 @@ export function recommendProducts(
       ) {
         score += RECOMMENDATION_RULES.widestStripCountMatch;
         reasons.push(
-          `Incluye ${product.stripCount} tiras, la cantidad más amplia del catálogo verificado actual.`,
+          `Prefieres más tiras: incluye ${product.stripCount} tiras.`,
         );
       }
       if (answers.preference === 'diseno') {
@@ -131,7 +137,7 @@ export function recommendProducts(
         );
         if (designTag) {
           score += RECOMMENDATION_RULES.distinctiveDesignMatch;
-          reasons.push(`Su ficha identifica el diseño «${designTag}».`);
+          reasons.push(`Buscas un diseño ${designTag}.`);
         }
       }
       return {

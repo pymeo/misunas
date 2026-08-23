@@ -12,7 +12,7 @@ const products = PRODUCTS.filter(
 
 <BaseLayout
   title="Uñas semicuradas: guía, productos y comparativas"
-  description="Aprende qué son las uñas semicuradas, consulta productos verificados y filtra por lámpara o estilo sin crear URLs duplicadas."
+  description="Aprende qué son las uñas semicuradas, consulta productos y encuentra opciones por lámpara o estilo."
   canonicalPath="/es/unas-semicuradas/"
   breadcrumbs={[
     { label: 'Inicio', href: '/es/' },
@@ -23,7 +23,7 @@ const products = PRODUCTS.filter(
     <p class="eyebrow">Categoría</p><h1
       class="mt-4 max-w-4xl text-5xl sm:text-6xl"
     >
-      Uñas semicuradas, sin atajos confusos
+      Todo sobre uñas semicuradas
     </h1><p class="section-intro">
       Compara tiras de gel que necesitan curado, kits con lámpara y diseños
       verificados. La preparación y la retirada dependen siempre de las
@@ -32,7 +32,8 @@ const products = PRODUCTS.filter(
       <a class="button-primary" href="/es/mejores-unas-semicuradas/"
         >Ver comparativa</a
       ><a class="button-secondary" href="/es/encuentra-tus-unas/"
-        >Encontrar mi opción</a>
+        >Encontrar mi opción</a
+      >
     </div>
   </section>
   <section class="container-page py-12" data-product-filters>
@@ -68,7 +69,7 @@ const products = PRODUCTS.filter(
         </div>
       </fieldset>
     </div><p class="mt-4 text-sm text-muted" data-filter-count>
-      {products.length} productos visibles. Los filtros no crean URLs indexables.
+      {products.length} productos para explorar.
     </p><div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {
         products.map((product, index) => (
@@ -133,8 +134,7 @@ const products = PRODUCTS.filter(
           card.hidden = !show;
           if (show) visible += 1;
         });
-        if (count)
-          count.textContent = `${visible} productos visibles. Los filtros no crean URLs indexables.`;
+        if (count) count.textContent = `${visible} productos para explorar.`;
       });
   }
 </script>

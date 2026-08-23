@@ -28,7 +28,7 @@ const related = getRelatedProducts(product);
 
 <BaseLayout
   title={`${product.name}: datos y opciones`}
-  description={`${product.summary} Consulta atributos verificados, alternativas y experiencias de la comunidad cuando haya datos suficientes.`}
+  description={`${product.summary} Consulta sus características, alternativas y experiencias de la comunidad.`}
   canonicalPath={`/es/productos/${product.slug}/`}
   breadcrumbs={[
     { label: 'Inicio', href: '/es/' },
@@ -77,11 +77,11 @@ const related = getRelatedProducts(product);
       class="container-page grid gap-8 py-14 lg:grid-cols-[1.15fr_.85fr]"
     >
       <div>
-        <p class="eyebrow">Resumen editorial</p><h2 class="section-heading">
-          Lo que sí sabemos
+        <p class="eyebrow">Resumen</p><h2 class="section-heading">
+          Lo más destacado
         </h2><p class="section-intro">
-          Esta ficha distingue los atributos comprobados de cualquier valoración
-          de rendimiento. No hemos asignado nota ni duración al producto.
+          Conoce de un vistazo el formato, el estilo y todo lo que incluye esta
+          opción.
         </p><div class="mt-7 grid gap-4 sm:grid-cols-2">
           <div class="rounded-card bg-blush p-6">
             <h3 class="text-2xl">Puede encajar si…</h3><ul
@@ -116,9 +116,8 @@ const related = getRelatedProducts(product);
       <p class="eyebrow">Experiencias</p><h2 class="section-heading">
         ¿Cuánto te duraron?
       </h2><p class="section-intro">
-        Una experiencia aislada no define un producto. Recogemos respuestas
-        anónimas y solo mostramos estadísticas cuando alcanzan la muestra
-        pública mínima.
+        Cuéntanos tu experiencia en menos de un minuto y ayuda a otras usuarias
+        a elegir.
       </p><details
         class="mt-7 max-w-2xl rounded-card border border-border bg-surface p-5"
       >
@@ -180,9 +179,9 @@ const related = getRelatedProducts(product);
         <p class="eyebrow">Transparencia</p><h2 class="section-heading">
           De dónde sale esta ficha
         </h2><p class="section-intro">
-          Los atributos comerciales se verificaron en Amazon.es el {
+          Los atributos comerciales de esta ficha se comprobaron en Amazon.es el {
             product.sourceVerifiedAt
-          }. No implican una prueba de uso propia.
+          }.
         </p><div class="mt-7"><MethodologyNotice /></div>
       </div><div>
         <p class="eyebrow">Preguntas frecuentes</p><h2 class="section-heading">
@@ -201,25 +200,20 @@ const related = getRelatedProducts(product);
           </details><details
             class="rounded-xl border border-border bg-surface p-5"
           >
-            <summary class="cursor-pointer font-bold">¿Cuánto dura?</summary><p
-              class="mt-3 text-muted"
-            >
-              No publicamos una duración hasta reunir suficientes experiencias
-              reales para este producto.
-            </p>
-          </details><details
-            class="rounded-xl border border-border bg-surface p-5"
-          >
             <summary class="cursor-pointer font-bold"
-              >¿Está probado por Tus-Uñas?</summary
+              >¿La lámpara está incluida?</summary
             ><p class="mt-3 text-muted">
-              No. La ficha organiza datos del catálogo investigado; cualquier
-              prueba de uso propia se identificará claramente y por separado.
+              {
+                product.includesLamp
+                  ? 'Sí, la lámpara figura incluida en este kit.'
+                  : product.requiresLamp
+                    ? 'La ficha del producto no incluye lámpara; necesitarás una compatible.'
+                    : 'Este formato se aplica sin lámpara.'
+              }
             </p>
           </details>
         </div>
       </div>
     </section>
-    <section class="container-page py-8"><AffiliateDisclosure /></section>
   </article>
 </BaseLayout>

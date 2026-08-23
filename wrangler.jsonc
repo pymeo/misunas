@@ -14,10 +14,12 @@
     "enabled": true,
     "logs": { "enabled": true, "invocation_logs": true },
   },
-  "d1_databases": [{
-    "binding": "DB",
-    "database_name": "tus-unas",
-    "migrations_dir": "migrations"
-    // `wrangler d1 create --update-config` adds the real database_id here.
-  }]
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tus-unas",
+      "migrations_dir": "migrations",
+      // `wrangler d1 create --update-config` adds the real database_id here.
+    },
+  ],
 }

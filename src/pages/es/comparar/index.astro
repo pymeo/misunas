@@ -8,7 +8,7 @@ export const prerender = true;
 
 <BaseLayout
   title="Comparar productos para uñas"
-  description="Compara entre dos y cuatro productos para uñas por tipo, tiras, lámpara y estilo, sin precios ni valoraciones inventadas."
+  description="Compara entre dos y cuatro productos para uñas por tipo, número de tiras, lámpara y estilo desde cualquier dispositivo."
   canonicalPath="/es/comparar/"
   breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Comparar' }]}
 >
@@ -16,11 +16,10 @@ export const prerender = true;
     <p class="eyebrow">Comparador</p><h1
       class="mt-4 max-w-4xl text-5xl leading-tight sm:text-6xl"
     >
-      Compara lo que realmente conocemos
+      Compara tus opciones de un vistazo
     </h1><p class="section-intro">
-      Elige entre 2 y 4 productos. La comparación usa el catálogo versionado y
-      funciona sobre HTML ya renderizado; los controles solo cambian qué
-      columnas ves.
+      Elige entre 2 y 4 productos y revisa formato, número de tiras, lámpara y
+      estilo en una vista cómoda también desde el móvil.
     </p><div class="mt-8"><AffiliateDisclosure /></div><div class="mt-10">
       <ProductComparison
         products={PRODUCTS}

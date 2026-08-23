@@ -13,8 +13,13 @@ const {
   interactive = false,
 } = Astro.props;
 const visible = products.slice(0, interactive ? products.length : 4);
-const typeLabels: Partial<Record<Product['productType'], string>> = { semi_cured_uv: 'Gel semicurado', starter_kit_uv: 'Kit semicurado', pre_cured_no_lamp: 'Gel sin lámpara' };
-const typeLabel = (type: Product['productType']) => typeLabels[type] ?? type.replaceAll('_', ' ');
+const typeLabels: Partial<Record<Product['productType'], string>> = {
+  semi_cured_uv: 'Gel semicurado',
+  starter_kit_uv: 'Kit semicurado',
+  pre_cured_no_lamp: 'Gel sin lámpara',
+};
+const typeLabel = (type: Product['productType']) =>
+  typeLabels[type] ?? type.replaceAll('_', ' ');
 ---
 
 <section data-comparison data-interactive={String(interactive)}>
@@ -22,9 +27,9 @@ const typeLabel = (type: Product['productType']) => typeLabels[type] ?? type.rep
     visible.length === 0 && (
       <div class="rounded-card border border-border bg-surface p-7">
         <>
-          <h3 class="text-2xl">No hay productos que comparar</h3>
+          <h3 class="text-2xl">Prueba con otra selección</h3>
           <p class="mt-3 text-muted">
-            El catálogo no contiene opciones publicables para estos criterios.
+            Elige otros criterios para encontrar productos que puedas comparar.
           </p>
         </>
       </div>
@@ -146,8 +151,7 @@ const typeLabel = (type: Product['productType']) => typeLabels[type] ?? type.rep
       }
     </div>
   </div><p class="mt-2 text-sm text-muted">
-    Desliza lateralmente en móvil. No mostramos precios, estrellas ni duración
-    sin datos fiables.
+    Desliza lateralmente en móvil para ver cada producto y sus características.
   </p>
 </section>
 <script>

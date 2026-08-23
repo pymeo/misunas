@@ -9,17 +9,20 @@ import {
 import { PRODUCTS } from '@/data/products';
 import type { ProductReview } from '@/domain/review';
 
+const product = PRODUCTS.at(0);
+if (product === undefined) throw new Error('El catálogo real está vacío.');
+const parseJson = (value: string): unknown => JSON.parse(value) as unknown;
+
 const review = (status: ProductReview['status']): ProductReview => ({
   id: 'de305d54-75b4-431b-adb2-eb6b9e546014',
-  productId: PRODUCTS[0]!.id,
+  productId: product.id,
   rating: 4,
   title: 'Experiencia verificada por moderación',
   body: 'Esta opinión contiene suficiente detalle y ha pasado por moderación.',
   recommend: true,
   status,
   createdAt: new Date('2026-08-23T00:00:00Z'),
-  approvedAt:
-    status === 'approved' ? new Date('2026-08-23T01:00:00Z') : null,
+  approvedAt: status === 'approved' ? new Date('2026-08-23T01:00:00Z') : null,
 });
 
 describe('JSON-LD builders', () => {
@@ -34,10 +37,10 @@ describe('JSON-LD builders', () => {
         publishedAt: new Date('2026-08-23T00:00:00Z'),
         author: 'Equipo editorial Tus-Uñas',
       }),
-      productJsonLd(PRODUCTS[0]!),
+      productJsonLd(product),
     ];
     const serialized = serializeJsonLd({ '@graph': structures });
-    expect(() => JSON.parse(serialized)).not.toThrow();
+    expect(() => parseJson(serialized)).not.toThrow();
     expect(serialized).not.toMatch(
       /AggregateRating|Offer|ratingValue|reviewCount|price/,
     );
@@ -45,14 +48,14 @@ describe('JSON-LD builders', () => {
 
   it('ignores pending and rejected reviews entirely', () => {
     const serialized = serializeJsonLd(
-      productJsonLd(PRODUCTS[0]!, [review('pending'), review('rejected')]),
+      productJsonLd(product, [review('pending'), review('rejected')]),
     );
     expect(serialized).not.toMatch(/AggregateRating|Review|ratingValue/);
   });
 
   it('emits rating data only from approved public reviews', () => {
     const serialized = serializeJsonLd(
-      productJsonLd(PRODUCTS[0]!, [review('approved'), review('pending')]),
+      productJsonLd(product, [review('approved'), review('pending')]),
     );
     expect(serialized).toContain('AggregateRating');
     expect(serialized).toContain('"reviewCount":1');

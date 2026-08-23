@@ -46,7 +46,8 @@ const { productId, requiresLamp } = Astro.props;
       <label class="choice"
         ><input type="radio" name="prepUsed" value="true" required />Sí</label
       ><label class="choice"
-        ><input type="radio" name="prepUsed" value="false" required />No</label>
+        ><input type="radio" name="prepUsed" value="false" required />No</label
+      >
     </div>
   </fieldset>
   <label class="grid gap-2 font-bold"
@@ -97,8 +98,7 @@ const { productId, requiresLamp } = Astro.props;
     /></label
   >
   <p class="text-xs leading-5 text-muted">
-    Registro anónimo: no pedimos nombre, email ni teléfono. Los datos se agregan
-    cuando existe una muestra suficiente.
+    Tu registro es anónimo y se suma a las estadísticas de la comunidad.
   </p>
   <button class="button-primary" type="submit">Registrar mi experiencia</button
   ><p class="text-sm font-semibold" data-status aria-live="polite"></p>

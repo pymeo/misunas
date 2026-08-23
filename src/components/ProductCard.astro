@@ -38,7 +38,12 @@ const { product, sourcePage, position, commercial = false } = Astro.props;
         >Ver análisis</a
       >{
         commercial && (
-          <AmazonCTA {product} {sourcePage} component="product-card" {...(position === undefined ? {} : { position })} />
+          <AmazonCTA
+            {product}
+            {sourcePage}
+            component="product-card"
+            {...(position === undefined ? {} : { position })}
+          />
         )
       }
     </div>

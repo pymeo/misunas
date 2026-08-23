@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 const clientRoot = resolve('dist/client');
+const parseJson = (value: string): unknown => JSON.parse(value) as unknown;
 const launchPages = [
   'es/index.html',
   'es/unas-semicuradas/index.html',
@@ -46,7 +47,10 @@ describe('SEO production smoke tests', () => {
         /<link rel="canonical" href="https:\/\/xn--tus-uas-8za\.com\//,
       );
       expect(html.match(/<h1(?:\s|>)/g)).toHaveLength(1);
-      expect(html).not.toMatch(/TODO|coming soon|en preparación|placeholder content/i);
+      expect(html).not.toMatch(/(?:>|\s)TODO(?:<|:|\s)/);
+      expect(html).not.toMatch(
+        /coming soon|en preparación|placeholder content/i,
+      );
     },
   );
 
@@ -102,7 +106,7 @@ describe('SEO production smoke tests', () => {
       ];
       expect(scripts.length).toBeGreaterThan(0);
       for (const match of scripts)
-        expect(() => JSON.parse(match[1] ?? '')).not.toThrow();
+        expect(() => parseJson(match[1] ?? '')).not.toThrow();
       expect(html).not.toMatch(
         /AggregateRating|ratingValue|reviewCount|"offers"|"price"/,
       );

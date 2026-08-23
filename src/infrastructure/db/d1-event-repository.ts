@@ -54,7 +54,10 @@ export class D1EventRepository implements EventRepository {
         type: event.type,
         productId:
           event.type === 'calculator_completed' ? null : event.productId,
-        metadata: event.type === 'calculator_completed' ? campaignToMetadata(event.campaign) : {},
+        metadata:
+          event.type === 'calculator_completed'
+            ? campaignToMetadata(event.campaign)
+            : {},
         createdAt: new Date(),
       })
       .run();

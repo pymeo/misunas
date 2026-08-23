@@ -15,29 +15,25 @@ export const prerender = true;
     <p class="eyebrow">Comunidad</p><h1
       class="mt-4 max-w-4xl text-5xl sm:text-6xl"
     >
-      Opiniones que empiezan siendo honestamente cero
+      Tu experiencia puede ayudar a otras usuarias
     </h1><p class="section-intro">
-      No copiamos reseñas de Amazon y no publicamos envíos sin revisión. Las
-      opiniones aparecen vinculadas a su producto y las estadísticas solo se
-      muestran con muestra suficiente.
+      Comparte cómo te fue con un producto del catálogo. Revisamos cada
+      aportación antes de publicarla para mantener una comunidad útil y cuidada.
     </p><div class="mt-10">
       <EmptyState
-        title="Todavía no hay opiniones publicadas"
-        description="Estamos recopilando las primeras aportaciones. Si has utilizado uno de los productos del catálogo, entra en su ficha para compartir una opinión o registrar cuánto te duró."
+        title="¿Has probado uno de estos productos?"
+        description="Entra en su ficha para compartir tu opinión o registrar cuánto te duró. No necesitas crear una cuenta."
         href="/es/unas-semicuradas/"
         cta="Ver productos"
       />
     </div><div class="mt-14 grid gap-5 md:grid-cols-3">
       {
         [
-          ['1 · Envías', 'Sin cuenta, nombre, email ni teléfono.'],
-          [
-            '2 · Revisamos',
-            'El estado inicial siempre es pendiente. Rechazamos spam, URLs y HTML.',
-          ],
+          ['1 · Comparte', 'Una opinión breve, sin crear una cuenta.'],
+          ['2 · Revisamos', 'Comprobamos cada aportación antes de publicarla.'],
           [
             '3 · Publicamos',
-            'Solo las opiniones aprobadas pueden mostrarse y contar para una valoración.',
+            'Las opiniones aprobadas aparecen en la ficha del producto.',
           ],
         ].map(([title, body]) => (
           <div class="rounded-card bg-lavender p-6">
