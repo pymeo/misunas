@@ -8,6 +8,7 @@ if (!process.argv.includes('--yes-local-only')) {
 }
 
 const tables = [
+  'reviews',
   'wear_reports',
   'affiliate_click_events',
   'recommendation_events',

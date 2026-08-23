@@ -21,6 +21,7 @@ interface Props {
   breadcrumbs?: BreadcrumbItem[];
   jsonLd?: Record<string, unknown>[];
   translations?: TranslationPath[];
+  contentType?: 'money' | 'informational' | 'brand' | 'product' | 'tool';
 }
 
 const {
@@ -33,6 +34,7 @@ const {
   breadcrumbs = [],
   jsonLd = [],
   translations = [{ locale: 'es', path: canonicalPath }],
+  contentType = 'informational',
 } = Astro.props;
 const breadcrumbData =
   breadcrumbs.length > 1
@@ -51,7 +53,7 @@ const schemas = breadcrumbData ? [...jsonLd, breadcrumbData] : jsonLd;
   <head>
     <SEOHead {title} {description} {canonicalPath} {image} {type} {noindex} jsonLd={schemas} {translations} />
   </head>
-  <body>
+  <body data-content-type={contentType}>
     <a
       class="sr-only z-50 bg-white p-3 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
       href="#contenido">Saltar al contenido</a

@@ -15,6 +15,7 @@ const editorialSchema = z.object({
   draft: z.boolean().default(false),
   seoTitle: z.string().max(65).optional(),
   seoDescription: z.string().max(170).optional(),
+  contentType: z.enum(['money', 'informational', 'brand', 'product', 'tool']).default('informational'),
 });
 
 export const collections = {

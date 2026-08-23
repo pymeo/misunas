@@ -30,6 +30,7 @@
     "db:migrate:remote": "wrangler d1 migrations apply tus-unas --remote",
     "db:seed:local": "wrangler d1 execute tus-unas --local --file=./scripts/seed-local.sql",
     "db:reset:local": "node ./scripts/reset-local.mjs",
+    "reviews:moderate": "node ./scripts/moderate-review.mjs",
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
