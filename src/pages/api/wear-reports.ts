@@ -14,10 +14,11 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   const database = env.DB;
   if (!database) return jsonResponse({ error: 'D1 no está configurado.' }, 503);
-  const { wearReports } = getD1Dependencies(database);
+  const { wearReports, tracker } = getD1Dependencies(database);
   return handleWearReportRequest(request, {
     wearReports,
     products: getProductRepository(),
     rateLimiter,
+    tracker,
   });
 };

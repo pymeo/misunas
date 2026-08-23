@@ -5,19 +5,49 @@ export const prerender = true;
 
 <EditorialLayout
   title="Política de privacidad"
-  description="Información inicial sobre privacidad y tratamiento mínimo de datos en Tus-Uñas, pendiente de completar por el responsable legal."
+  description="Cómo minimiza Tus-Uñas los datos recogidos al registrar experiencias, opiniones y eventos comerciales anónimos."
   canonicalPath="/es/privacidad/"
   noindex
   eyebrow="Legal"
 >
   <p>
-    Tus-Uñas está diseñada para minimizar la recogida de datos. Los formularios
-    de experiencias no solicitan nombre ni correo electrónico y no guardan
-    direcciones IP en la base de datos.
+    Tus-Uñas aplica minimización de datos: los formularios de opiniones y
+    duración no solicitan nombre, email, teléfono, cuenta de usuario ni
+    dirección postal. La base D1 no guarda direcciones IP.
+  </p>
+  <h2>Datos que se tratan</h2><ul>
+    <li>
+      Opiniones: producto, valoración, título opcional, texto, recomendación y
+      estado de moderación.
+    </li><li>
+      Experiencias: producto, días, motivo de retirada, preparación, exposición
+      al agua, trabajo manual y uso de lámpara cuando corresponde.
+    </li><li>
+      Eventos comerciales: producto, página, componente, posición y, si existen,
+      los parámetros limitados <code>utm_source</code>, <code>utm_medium</code>, <code
+        >utm_campaign</code
+      > y <code>utm_content</code>.
+    </li>
+  </ul>
+  <h2>Finalidad</h2><p>
+    Los datos sirven para moderar opiniones, calcular estadísticas agregadas al
+    alcanzar la muestra mínima, mejorar las herramientas y medir qué contenidos
+    originan interacciones comerciales. No se registra una fila de D1 por cada
+    visita.
+  </p>
+  <h2>Seguridad y proveedores</h2><p>
+    La aplicación se ejecuta sobre Cloudflare Workers y utiliza Cloudflare D1.
+    Cloudflare puede procesar los datos técnicos imprescindibles para servir y
+    proteger las solicitudes conforme a sus condiciones y políticas.
+  </p>
+  <h2>Control y conservación</h2><p>
+    Las opiniones empiezan en estado pendiente y solo las aprobadas se muestran.
+    Las rechazadas pueden eliminarse durante el mantenimiento. Los registros
+    anónimos se conservan mientras sean útiles para las finalidades descritas o
+    hasta que resulte necesaria su supresión.
   </p>
   <p>
-    <strong>TODO legal:</strong> completar identidad y datos de contacto del responsable,
-    bases jurídicas, plazos de conservación, encargados, transferencias y procedimiento
-    para ejercer derechos antes del lanzamiento público.
+    Esta página no sustituye la identificación legal del responsable del sitio,
+    que debe incorporarse con los datos reales del titular.
   </p>
 </EditorialLayout>

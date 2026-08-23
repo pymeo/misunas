@@ -1,8 +1,10 @@
 import { drizzle } from 'drizzle-orm/d1';
+import { campaignToMetadata } from '@/application/campaign';
 
 import type { AnalyticsEvent, EventRepository } from '@/domain/event';
 import {
   affiliateClickEvents,
+  businessEvents,
   recommendationEvents,
 } from '@/infrastructure/db/schema';
 
@@ -23,6 +25,10 @@ export class D1EventRepository implements EventRepository {
           sourcePage: event.sourcePage,
           component: event.component,
           position: event.position,
+          utmSource: event.campaign?.utmSource,
+          utmMedium: event.campaign?.utmMedium,
+          utmCampaign: event.campaign?.utmCampaign,
+          utmContent: event.campaign?.utmContent,
           createdAt: new Date(),
         })
         .run();
@@ -39,6 +45,18 @@ export class D1EventRepository implements EventRepository {
           createdAt: new Date(),
         })
         .run();
+      return;
     }
+    await this.db
+      .insert(businessEvents)
+      .values({
+        id: crypto.randomUUID(),
+        type: event.type,
+        productId:
+          event.type === 'calculator_completed' ? null : event.productId,
+        metadata: event.type === 'calculator_completed' ? campaignToMetadata(event.campaign) : {},
+        createdAt: new Date(),
+      })
+      .run();
   }
 }

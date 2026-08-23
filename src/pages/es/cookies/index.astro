@@ -5,18 +5,35 @@ export const prerender = true;
 
 <EditorialLayout
   title="Política de cookies"
-  description="Información inicial sobre cookies y analítica de Tus-Uñas, pendiente de completar antes del lanzamiento público."
+  description="Información sobre el uso actual de almacenamiento en navegador y Cloudflare Web Analytics en Tus-Uñas."
   canonicalPath="/es/cookies/"
   noindex
   eyebrow="Legal"
 >
   <p>
-    El MVP no implementa cuentas de usuario ni cookies publicitarias propias.
-    Está previsto utilizar Cloudflare Web Analytics para métricas generales sin
-    escribir una fila de base de datos por cada visita.
+    Tus-Uñas no implementa cuentas, publicidad comportamental, GA4 ni cookies
+    propias para perfilar visitantes.
+  </p>
+  <h2>Analítica</h2><p>
+    La configuración está preparada para Cloudflare Web Analytics. Según su
+    documentación oficial, su beacon de rendimiento funciona sin cookies, no usa <code
+      >localStorage</code
+    > para medir el uso y recoge métricas de rendimiento y Core Web Vitals sin identificar
+    a visitantes individuales.
+  </p>
+  <h2>Almacenamiento funcional</h2><p>
+    El recomendador, el comparador y la calculadora funcionan en el navegador
+    sin guardar sus respuestas de forma persistente. Los formularios envían
+    únicamente los campos visibles y el honeypot técnico al backend.
+  </p>
+  <h2>Servicios de terceros</h2><p>
+    Al seguir un enlace a Amazon.es se aplican las políticas y tecnologías de
+    Amazon en su propio dominio. Tus-Uñas identifica esos enlaces como
+    patrocinados.
   </p>
   <p>
-    <strong>TODO legal:</strong> auditar las tecnologías efectivamente activadas en
-    producción y completar esta política y, si fuera necesario, el mecanismo de consentimiento.
+    Si la configuración tecnológica cambia, esta política deberá reflejar el
+    servicio realmente activo antes de añadir herramientas que requieran
+    consentimiento.
   </p>
 </EditorialLayout>

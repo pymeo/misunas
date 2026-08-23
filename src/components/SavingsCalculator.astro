@@ -1,5 +1,11 @@
-<section class="rounded-[1.6rem] border border-border bg-surface p-5 shadow-card sm:p-8" data-savings-calculator>
-  <p class="mb-6 rounded-xl bg-cream p-4 text-sm text-muted"><strong class="text-text">Valores de ejemplo editables.</strong> No representan precios de Amazon ni una recomendación comercial.</p>
+<section
+  class="rounded-[1.6rem] border border-border bg-surface p-5 shadow-card sm:p-8"
+  data-savings-calculator
+>
+  <p class="mb-6 rounded-xl bg-cream p-4 text-sm text-muted">
+    <strong class="text-text">Valores de ejemplo editables.</strong> No representan
+    precios de Amazon ni una recomendación comercial.
+  </p>
   <form class="grid gap-5 sm:grid-cols-2">
     <label class="grid gap-2 font-semibold">
       Precio por manicura en salón (€)
@@ -63,7 +69,9 @@
     aria-live="polite"
     data-results
   >
-    <p class="text-xs font-bold tracking-[.18em] text-blush uppercase">Estimación anual</p>
+    <p class="text-xs font-bold tracking-[.18em] text-blush uppercase">
+      Estimación anual
+    </p>
     <dl class="mt-4 grid gap-4 sm:grid-cols-3">
       <div>
         <dt class="text-sm text-white/70">Salón</dt><dd
@@ -96,6 +104,7 @@
 
 <script>
   import { calculateAnnualSavings } from '@/application/savings';
+  import { readCampaignAttribution } from '@/application/campaign';
 
   const currency = new Intl.NumberFormat('es-ES', {
     style: 'currency',
@@ -125,6 +134,18 @@
       assign('[data-home]', calculated.annualHomeCost);
       assign('[data-savings]', calculated.annualSavings);
       results.classList.remove('hidden');
+      navigator.sendBeacon(
+        '/api/events/business/',
+        new Blob(
+          [
+            JSON.stringify({
+              type: 'calculator_completed',
+              campaign: readCampaignAttribution(window.location.search),
+            }),
+          ],
+          { type: 'application/json' },
+        ),
+      );
     });
   }
 </script>

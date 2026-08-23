@@ -10,7 +10,9 @@ export const wearReports = sqliteTable(
     waterExposure: text('water_exposure', {
       enum: ['poca', 'normal', 'mucha'],
     }).notNull(),
-    manualWork: text('manual_work', { enum: ['bajo', 'medio', 'alto'] }).notNull(),
+    manualWork: text('manual_work', {
+      enum: ['bajo', 'medio', 'alto'],
+    }).notNull(),
     prepUsed: integer('prep_used', { mode: 'boolean' }).notNull(),
     lampUsed: integer('lamp_used', { mode: 'boolean' }),
     removalReason: text('removal_reason', {
@@ -36,12 +38,18 @@ export const reviews = sqliteTable(
     title: text('title'),
     body: text('body').notNull(),
     recommend: integer('recommend', { mode: 'boolean' }).notNull(),
-    status: text('status', { enum: ['pending', 'approved', 'rejected'] }).notNull().default('pending'),
+    status: text('status', { enum: ['pending', 'approved', 'rejected'] })
+      .notNull()
+      .default('pending'),
     createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
     approvedAt: integer('approved_at', { mode: 'timestamp_ms' }),
   },
   (table) => [
-    index('reviews_product_status_created_idx').on(table.productId, table.status, table.createdAt),
+    index('reviews_product_status_created_idx').on(
+      table.productId,
+      table.status,
+      table.createdAt,
+    ),
     index('reviews_status_created_idx').on(table.status, table.createdAt),
   ],
 );
@@ -54,6 +62,10 @@ export const affiliateClickEvents = sqliteTable(
     sourcePage: text('source_page').notNull(),
     component: text('component').notNull(),
     position: integer('position'),
+    utmSource: text('utm_source'),
+    utmMedium: text('utm_medium'),
+    utmCampaign: text('utm_campaign'),
+    utmContent: text('utm_content'),
     createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
   },
   (table) => [
@@ -63,6 +75,32 @@ export const affiliateClickEvents = sqliteTable(
     ),
     index('affiliate_click_source_created_idx').on(
       table.sourcePage,
+      table.createdAt,
+    ),
+  ],
+);
+
+export const businessEvents = sqliteTable(
+  'business_events',
+  {
+    id: text('id').primaryKey(),
+    type: text('type', {
+      enum: [
+        'review_submitted',
+        'wear_report_submitted',
+        'calculator_completed',
+      ],
+    }).notNull(),
+    productId: text('product_id'),
+    metadata: text('metadata', { mode: 'json' })
+      .$type<Record<string, string>>()
+      .notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (table) => [
+    index('business_events_type_created_idx').on(table.type, table.createdAt),
+    index('business_events_product_created_idx').on(
+      table.productId,
       table.createdAt,
     ),
   ],

@@ -9,4 +9,4 @@ author: Equipo editorial Tus-Uñas
 draft: true
 ---
 
-Contenido pendiente de revisión editorial y metodológica. No debe publicarse hasta establecer criterios de muestra, sesgos y presentación.
+Documento interno excluido de publicación. Define el espacio de trabajo para validar criterios de muestra, sesgos y presentación antes de producir una guía editorial.

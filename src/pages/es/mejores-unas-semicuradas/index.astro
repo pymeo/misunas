@@ -7,11 +7,159 @@ import { FEATURED_PRODUCTS } from '@/data/products';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-<BaseLayout title="Mejores uñas semicuradas: comparativa para elegir" description="Comparativa editorial de uñas semicuradas, kits con lámpara y una alternativa sin lámpara basada en atributos verificados y sin puntuaciones inventadas." canonicalPath="/es/mejores-unas-semicuradas/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Uñas semicuradas', href: '/es/unas-semicuradas/' }, { label: 'Comparativa' }]}>
-  <section class="container-page py-10 sm:py-16"><p class="eyebrow">Comparativa editorial</p><h1 class="mt-4 max-w-5xl text-5xl leading-tight sm:text-6xl">Mejores uñas semicuradas: comparativa y guía para elegir</h1><p class="section-intro">No existe una opción universal. La decisión empieza por tres datos: si quieres usar lámpara, si necesitas que venga incluida y qué estilo buscas.</p><div class="mt-8"><AffiliateDisclosure /></div></section>
-  <section class="container-page pb-14"><div class="rounded-[1.5rem] bg-primary p-7 text-white sm:p-9"><p class="text-xs font-bold tracking-wider text-blush uppercase">Respuesta rápida</p><h2 class="mt-3 text-3xl sm:text-4xl">Elige primero el formato</h2><div class="mt-7 grid gap-5 md:grid-cols-3"><div class="border-t border-white/25 pt-4"><h3 class="text-xl">Ya tienes lámpara</h3><p class="mt-2 text-sm text-white/75">Compara estilo y número de tiras entre formatos semicurados UV/LED.</p></div><div class="border-t border-white/25 pt-4"><h3 class="text-xl">Quieres un kit</h3><p class="mt-2 text-sm text-white/75">Filtra únicamente opciones donde la lámpara figure incluida.</p></div><div class="border-t border-white/25 pt-4"><h3 class="text-xl">No quieres lámpara</h3><p class="mt-2 text-sm text-white/75">Mira formatos precured o nail wraps; no son equivalentes al semicurado UV.</p></div></div></div></section>
-  <section class="container-page py-14"><p class="eyebrow">Comparación esencial</p><h2 class="section-heading">Cuatro opciones, atributos equivalentes</h2><p class="section-intro">La selección cubre francesa, diseño, kit y formato sin lámpara. No es un ranking de rendimiento.</p><div class="mt-8"><ProductComparison products={FEATURED_PRODUCTS} sourcePage="/es/mejores-unas-semicuradas/" /></div></section>
-  <section class="container-page py-14"><p class="eyebrow">Fichas explicadas</p><h2 class="section-heading">Qué aporta cada opción</h2><div class="mt-8"><ProductGrid products={FEATURED_PRODUCTS} sourcePage="/es/mejores-unas-semicuradas/" commercial /></div></section>
-  <section class="container-page grid gap-10 py-14 lg:grid-cols-[1fr_.8fr]"><div><p class="eyebrow">Cómo elegir</p><h2 class="section-heading">Cuatro preguntas útiles</h2><ol class="mt-7 grid gap-5"><li class="card"><strong>1. ¿Quieres curado UV/LED?</strong><p class="mt-2 text-muted">Descarta de entrada el formato incompatible con tu decisión.</p></li><li class="card"><strong>2. ¿Necesitas lámpara?</strong><p class="mt-2 text-muted">“Requiere lámpara” y “la incluye” son datos diferentes.</p></li><li class="card"><strong>3. ¿Qué diseño usarías realmente?</strong><p class="mt-2 text-muted">Natural, francesa, floral o llamativo son señales verificables del catálogo.</p></li><li class="card"><strong>4. ¿Conoces la cantidad de tiras?</strong><p class="mt-2 text-muted">Solo comparamos el número cuando está explícitamente confirmado.</p></li></ol></div><div><p class="eyebrow">Herramientas</p><h2 class="section-heading">Decide con ayuda</h2><div class="mt-7 grid gap-4"><a class="card no-underline" href="/es/encuentra-tus-unas/"><h3 class="text-2xl">Encuentra tus uñas</h3><p class="mt-2 text-muted">Cuatro preguntas, máximo tres resultados y razones visibles.</p></a><a class="card no-underline" href="/es/calculadora-ahorro-manicura/"><h3 class="text-2xl">Calcula tu ahorro</h3><p class="mt-2 text-muted">Compara el salón con tus propios costes domésticos.</p></a></div></div></section>
-  <section class="container-page py-14"><p class="eyebrow">Preguntas frecuentes</p><h2 class="section-heading">Lo que no cabe en una tarjeta</h2><div class="mt-7 grid gap-3">{[['¿Cuál dura más?','Todavía no lo afirmamos. Publicaremos duración por producto cuando existan suficientes experiencias reales.'],['¿El kit es mejor para empezar?','Un kit evita comprar la lámpara por separado. Solo favorecemos la primera experiencia cuando el catálogo lo clasifica explícitamente como kit de inicio.'],['¿Mostráis el precio?','No. El precio y la disponibilidad se consultan en Amazon.es mediante el CTA correspondiente.'],['¿Habéis probado todos los productos?','No. Esta primera comparativa organiza datos de catálogo. Una prueba editorial futura se identificará de forma separada.']].map(([question, answer]) => <details class="rounded-xl border border-border bg-surface p-5"><summary class="cursor-pointer font-bold">{question}</summary><p class="mt-3 text-muted">{answer}</p></details>)}</div><div class="mt-8"><MethodologyNotice /></div></section>
+
+<BaseLayout
+  title="Mejores uñas semicuradas: comparativa para elegir"
+  description="Comparativa editorial de uñas semicuradas, kits con lámpara y una alternativa sin lámpara basada en atributos verificados y sin puntuaciones inventadas."
+  canonicalPath="/es/mejores-unas-semicuradas/"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Uñas semicuradas', href: '/es/unas-semicuradas/' },
+    { label: 'Comparativa' },
+  ]}
+>
+  <section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Comparativa editorial</p><h1
+      class="mt-4 max-w-5xl text-5xl leading-tight sm:text-6xl"
+    >
+      Mejores uñas semicuradas: comparativa y guía para elegir
+    </h1><p class="section-intro">
+      No existe una opción universal. La decisión empieza por tres datos: si
+      quieres usar lámpara, si necesitas que venga incluida y qué estilo buscas.
+    </p><div class="mt-8"><AffiliateDisclosure /></div>
+  </section>
+  <section class="container-page pb-14">
+    <div class="rounded-[1.5rem] bg-primary p-7 text-white sm:p-9">
+      <p class="text-xs font-bold tracking-wider text-blush uppercase">
+        Respuesta rápida
+      </p><h2 class="mt-3 text-3xl sm:text-4xl">
+        Elige primero el formato
+      </h2><div class="mt-7 grid gap-5 md:grid-cols-3">
+        <div class="border-t border-white/25 pt-4">
+          <h3 class="text-xl">Ya tienes lámpara</h3><p
+            class="mt-2 text-sm text-white/75"
+          >
+            Compara estilo y número de tiras entre formatos semicurados UV/LED.
+          </p>
+        </div><div class="border-t border-white/25 pt-4">
+          <h3 class="text-xl">Quieres un kit</h3><p
+            class="mt-2 text-sm text-white/75"
+          >
+            Filtra únicamente opciones donde la lámpara figure incluida.
+          </p>
+        </div><div class="border-t border-white/25 pt-4">
+          <h3 class="text-xl">No quieres lámpara</h3><p
+            class="mt-2 text-sm text-white/75"
+          >
+            Mira formatos precured o nail wraps; no son equivalentes al
+            semicurado UV.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="container-page py-14">
+    <p class="eyebrow">Comparación esencial</p><h2 class="section-heading">
+      Cuatro opciones, atributos equivalentes
+    </h2><p class="section-intro">
+      La selección cubre francesa, diseño, kit y formato sin lámpara. No es un
+      ranking de rendimiento.
+    </p><div class="mt-8">
+      <ProductComparison
+        products={FEATURED_PRODUCTS}
+        sourcePage="/es/mejores-unas-semicuradas/"
+      />
+    </div>
+  </section>
+  <section class="container-page py-14">
+    <p class="eyebrow">Fichas explicadas</p><h2 class="section-heading">
+      Qué aporta cada opción
+    </h2><div class="mt-8">
+      <ProductGrid
+        products={FEATURED_PRODUCTS}
+        sourcePage="/es/mejores-unas-semicuradas/"
+        commercial
+      />
+    </div>
+  </section>
+  <section class="container-page grid gap-10 py-14 lg:grid-cols-[1fr_.8fr]">
+    <div>
+      <p class="eyebrow">Cómo elegir</p><h2 class="section-heading">
+        Cuatro preguntas útiles
+      </h2><ol class="mt-7 grid gap-5">
+        <li class="card">
+          <strong>1. ¿Quieres curado UV/LED?</strong><p class="mt-2 text-muted">
+            Descarta de entrada el formato incompatible con tu decisión.
+          </p>
+        </li><li class="card">
+          <strong>2. ¿Necesitas lámpara?</strong><p class="mt-2 text-muted">
+            “Requiere lámpara” y “la incluye” son datos diferentes.
+          </p>
+        </li><li class="card">
+          <strong>3. ¿Qué diseño usarías realmente?</strong><p
+            class="mt-2 text-muted"
+          >
+            Natural, francesa, floral o llamativo son señales verificables del
+            catálogo.
+          </p>
+        </li><li class="card">
+          <strong>4. ¿Conoces la cantidad de tiras?</strong><p
+            class="mt-2 text-muted"
+          >
+            Solo comparamos el número cuando está explícitamente confirmado.
+          </p>
+        </li>
+      </ol>
+    </div><div>
+      <p class="eyebrow">Herramientas</p><h2 class="section-heading">
+        Decide con ayuda
+      </h2><div class="mt-7 grid gap-4">
+        <a class="card no-underline" href="/es/encuentra-tus-unas/"
+          ><h3 class="text-2xl">Encuentra tus uñas</h3><p
+            class="mt-2 text-muted"
+          >
+            Cuatro preguntas, máximo tres resultados y razones visibles.
+          </p></a
+        ><a class="card no-underline" href="/es/calculadora-ahorro-manicura/"
+          ><h3 class="text-2xl">Calcula tu ahorro</h3><p
+            class="mt-2 text-muted"
+          >
+            Compara el salón con tus propios costes domésticos.
+          </p></a>
+      </div>
+    </div>
+  </section>
+  <section class="container-page py-14">
+    <p class="eyebrow">Preguntas frecuentes</p><h2 class="section-heading">
+      Lo que no cabe en una tarjeta
+    </h2><div class="mt-7 grid gap-3">
+      {
+        [
+          [
+            '¿Cuál dura más?',
+            'Las experiencias actuales no alcanzan la muestra mínima, por lo que esta comparación no atribuye duración a ningún producto.',
+          ],
+          [
+            '¿El kit es mejor para empezar?',
+            'Un kit evita comprar la lámpara por separado. Solo favorecemos la primera experiencia cuando el catálogo lo clasifica explícitamente como kit de inicio.',
+          ],
+          [
+            '¿Mostráis el precio?',
+            'No. El precio y la disponibilidad se consultan en Amazon.es mediante el CTA correspondiente.',
+          ],
+          [
+            '¿Habéis probado todos los productos?',
+            'No. Esta comparativa organiza atributos comprobables del catálogo y no los presenta como una prueba de uso propia.',
+          ],
+        ].map(([question, answer]) => (
+          <details class="rounded-xl border border-border bg-surface p-5">
+            <>
+              <summary class="cursor-pointer font-bold">{question}</summary>
+              <p class="mt-3 text-muted">{answer}</p>
+            </>
+          </details>
+        ))
+      }
+    </div><div class="mt-8"><MethodologyNotice /></div>
+  </section>
 </BaseLayout>

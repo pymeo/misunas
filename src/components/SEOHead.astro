@@ -1,13 +1,35 @@
 ---
-import { buildHreflangLinks, type TranslationPath } from '@/application/hreflang';
+import {
+  buildHreflangLinks,
+  type TranslationPath,
+} from '@/application/hreflang';
 import { serializeJsonLd } from '@/application/jsonld';
 import { SITE_NAME, SITE_URL } from '@/config/site';
-interface Props { title: string; description: string; canonicalPath: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; jsonLd?: Record<string, unknown>[]; translations?: TranslationPath[] }
-const { title, description, canonicalPath, image = '/social-card.svg', type = 'website', noindex = false, jsonLd = [], translations = [{ locale: 'es', path: canonicalPath }] } = Astro.props;
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+  translations?: TranslationPath[];
+}
+const {
+  title,
+  description,
+  canonicalPath,
+  image = '/social-card.svg',
+  type = 'website',
+  noindex = false,
+  jsonLd = [],
+  translations = [{ locale: 'es', path: canonicalPath }],
+} = Astro.props;
 const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
 const canonical = new URL(canonicalPath, SITE_URL).toString();
 const socialImage = new URL(image, SITE_URL).toString();
 ---
+
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
@@ -15,15 +37,47 @@ const socialImage = new URL(image, SITE_URL).toString();
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 <link rel="canonical" href={canonical} />
-{buildHreflangLinks(translations).map((link) => <link rel="alternate" hreflang={link.hreflang} href={link.href} />)}
+{
+  buildHreflangLinks(translations).map((link) => (
+    <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+  ))
+}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="manifest" href="/site.webmanifest" />
-<link rel="alternate" type="application/rss+xml" title={`RSS de ${SITE_NAME}`} href="/es/rss.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={`RSS de ${SITE_NAME}`}
+  href="/es/rss.xml"
+/>
 <meta name="theme-color" content="#fffaf7" />
-<meta property="og:type" content={type} /><meta property="og:site_name" content={SITE_NAME} />
-<meta property="og:locale" content="es_ES" /><meta property="og:title" content={fullTitle} />
-<meta property="og:description" content={description} /><meta property="og:url" content={canonical} />
-<meta property="og:image" content={socialImage} /><meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={fullTitle} /><meta name="twitter:description" content={description} />
+<meta property="og:type" content={type} /><meta
+  property="og:site_name"
+  content={SITE_NAME}
+/>
+<meta property="og:locale" content="es_ES" /><meta
+  property="og:title"
+  content={fullTitle}
+/>
+<meta property="og:description" content={description} /><meta
+  property="og:url"
+  content={canonical}
+/>
+<meta property="og:image" content={socialImage} /><meta
+  name="twitter:card"
+  content="summary_large_image"
+/>
+<meta name="twitter:title" content={fullTitle} /><meta
+  name="twitter:description"
+  content={description}
+/>
 <meta name="twitter:image" content={socialImage} /><title>{fullTitle}</title>
-{jsonLd.map((schema) => <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />)}
+{
+  jsonLd.map((schema) => (
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={serializeJsonLd(schema)}
+    />
+  ))
+}

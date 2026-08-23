@@ -14,11 +14,10 @@
     "enabled": true,
     "logs": { "enabled": true, "invocation_logs": true },
   },
-  // After `npx wrangler d1 create tus-unas`, add:
-  // "d1_databases": [{
-  //   "binding": "DB",
-  //   "database_name": "tus-unas",
-  //   "database_id": "<REAL_ID_RETURNED_BY_WRANGLER>",
-  //   "migrations_dir": "migrations"
-  // }]
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "tus-unas",
+    "migrations_dir": "migrations"
+    // `wrangler d1 create --update-config` adds the real database_id here.
+  }]
 }

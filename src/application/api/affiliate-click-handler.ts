@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { campaignSchema } from '@/application/campaign';
 
 import {
   jsonResponse,
@@ -15,6 +16,7 @@ export const affiliateClickInputSchema = z.object({
   sourcePage: z.string().startsWith('/').max(300),
   component: z.string().min(1).max(80),
   position: z.number().int().min(1).max(100).optional(),
+  campaign: campaignSchema.optional(),
 });
 
 export async function handleAffiliateClickRequest(
@@ -39,6 +41,7 @@ export async function handleAffiliateClickRequest(
       sourcePage: input.sourcePage,
       component: input.component,
       ...(input.position === undefined ? {} : { position: input.position }),
+      ...(input.campaign === undefined ? {} : { campaign: input.campaign }),
     });
     return jsonResponse({ ok: true }, 202);
   } catch (error) {

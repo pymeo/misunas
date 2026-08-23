@@ -1,48 +1,66 @@
 # Tus-Uñas
 
-Base de producción SEO-first para `https://tus-uñas.com` (host técnico canónico `https://xn--tus-uas-8za.com`). Astro prerenderiza el contenido público y Cloudflare Workers ejecuta únicamente rutas dinámicas/API. D1 guarda experiencias y eventos; el contenido editorial y el catálogo verificado viven en Git.
+Aplicación SEO-first para `https://tus-uñas.com` (canonical técnico `https://xn--tus-uas-8za.com`). Astro prerenderiza las rutas editoriales; Cloudflare Workers sirve las API y D1 conserva solo datos dinámicos.
 
 ## Arquitectura
 
-- `src/domain`: modelos y puertos (`ProductRepository`, `WearReportRepository`, `EventRepository`).
-- `src/application`: scoring, cálculos, estadísticas, JSON-LD, afiliación y handlers HTTP.
-- `src/infrastructure`: Drizzle/D1, repositorios, tracking y rate limiting sustituible.
-- `src/content`: colecciones editoriales versionadas; D1 nunca contiene HTML editorial.
-- `src/components`, `layouts`, `pages`: HTML prerenderizado e islas vanilla solo donde aportan interacción.
-- `migrations`: esquema D1 versionado.
+- `src/domain` y `src/application`: catálogo tipado, recomendador explicable, estadísticas, afiliación, validación y puertos.
+- `src/infrastructure`: repositorios Drizzle/D1, rate limiting sustituible y tracking.
+- `src/content`: contenido editorial versionado en Git mediante Astro Content Collections.
+- `src/data/products.ts`: adaptador editorial de los 10 productos verificados del seed de Amazon.es. No almacena precios, ratings ni imágenes de Amazon.
+- `src/components`, `src/layouts`, `src/pages`: HTML prerenderizado e islands vanilla para recomendador, comparador, calculadora y formularios.
+- `migrations`: experiencias de duración, opiniones moderadas y eventos comerciales.
 
-Los cuatro productos SAMPLE solo aparecen con `import.meta.env.DEV`; el build de producción no los recomienda ni publica. No hay precios manuales, scraping ni datos de valoración ficticios.
+Los fixtures SAMPLE viven exclusivamente en `src/data/products.sample.ts` para tests y nunca entran en el catálogo de producción.
 
 ## Desarrollo
 
-Con Docker (no requiere Node en el host):
+Con Docker, sin Node en el host:
 
 ```sh
 docker compose up --build
 ```
 
-Abre `http://localhost:4321/es/`. Sin Docker requiere Node 22.12+ (recomendado Node 24):
+Abre `http://localhost:4321/es/`. Sin Docker requiere Node 22 o superior:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Comandos principales: `make dev`, `make build`, `make test`, `make lint`, `make format`, `make cf-dev` y `make deploy`.
+Gates: `npm run typecheck`, `npm run lint`, `npm test`, `npm run build` y `npm run format:check`.
 
-## D1 y Cloudflare
+## D1, migraciones y moderación
 
-La configuración D1 queda comentada en `wrangler.jsonc` porque todavía no existe un `database_id` real. El comando siguiente pide a Wrangler que añada automáticamente el binding `DB` con el ID devuelto. Si tu sesión de Wrangler no actualiza el archivo, usa el bloque comentado como plantilla y pega el ID real; nunca uses uno ficticio.
+El binding local `DB` no necesita un ID inventado. `wrangler.jsonc` declara el nombre y `--update-config` añade el `database_id` real al crear la base remota. Creación y primer despliegue:
 
 ```sh
 npx wrangler login
 npx wrangler d1 create tus-unas --binding DB --location weur --update-config
 npm run db:migrate:local
-npm run db:seed:local
 npm run db:migrate:remote
 npm run deploy
 ```
 
-El reset exige la confirmación explícita `npm run db:reset:local -- --yes-local-only` y siempre utiliza `--local`; no existe script de reset remoto.
+No ejecutes `db:seed:local` en remoto: solo inserta un evento identificado como fixture local. El reset exige `npm run db:reset:local -- --yes-local-only` y no admite modo remoto.
 
-Configuración no secreta: `AMAZON_AFFILIATE_TAG=tusunas-21` y `AMAZON_MARKETPLACE=es`. Consulta `.env.example`. Para CI o Workers Builds usa `npm ci` y `npm run build`; no se incluye despliegue automático con secretos.
+Listar opiniones pendientes:
+
+```sh
+npx wrangler d1 execute tus-unas --remote --command "SELECT id, product_id, rating, title, body, recommend, created_at FROM reviews WHERE status = 'pending' ORDER BY created_at ASC"
+```
+
+Aprobar o rechazar, siempre con confirmación remota explícita:
+
+```sh
+npm run reviews:moderate -- <UUID> approved --remote --yes-remote
+npm run reviews:moderate -- <UUID> rejected --remote --yes-remote
+```
+
+No existe endpoint administrativo público. Las opiniones nuevas son `pending` y solo las `approved` aparecen en la API pública.
+
+## Configuración
+
+`AMAZON_AFFILIATE_TAG=tusunas-21` y `AMAZON_MARKETPLACE=es` son configuración no secreta centralizada. `PUBLIC_CF_WEB_ANALYTICS_TOKEN` activa el beacon oficial de Cloudflare Web Analytics cuando se proporciona. `.env.example` no contiene secretos.
+
+Cloudflare Workers Builds puede usar `npm ci` y `npm run build`. No hay workflow de despliegue automático ni configuración de custom domain.

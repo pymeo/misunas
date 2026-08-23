@@ -6,7 +6,7 @@ publishedAt: 2026-08-23
 category: manicura-en-casa
 tags: [guía, criterios]
 author: Equipo editorial Tus-Uñas
-draft: false
+draft: true
 ---
 
 Antes de elegir, comprueba si el producto necesita lámpara, cuánto tiempo requiere la aplicación y qué incluye exactamente el paquete. También conviene distinguir las afirmaciones del fabricante de las experiencias verificadas de uso.
@@ -18,4 +18,4 @@ Antes de elegir, comprueba si el producto necesita lámpara, cuánto tiempo requ
 - Pasos de preparación y retirada.
 - Compatibilidad con tu experiencia y rutina.
 
-> **Pendiente editorial:** ampliar esta guía con fuentes primarias y pruebas prácticas antes de promocionarla como contenido definitivo.
+Antes de aplicar cualquier formato, consulta las instrucciones específicas y evita usarlo sobre piel lesionada. Las afirmaciones de rendimiento deben distinguirse de los atributos comprobables del paquete.

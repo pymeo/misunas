@@ -1,13 +1,78 @@
 ---
 import type { Product } from '@/domain/product';
-interface Props { product: Product; compact?: boolean }
+interface Props {
+  product: Product;
+  compact?: boolean;
+}
 const { product, compact = false } = Astro.props;
 const tags = new Set(product.styleTags);
-const tone = tags.has('llamativa') || tags.has('leopardo') ? 'bold' : tags.has('floral') ? 'floral' : tags.has('francesa') ? 'french' : tags.has('nude') || tags.has('natural') ? 'nude' : 'rose';
-const nailColors = { bold: ['bg-primary', 'bg-accent', 'bg-secondary'], floral: ['bg-white', 'bg-blush', 'bg-white'], french: ['bg-[#e9b9ae]', 'bg-[#edc7bd]', 'bg-[#e2aea5]'], nude: ['bg-[#d8a99d]', 'bg-[#e6bdb2]', 'bg-[#c9948c]'], rose: ['bg-[#cf8495]', 'bg-[#e4a2ad]', 'bg-[#a96d82]'] }[tone];
+const tone =
+  tags.has('llamativa') || tags.has('leopardo')
+    ? 'bold'
+    : tags.has('floral')
+      ? 'floral'
+      : tags.has('francesa')
+        ? 'french'
+        : tags.has('nude') || tags.has('natural')
+          ? 'nude'
+          : 'rose';
+const nailColors = {
+  bold: ['bg-primary', 'bg-accent', 'bg-secondary'],
+  floral: ['bg-white', 'bg-blush', 'bg-white'],
+  french: ['bg-[#e9b9ae]', 'bg-[#edc7bd]', 'bg-[#e2aea5]'],
+  nude: ['bg-[#d8a99d]', 'bg-[#e6bdb2]', 'bg-[#c9948c]'],
+  rose: ['bg-[#cf8495]', 'bg-[#e4a2ad]', 'bg-[#a96d82]'],
+}[tone];
 ---
-<div class:list={['relative overflow-hidden rounded-2xl bg-lavender', compact ? 'aspect-[4/3]' : 'aspect-square']} role="img" aria-label={`Ilustración editorial del estilo ${product.styleTags.slice(0, 2).join(' y ')} de ${product.name}; no es una fotografía del producto.`}>
-  <div class="absolute -top-10 -right-8 size-32 rounded-full bg-cream/90"></div><div class="absolute -bottom-12 -left-8 size-36 rounded-full bg-blush"></div>
-  <div class="absolute inset-x-[15%] top-[13%] flex justify-center gap-[7%]" aria-hidden="true">{nailColors.map((color, index) => <span class:list={['relative overflow-hidden rounded-[999px] shadow-soft', color, compact ? 'h-24 w-9' : 'h-40 w-12', index === 0 && '-rotate-12', index === 2 && 'rotate-12']}>{tone === 'french' && <span class="absolute inset-x-0 top-0 h-[18%] rounded-b-[60%] bg-white"></span>}{tone === 'floral' && <><i class="absolute top-[28%] left-[22%] size-3 rounded-full bg-accent"></i><i class="absolute top-[42%] right-[18%] size-2 rounded-full bg-secondary"></i></>}{tone === 'bold' && <><i class="absolute top-[25%] left-[18%] size-2 rounded-full bg-cream"></i><i class="absolute right-[20%] bottom-[30%] size-3 rounded-full bg-text/50"></i></>}</span>)}</div>
-  <p class="absolute right-4 bottom-4 left-4 text-center text-[.65rem] font-bold tracking-[.16em] text-primary uppercase">Vista editorial · {product.brand}</p>
+
+<div
+  class:list={[
+    'relative overflow-hidden rounded-2xl bg-lavender',
+    compact ? 'aspect-[4/3]' : 'aspect-square',
+  ]}
+  role="img"
+  aria-label={`Ilustración editorial del estilo ${product.styleTags.slice(0, 2).join(' y ')} de ${product.name}; no es una fotografía del producto.`}
+>
+  <div class="absolute -top-10 -right-8 size-32 rounded-full bg-cream/90">
+  </div><div class="absolute -bottom-12 -left-8 size-36 rounded-full bg-blush">
+  </div>
+  <div
+    class="absolute inset-x-[15%] top-[13%] flex justify-center gap-[7%]"
+    aria-hidden="true"
+  >
+    {
+      nailColors.map((color, index) => (
+        <span
+          class:list={[
+            'relative overflow-hidden rounded-[999px] shadow-soft',
+            color,
+            compact ? 'h-24 w-9' : 'h-40 w-12',
+            index === 0 && '-rotate-12',
+            index === 2 && 'rotate-12',
+          ]}
+        >
+          {tone === 'french' && (
+            <span class="absolute inset-x-0 top-0 h-[18%] rounded-b-[60%] bg-white" />
+          )}
+          {tone === 'floral' && (
+            <>
+              <i class="absolute top-[28%] left-[22%] size-3 rounded-full bg-accent" />
+              <i class="absolute top-[42%] right-[18%] size-2 rounded-full bg-secondary" />
+            </>
+          )}
+          {tone === 'bold' && (
+            <>
+              <i class="absolute top-[25%] left-[18%] size-2 rounded-full bg-cream" />
+              <i class="absolute right-[20%] bottom-[30%] size-3 rounded-full bg-text/50" />
+            </>
+          )}
+        </span>
+      ))
+    }
+  </div>
+  <p
+    class="absolute right-4 bottom-4 left-4 text-center text-[.65rem] font-bold tracking-[.16em] text-primary uppercase"
+  >
+    Vista editorial · {product.brand}
+  </p>
 </div>

@@ -3,6 +3,7 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Footer from '@/components/Footer.astro';
 import Header from '@/components/Header.astro';
 import SEOHead from '@/components/SEOHead.astro';
+import WebAnalytics from '@/components/WebAnalytics.astro';
 import type { TranslationPath } from '@/application/hreflang';
 import { breadcrumbJsonLd } from '@/application/jsonld';
 import '@/styles/global.css';
@@ -51,7 +52,16 @@ const schemas = breadcrumbData ? [...jsonLd, breadcrumbData] : jsonLd;
 <!doctype html>
 <html lang="es">
   <head>
-    <SEOHead {title} {description} {canonicalPath} {image} {type} {noindex} jsonLd={schemas} {translations} />
+    <SEOHead
+      {title}
+      {description}
+      {canonicalPath}
+      {image}
+      {type}
+      {noindex}
+      jsonLd={schemas}
+      {translations}
+    />
   </head>
   <body data-content-type={contentType}>
     <a
@@ -70,5 +80,6 @@ const schemas = breadcrumbData ? [...jsonLd, breadcrumbData] : jsonLd;
       <slot />
     </main>
     <Footer />
+    <WebAnalytics />
   </body>
 </html>

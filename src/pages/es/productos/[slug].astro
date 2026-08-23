@@ -10,12 +10,7 @@ import NailStylePreview from '@/components/NailStylePreview.astro';
 import ReviewForm from '@/components/ReviewForm.astro';
 import WearReportForm from '@/components/WearReportForm.astro';
 import { productJsonLd } from '@/application/jsonld';
-import {
-  getRelatedProducts,
-  PRODUCTS,
-  PUBLISHED_BRANDS,
-  slugifyBrand,
-} from '@/data/products';
+import { getRelatedProducts, PRODUCTS } from '@/data/products';
 import type { Product } from '@/domain/product';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
@@ -29,10 +24,6 @@ interface Props {
 }
 const { product } = Astro.props;
 const related = getRelatedProducts(product);
-const brandSlug = slugifyBrand(product.brand);
-const hasBrandPage = (PUBLISHED_BRANDS as readonly string[]).includes(
-  brandSlug,
-);
 ---
 
 <BaseLayout
@@ -45,6 +36,7 @@ const hasBrandPage = (PUBLISHED_BRANDS as readonly string[]).includes(
     { label: product.name },
   ]}
   jsonLd={[productJsonLd(product)]}
+  noindex
 >
   <article>
     <section
@@ -78,6 +70,8 @@ const hasBrandPage = (PUBLISHED_BRANDS as readonly string[]).includes(
         </p>
       </div>
     </section>
+
+    <div class="container-page pb-8"><AffiliateDisclosure /></div>
 
     <section
       class="container-page grid gap-8 py-14 lg:grid-cols-[1.15fr_.85fr]"
@@ -118,7 +112,7 @@ const hasBrandPage = (PUBLISHED_BRANDS as readonly string[]).includes(
       </div><div><ProductStatistics slug={product.slug} /></div>
     </section>
 
-    <section class="container-page py-14">
+    <section class="container-page py-14" id="registrar-duracion">
       <p class="eyebrow">Experiencias</p><h2 class="section-heading">
         ¿Cuánto te duraron?
       </h2><p class="section-intro">
@@ -188,15 +182,7 @@ const hasBrandPage = (PUBLISHED_BRANDS as readonly string[]).includes(
         </h2><p class="section-intro">
           Los atributos comerciales se verificaron en Amazon.es el {
             product.sourceVerifiedAt
-          }. No implican una prueba de uso propia. {
-            hasBrandPage ? (
-              <a href={`/es/marcas/${brandSlug}/`}>
-                Consulta los productos de {product.brand}
-              </a>
-            ) : (
-              `La página de marca se publicará cuando exista suficiente catálogo editorial.`
-            )
-          }
+          }. No implican una prueba de uso propia.
         </p><div class="mt-7"><MethodologyNotice /></div>
       </div><div>
         <p class="eyebrow">Preguntas frecuentes</p><h2 class="section-heading">
@@ -227,9 +213,8 @@ const hasBrandPage = (PUBLISHED_BRANDS as readonly string[]).includes(
             <summary class="cursor-pointer font-bold"
               >¿Está probado por Tus-Uñas?</summary
             ><p class="mt-3 text-muted">
-              No todavía. La ficha actual organiza datos del catálogo
-              investigado; cualquier prueba editorial futura se identificará
-              claramente.
+              No. La ficha organiza datos del catálogo investigado; cualquier
+              prueba de uso propia se identificará claramente y por separado.
             </p>
           </details>
         </div>

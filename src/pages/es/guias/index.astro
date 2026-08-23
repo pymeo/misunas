@@ -3,4 +3,35 @@ import ArticleCard from '@/components/ArticleCard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-<BaseLayout title="Guías de uñas y manicura en casa" description="Guías prácticas de Tus-Uñas para conocer formatos, aplicar y retirar productos de manicura en casa con prudencia." canonicalPath="/es/guias/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Guías' }]}><section class="container-page py-10 sm:py-16"><p class="eyebrow">Biblioteca editorial</p><h1 class="mt-4 text-5xl sm:text-6xl">Guías para entender antes de elegir</h1><p class="section-intro">Publicamos poco y con intención. Las secciones pendientes de investigación se señalan con claridad.</p><div class="mt-10 grid gap-5 lg:grid-cols-3"><ArticleCard title="Qué son las uñas semicuradas" description="Formato, requisitos y diferencias básicas." href="/es/que-son-las-unas-semicuradas/" /><ArticleCard title="Cómo poner uñas semicuradas" description="Preparación y aplicación siguiendo cada fabricante." href="/es/como-poner-unas-semicuradas/" /><ArticleCard title="Cómo quitar uñas semicuradas" description="Retirada paciente y señales para detenerse." href="/es/como-quitar-unas-semicuradas/" /></div></section></BaseLayout>
+
+<BaseLayout
+  title="Guías de uñas y manicura en casa"
+  description="Guías prácticas de Tus-Uñas para conocer formatos, aplicar y retirar productos de manicura en casa con prudencia."
+  canonicalPath="/es/guias/"
+  noindex
+  breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Guías' }]}
+  ><section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Biblioteca editorial</p><h1
+      class="mt-4 text-5xl sm:text-6xl"
+    >
+      Guías para entender antes de elegir
+    </h1><p class="section-intro">
+      Tres recorridos breves para reconocer el formato, aplicarlo y retirarlo
+      con cuidado.
+    </p><div class="mt-10 grid gap-5 lg:grid-cols-3">
+      <ArticleCard
+        title="Qué son las uñas semicuradas"
+        description="Formato, requisitos y diferencias básicas."
+        href="/es/que-son-las-unas-semicuradas/"
+      /><ArticleCard
+        title="Cómo poner uñas semicuradas"
+        description="Preparación y aplicación siguiendo cada fabricante."
+        href="/es/como-poner-unas-semicuradas/"
+      /><ArticleCard
+        title="Cómo quitar uñas semicuradas"
+        description="Retirada paciente y señales para detenerse."
+        href="/es/como-quitar-unas-semicuradas/"
+      />
+    </div>
+  </section></BaseLayout
+>

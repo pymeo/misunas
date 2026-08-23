@@ -1,0 +1,80 @@
+---
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import ProductComparison from '@/components/ProductComparison.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
+import { PRODUCTS } from '@/data/products';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+const french = PRODUCTS.filter((product) =>
+  product.styleTags.includes('francesa'),
+);
+---
+
+<BaseLayout
+  title="Uñas semicuradas francesas: opciones para comparar"
+  description="Compara uñas semicuradas de estilo francés por número de tiras, necesidad de lámpara y matices de diseño con datos verificados."
+  canonicalPath="/es/unas-semicuradas-francesas/"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Uñas semicuradas', href: '/es/unas-semicuradas/' },
+    { label: 'Francesas' },
+  ]}
+>
+  <section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Selección por estilo</p><h1
+      class="mt-4 max-w-4xl text-5xl sm:text-6xl"
+    >
+      Uñas semicuradas francesas
+    </h1><p class="section-intro">
+      La francesa combina una base natural o rosa con una punta definida. En el
+      catálogo actual hay {french.length} opciones identificadas expresamente con
+      este estilo; ambas requieren lámpara UV/LED.
+    </p><div class="mt-8"><AffiliateDisclosure /></div>
+  </section>
+  <section class="container-page py-12">
+    <p class="eyebrow">Cara a cara</p><h2 class="section-heading">
+      Qué cambia entre las opciones
+    </h2><p class="section-intro">
+      El número de tiras coincide, así que la elección se concentra en los
+      matices visuales documentados. La duración no forma parte de esta
+      comparación.
+    </p><div class="mt-8">
+      <ProductComparison
+        products={french}
+        sourcePage="/es/unas-semicuradas-francesas/"
+      />
+    </div>
+  </section>
+  <section class="container-page grid gap-10 py-14 lg:grid-cols-[1fr_.8fr]">
+    <div>
+      <p class="eyebrow">Fichas</p><h2 class="section-heading">
+        Opciones francesas verificadas
+      </h2><div class="mt-8">
+        <ProductGrid
+          products={french}
+          sourcePage="/es/unas-semicuradas-francesas/"
+          commercial
+        />
+      </div>
+    </div><div>
+      <p class="eyebrow">Antes de elegir</p><h2 class="section-heading">
+        Tres comprobaciones
+      </h2><div class="mt-7 grid gap-4">
+        <div class="card">
+          <h3 class="text-xl">Lámpara</h3><p class="mt-2 text-muted">
+            Las opciones actuales necesitan curado UV/LED y no incluyen lámpara.
+          </p>
+        </div><div class="card">
+          <h3 class="text-xl">Cantidad</h3><p class="mt-2 text-muted">
+            Las dos fichas investigadas indican 20 tiras.
+          </p>
+        </div><div class="card">
+          <h3 class="text-xl">Acabado</h3><p class="mt-2 text-muted">
+            Revisa los tags de estilo y la ficha en Amazon para confirmar el
+            diseño exacto antes de comprar.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

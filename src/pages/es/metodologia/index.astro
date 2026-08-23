@@ -2,4 +2,62 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-<BaseLayout title="Metodología editorial y de datos" description="Cómo selecciona productos Tus-Uñas, separa fuentes, explica recomendaciones y publica experiencias de la comunidad." canonicalPath="/es/metodologia/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Metodología' }]}><article class="container-page py-10 sm:py-16"><p class="eyebrow">Metodología</p><h1 class="mt-4 max-w-4xl text-5xl sm:text-6xl">Cada dato debe decir de dónde viene</h1><div class="mt-12 grid gap-5 md:grid-cols-2"><section class="card"><p class="eyebrow">01</p><h2 class="mt-3 text-3xl">Datos de producto</h2><p class="mt-4 leading-7 text-muted">Marca, tipo, ASIN, número de tiras o necesidad de lámpara se guardan en un catálogo versionado. La fecha de verificación acompaña al dato. Nunca almacenamos un precio manual.</p></section><section class="card"><p class="eyebrow">02</p><h2 class="mt-3 text-3xl">Datos del fabricante</h2><p class="mt-4 leading-7 text-muted">Las afirmaciones del fabricante deben identificarse como tales. No las convertimos automáticamente en conclusiones editoriales ni en señales del recomendador.</p></section><section class="card"><p class="eyebrow">03</p><h2 class="mt-3 text-3xl">Experiencias de comunidad</h2><p class="mt-4 leading-7 text-muted">Los registros de duración son anónimos. Calculamos mediana, media y distribución, pero no los mostramos antes de alcanzar la muestra pública mínima. Las opiniones pasan por moderación.</p></section><section class="card"><p class="eyebrow">04</p><h2 class="mt-3 text-3xl">Recomendación orientativa</h2><p class="mt-4 leading-7 text-muted">El motor actual solo usa estilo, necesidad o inclusión de lámpara, tipo de kit, cantidad de tiras y ángulos explícitos. No puntúa duración, agua, tipo de uña, precio o resistencia.</p></section></div><div class="prose-editorial mt-12"><h2>Afiliación</h2><p>Algunos enlaces a Amazon.es incluyen el identificador de afiliado de Tus-Uñas. Podemos recibir una comisión sin coste adicional para quien compra. El enlace comercial no modifica el catálogo ni sustituye la revisión editorial.</p><h2>Estado de la investigación</h2><p>Una ficha de catálogo no equivale a una prueba propia. Cuando exista una review editorial basada en uso, indicará método, fecha, producto probado y limitaciones.</p></div></article></BaseLayout>
+
+<BaseLayout
+  title="Metodología editorial y de datos"
+  description="Cómo selecciona productos Tus-Uñas, separa fuentes, explica recomendaciones y publica experiencias de la comunidad."
+  canonicalPath="/es/metodologia/"
+  breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Metodología' }]}
+  ><article class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Metodología</p><h1
+      class="mt-4 max-w-4xl text-5xl sm:text-6xl"
+    >
+      Cada dato debe decir de dónde viene
+    </h1><div class="mt-12 grid gap-5 md:grid-cols-2">
+      <section class="card">
+        <p class="eyebrow">01</p><h2 class="mt-3 text-3xl">
+          Datos de producto
+        </h2><p class="mt-4 leading-7 text-muted">
+          Marca, tipo, ASIN, número de tiras o necesidad de lámpara se guardan
+          en un catálogo versionado. La fecha de verificación acompaña al dato.
+          Nunca almacenamos un precio manual.
+        </p>
+      </section><section class="card">
+        <p class="eyebrow">02</p><h2 class="mt-3 text-3xl">
+          Datos del fabricante
+        </h2><p class="mt-4 leading-7 text-muted">
+          Las afirmaciones del fabricante deben identificarse como tales. No las
+          convertimos automáticamente en conclusiones editoriales ni en señales
+          del recomendador.
+        </p>
+      </section><section class="card">
+        <p class="eyebrow">03</p><h2 class="mt-3 text-3xl">
+          Experiencias de comunidad
+        </h2><p class="mt-4 leading-7 text-muted">
+          Los registros de duración son anónimos. Calculamos mediana, media y
+          distribución, pero no los mostramos antes de alcanzar la muestra
+          pública mínima. Las opiniones pasan por moderación.
+        </p>
+      </section><section class="card">
+        <p class="eyebrow">04</p><h2 class="mt-3 text-3xl">
+          Recomendación orientativa
+        </h2><p class="mt-4 leading-7 text-muted">
+          El motor actual solo usa estilo, necesidad o inclusión de lámpara,
+          tipo de kit, cantidad de tiras y ángulos explícitos. No puntúa
+          duración, agua, tipo de uña, precio o resistencia.
+        </p>
+      </section>
+    </div><div class="prose-editorial mt-12">
+      <h2>Afiliación</h2><p>
+        Algunos enlaces a Amazon.es incluyen el identificador de afiliado de
+        Tus-Uñas. Podemos recibir una comisión sin coste adicional para quien
+        compra. El enlace comercial no modifica el catálogo ni sustituye la
+        revisión editorial.
+      </p><h2>Estado de la investigación</h2><p>
+        Una ficha de catálogo no equivale a una prueba propia. Cuando exista una
+        review editorial basada en uso, indicará método, fecha, producto probado
+        y limitaciones.
+      </p>
+    </div>
+  </article></BaseLayout
+>

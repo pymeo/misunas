@@ -1,14 +1,60 @@
 ---
 import type { Product } from '@/domain/product';
-interface Props { product: Product; compact?: boolean }
+interface Props {
+  product: Product;
+  compact?: boolean;
+}
 const { product, compact = false } = Astro.props;
 const typeLabels: Record<Product['productType'], string> = {
-  semi_cured_uv: 'Gel semicurado UV/LED', starter_kit_uv: 'Kit semicurado con lámpara', pre_cured_no_lamp: 'Gel precured sin lámpara', nail_wrap: 'Nail wraps', press_on: 'Press-on', uv_led_lamp: 'Lámpara UV/LED', polish: 'Esmalte', gel_polish: 'Esmalte de gel', remover: 'Removedor', cuticle_care: 'Cuidado de cutículas', manicure_kit: 'Kit de manicura', file_buffer: 'Lima o pulidor', nail_drill: 'Torno', nail_art: 'Nail art', nail_care: 'Cuidado de uñas', accessory: 'Accesorio',
+  semi_cured_uv: 'Gel semicurado UV/LED',
+  starter_kit_uv: 'Kit semicurado con lámpara',
+  pre_cured_no_lamp: 'Gel precured sin lámpara',
+  nail_wrap: 'Nail wraps',
+  press_on: 'Press-on',
+  uv_led_lamp: 'Lámpara UV/LED',
+  polish: 'Esmalte',
+  gel_polish: 'Esmalte de gel',
+  remover: 'Removedor',
+  cuticle_care: 'Cuidado de cutículas',
+  manicure_kit: 'Kit de manicura',
+  file_buffer: 'Lima o pulidor',
+  nail_drill: 'Torno',
+  nail_art: 'Nail art',
+  nail_care: 'Cuidado de uñas',
+  accessory: 'Accesorio',
 };
 ---
+
 <dl class:list={['grid gap-3', compact ? 'text-sm' : 'sm:grid-cols-2']}>
-  <div class="rounded-xl bg-background p-4"><dt class="text-xs font-bold tracking-wide text-muted uppercase">Tipo</dt><dd class="mt-1 font-semibold">{typeLabels[product.productType]}</dd></div>
-  <div class="rounded-xl bg-background p-4"><dt class="text-xs font-bold tracking-wide text-muted uppercase">Tiras</dt><dd class="mt-1 font-semibold">{product.stripCount ?? 'No confirmado'}</dd></div>
-  <div class="rounded-xl bg-background p-4"><dt class="text-xs font-bold tracking-wide text-muted uppercase">Lámpara</dt><dd class="mt-1 font-semibold">{product.requiresLamp ? 'Necesaria' : 'No necesaria'}</dd></div>
-  <div class="rounded-xl bg-background p-4"><dt class="text-xs font-bold tracking-wide text-muted uppercase">Incluida</dt><dd class="mt-1 font-semibold">{product.includesLamp ? 'Sí' : 'No'}</dd></div>
+  <div class="rounded-xl bg-background p-4">
+    <dt class="text-xs font-bold tracking-wide text-muted uppercase">
+      Tipo
+    </dt><dd class="mt-1 font-semibold">{typeLabels[product.productType]}</dd>
+  </div>
+  {
+    product.stripCount !== undefined && (
+      <div class="rounded-xl bg-background p-4">
+        <>
+          <dt class="text-xs font-bold tracking-wide text-muted uppercase">
+            Tiras
+          </dt>
+          <dd class="mt-1 font-semibold">{product.stripCount}</dd>
+        </>
+      </div>
+    )
+  }
+  <div class="rounded-xl bg-background p-4">
+    <dt class="text-xs font-bold tracking-wide text-muted uppercase">
+      Lámpara
+    </dt><dd class="mt-1 font-semibold">
+      {product.requiresLamp ? 'Necesaria' : 'No necesaria'}
+    </dd>
+  </div>
+  <div class="rounded-xl bg-background p-4">
+    <dt class="text-xs font-bold tracking-wide text-muted uppercase">
+      Incluida
+    </dt><dd class="mt-1 font-semibold">
+      {product.includesLamp ? 'Sí' : 'No'}
+    </dd>
+  </div>
 </dl>

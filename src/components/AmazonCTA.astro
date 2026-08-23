@@ -9,13 +9,16 @@ interface Props {
   position?: number;
 }
 const { product, sourcePage, component = 'amazon-cta', position } = Astro.props;
-const href = product.active && product.affiliateEligible && product.editorialStatus === 'approved'
-  ? buildAmazonAffiliateUrl(product)
-  : null;
+const href =
+  product.active &&
+  product.affiliateEligible &&
+  product.editorialStatus === 'approved'
+    ? buildAmazonAffiliateUrl(product)
+    : null;
 ---
 
 {
-  href ? (
+  href && (
     <a
       class="amazon-cta button-primary"
       href={href}
@@ -27,19 +30,17 @@ const href = product.active && product.affiliateEligible && product.editorialSta
       data-position={position}
       aria-label={`Ver precio de ${product.name} en Amazon (abre en una pestaña nueva)`}
     >
-      Ver precio en Amazon{' '}
+      Ver precio actualizado en Amazon{' '}
       <span class="ml-2" aria-hidden="true">
         ↗
       </span>
     </a>
-  ) : (
-    <span class="inline-flex min-h-11 items-center rounded-full bg-line px-6 py-3 text-sm text-muted">
-      Enlace pendiente de verificación
-    </span>
   )
 }
 
 <script>
+  import { readCampaignAttribution } from '@/application/campaign';
+
   for (const link of document.querySelectorAll<HTMLAnchorElement>(
     '.amazon-cta',
   )) {
@@ -51,6 +52,7 @@ const href = product.active && product.affiliateEligible && product.editorialSta
         ...(link.dataset.position
           ? { position: Number(link.dataset.position) }
           : {}),
+        campaign: readCampaignAttribution(window.location.search),
       });
       navigator.sendBeacon(
         '/api/events/amazon-click/',

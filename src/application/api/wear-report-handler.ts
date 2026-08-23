@@ -6,6 +6,7 @@ import {
   validationErrorResponse,
 } from '@/application/api/http';
 import type { ProductRepository } from '@/domain/product';
+import type { EventTracker } from '@/domain/event';
 import type { WearReportRepository } from '@/domain/wear-report';
 import type { RateLimiter } from '@/infrastructure/rate-limit/rate-limiter';
 import { anonymousRateLimitKey } from '@/infrastructure/rate-limit/rate-limiter';
@@ -33,6 +34,7 @@ export async function handleWearReportRequest(
     wearReports: WearReportRepository;
     products: ProductRepository;
     rateLimiter: RateLimiter;
+    tracker?: EventTracker;
   },
 ): Promise<Response> {
   try {
@@ -56,6 +58,9 @@ export async function handleWearReportRequest(
       removalReason: input.removalReason,
       createdAt: new Date(),
     });
+    await dependencies.tracker
+      ?.track({ type: 'wear_report_submitted', productId: input.productId })
+      .catch(() => undefined);
     return jsonResponse({ ok: true }, 201);
   } catch (error) {
     return validationErrorResponse(error);

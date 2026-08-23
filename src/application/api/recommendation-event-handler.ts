@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { campaignSchema, campaignToMetadata } from '@/application/campaign';
 
 import {
   jsonResponse,
@@ -12,11 +13,18 @@ import { anonymousRateLimitKey } from '@/infrastructure/rate-limit/rate-limiter'
 export const recommendationEventInputSchema = z.object({
   resultProductIds: z.array(z.string().min(1).max(64)).max(3),
   answers: z.object({
-    style: z.enum(['natural', 'francesa', 'elegante', 'llamativa', 'indiferente']),
+    style: z.enum([
+      'natural',
+      'francesa',
+      'elegante',
+      'llamativa',
+      'indiferente',
+    ]),
     lamp: z.enum(['tengo', 'quiero-kit', 'sin-lampara']),
     experience: z.enum(['primera-vez', 'con-experiencia', 'indiferente']),
     preference: z.enum(['kit-completo', 'mas-tiras', 'diseno', 'indiferente']),
   }),
+  campaign: campaignSchema.optional(),
 });
 
 export async function handleRecommendationEventRequest(
@@ -31,7 +39,7 @@ export async function handleRecommendationEventRequest(
     await dependencies.tracker.track({
       type: 'recommendation_completed',
       resultProductIds: input.resultProductIds,
-      metadata: input.answers,
+      metadata: { ...input.answers, ...campaignToMetadata(input.campaign) },
     });
     return jsonResponse({ ok: true }, 202);
   } catch (error) {

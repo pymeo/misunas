@@ -3,4 +3,31 @@ import ArticleCard from '@/components/ArticleCard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-<BaseLayout title="Comparativas de productos para uñas" description="Comparativas editoriales de productos de manicura en casa basadas en atributos comprobables y una metodología transparente." canonicalPath="/es/comparativas/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Comparativas' }]}><section class="container-page py-10 sm:py-16"><p class="eyebrow">Comparativas</p><h1 class="mt-4 text-5xl sm:text-6xl">Decidir sin una tabla interminable</h1><p class="section-intro">Priorizamos respuestas rápidas, atributos equivalentes y contexto para elegir. No ordenamos productos por notas inventadas.</p><div class="mt-10 grid gap-5 md:grid-cols-2"><ArticleCard eyebrow="Comparativa principal" title="Mejores uñas semicuradas: comparativa para elegir" description="Formatos con lámpara, kits y una alternativa sin lámpara explicados con criterios claros." href="/es/mejores-unas-semicuradas/" /><ArticleCard eyebrow="Herramienta" title="Comparador de productos" description="Selecciona entre dos y cuatro fichas del catálogo y revisa sus diferencias en móvil." href="/es/comparar/" /></div></section></BaseLayout>
+
+<BaseLayout
+  title="Comparativas de productos para uñas"
+  description="Comparativas editoriales de productos de manicura en casa basadas en atributos comprobables y una metodología transparente."
+  canonicalPath="/es/comparativas/"
+  noindex
+  breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Comparativas' }]}
+  ><section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Comparativas</p><h1 class="mt-4 text-5xl sm:text-6xl">
+      Decidir sin una tabla interminable
+    </h1><p class="section-intro">
+      Priorizamos respuestas rápidas, atributos equivalentes y contexto para
+      elegir. No ordenamos productos por notas inventadas.
+    </p><div class="mt-10 grid gap-5 md:grid-cols-2">
+      <ArticleCard
+        eyebrow="Comparativa principal"
+        title="Mejores uñas semicuradas: comparativa para elegir"
+        description="Formatos con lámpara, kits y una alternativa sin lámpara explicados con criterios claros."
+        href="/es/mejores-unas-semicuradas/"
+      /><ArticleCard
+        eyebrow="Herramienta"
+        title="Comparador de productos"
+        description="Selecciona entre dos y cuatro fichas del catálogo y revisa sus diferencias en móvil."
+        href="/es/comparar/"
+      />
+    </div>
+  </section></BaseLayout
+>

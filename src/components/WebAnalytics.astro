@@ -1,0 +1,16 @@
+---
+const token = import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN as
+  string | undefined;
+const enabled = token !== undefined && /^[a-f0-9]{32}$/i.test(token);
+---
+
+{
+  enabled && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token })}
+    />
+  )
+}

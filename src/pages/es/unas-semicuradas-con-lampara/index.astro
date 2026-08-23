@@ -1,0 +1,83 @@
+---
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import ProductComparison from '@/components/ProductComparison.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
+import { PRODUCTS } from '@/data/products';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+const kits = PRODUCTS.filter(
+  (product) => product.productType === 'starter_kit_uv' && product.includesLamp,
+);
+const requiresLamp = PRODUCTS.filter(
+  (product) =>
+    product.category === 'unas-semicuradas' &&
+    product.requiresLamp &&
+    !product.includesLamp,
+).slice(0, 3);
+---
+
+<BaseLayout
+  title="Uñas semicuradas con lámpara: formatos y kits"
+  description="Diferencias entre uñas semicuradas que requieren lámpara y kits que ya la incluyen, con productos y atributos verificados."
+  canonicalPath="/es/unas-semicuradas-con-lampara/"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Uñas semicuradas', href: '/es/unas-semicuradas/' },
+    { label: 'Con lámpara' },
+  ]}
+>
+  <section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Guía por formato</p><h1
+      class="mt-4 max-w-5xl text-5xl sm:text-6xl"
+    >
+      Uñas semicuradas con lámpara: qué necesitas
+    </h1><p class="section-intro">
+      “Necesita lámpara” no significa que el paquete la incluya. Si empiezas
+      desde cero, un kit puede reunir ambas piezas; si ya tienes una, puedes
+      centrarte en cantidad y estilo.
+    </p><div class="mt-8"><AffiliateDisclosure /></div>
+  </section>
+  <section class="container-page py-12">
+    <p class="eyebrow">Kits verificados</p><h2 class="section-heading">
+      Lámpara incluida
+    </h2><p class="section-intro">
+      Estas opciones están clasificadas como kit de inicio y su ficha indica
+      expresamente que incluyen lámpara.
+    </p><div class="mt-8">
+      <ProductComparison
+        products={kits}
+        sourcePage="/es/unas-semicuradas-con-lampara/"
+      />
+    </div>
+  </section>
+  <section class="container-page py-14">
+    <p class="eyebrow">Si ya tienes lámpara</p><h2 class="section-heading">
+      Elige por un atributo visible
+    </h2><p class="section-intro">
+      Estas fichas requieren lámpara, pero no la incluyen. Compara el estilo y
+      la cantidad de tiras cuando esté indicada.
+    </p><div class="mt-8">
+      <ProductGrid
+        products={requiresLamp}
+        sourcePage="/es/unas-semicuradas-con-lampara/"
+        commercial
+      />
+    </div>
+  </section>
+  <section class="container-page py-14">
+    <div class="rounded-[1.5rem] bg-cream p-7 sm:p-9">
+      <h2 class="text-3xl">Antes de usar una lámpara UV/LED</h2><p
+        class="mt-4 max-w-3xl leading-7 text-muted"
+      >
+        Sigue el tiempo, la potencia y las instrucciones del producto y de la
+        lámpara. Si tienes una reacción, dolor o una cuestión de salud, deja de
+        usarlo y consulta a un profesional cualificado.
+      </p><div class="mt-6 flex flex-wrap gap-3">
+        <a class="button-primary" href="/es/encuentra-tus-unas/"
+          >Encontrar mi opción</a
+        ><a class="button-secondary" href="/es/como-poner-unas-semicuradas/"
+          >Ver guía de aplicación</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

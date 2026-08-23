@@ -3,6 +3,36 @@ import SavingsCalculator from '@/components/SavingsCalculator.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-<BaseLayout title="Calculadora de ahorro: manicura en casa frente al salón" description="Calcula con tus propias cifras cuánto podrías gastar al año en el salón y en manicura doméstica, sin guardar los datos introducidos." canonicalPath="/es/calculadora-ahorro-manicura/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Herramientas', href: '/es/herramientas/' }, { label: 'Calculadora de ahorro' }]}>
-  <section class="container-page grid gap-10 py-10 sm:py-16 lg:grid-cols-[.75fr_1.25fr] lg:items-start"><div class="lg:sticky lg:top-28"><p class="eyebrow">Salón vs. casa</p><h1 class="mt-4 text-5xl leading-tight sm:text-6xl">¿Cuánto puedes ahorrar frente al salón?</h1><p class="section-intro">Introduce tus importes y frecuencia. El cálculo se hace en tu navegador y no guardamos las cantidades.</p><div class="mt-7 rounded-card bg-lavender p-6"><h2 class="text-2xl">La fórmula</h2><p class="mt-3 text-sm leading-6 text-muted">Visitas anuales = 52 ÷ frecuencia. En casa, el coste de cada paquete se reparte entre las manicuras que estimas obtener.</p></div></div><div><SavingsCalculator /></div></section>
+
+<BaseLayout
+  title="Calculadora de ahorro: manicura en casa frente al salón"
+  description="Calcula con tus propias cifras cuánto podrías gastar al año en el salón y en manicura doméstica, sin guardar los datos introducidos."
+  canonicalPath="/es/calculadora-ahorro-manicura/"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Herramientas', href: '/es/herramientas/' },
+    { label: 'Calculadora de ahorro' },
+  ]}
+>
+  <section
+    class="container-page grid gap-10 py-10 sm:py-16 lg:grid-cols-[.75fr_1.25fr] lg:items-start"
+  >
+    <div class="lg:sticky lg:top-28">
+      <p class="eyebrow">Salón vs. casa</p><h1
+        class="mt-4 text-5xl leading-tight sm:text-6xl"
+      >
+        ¿Cuánto puedes ahorrar frente al salón?
+      </h1><p class="section-intro">
+        Introduce tus importes y frecuencia. El cálculo se hace en tu navegador
+        y no guardamos las cantidades.
+      </p><div class="mt-7 rounded-card bg-lavender p-6">
+        <h2 class="text-2xl">La fórmula</h2><p
+          class="mt-3 text-sm leading-6 text-muted"
+        >
+          Visitas anuales = 52 ÷ frecuencia. En casa, el coste de cada paquete
+          se reparte entre las manicuras que estimas obtener.
+        </p>
+      </div>
+    </div><div><SavingsCalculator /></div>
+  </section>
 </BaseLayout>

@@ -3,6 +3,51 @@ import EmptyState from '@/components/EmptyState.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-<BaseLayout title="Opiniones reales sobre productos para uñas" description="Cómo recopila, modera y publica Tus-Uñas opiniones propias y experiencias anónimas sobre productos de manicura." canonicalPath="/es/opiniones/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Opiniones' }]}>
-  <section class="container-page py-10 sm:py-16"><p class="eyebrow">Comunidad</p><h1 class="mt-4 max-w-4xl text-5xl sm:text-6xl">Opiniones que empiezan siendo honestamente cero</h1><p class="section-intro">No copiamos reseñas de Amazon y no publicamos envíos sin revisión. Las opiniones aparecen vinculadas a su producto y las estadísticas solo se muestran con muestra suficiente.</p><div class="mt-10"><EmptyState title="Todavía no hay opiniones publicadas" description="Estamos recopilando las primeras aportaciones. Si has utilizado uno de los productos del catálogo, entra en su ficha para compartir una opinión o registrar cuánto te duró." href="/es/unas-semicuradas/" cta="Ver productos" /></div><div class="mt-14 grid gap-5 md:grid-cols-3">{[['1 · Envías','Sin cuenta, nombre, email ni teléfono.'],['2 · Revisamos','El estado inicial siempre es pendiente. Rechazamos spam, URLs y HTML.'],['3 · Publicamos','Solo las opiniones aprobadas pueden mostrarse y contar para una valoración.']].map(([title, body]) => <div class="rounded-card bg-lavender p-6"><h2 class="text-2xl">{title}</h2><p class="mt-3 text-muted">{body}</p></div>)}</div></section>
+
+<BaseLayout
+  title="Opiniones reales sobre productos para uñas"
+  description="Cómo recopila, modera y publica Tus-Uñas opiniones propias y experiencias anónimas sobre productos de manicura."
+  canonicalPath="/es/opiniones/"
+  noindex
+  breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Opiniones' }]}
+>
+  <section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Comunidad</p><h1
+      class="mt-4 max-w-4xl text-5xl sm:text-6xl"
+    >
+      Opiniones que empiezan siendo honestamente cero
+    </h1><p class="section-intro">
+      No copiamos reseñas de Amazon y no publicamos envíos sin revisión. Las
+      opiniones aparecen vinculadas a su producto y las estadísticas solo se
+      muestran con muestra suficiente.
+    </p><div class="mt-10">
+      <EmptyState
+        title="Todavía no hay opiniones publicadas"
+        description="Estamos recopilando las primeras aportaciones. Si has utilizado uno de los productos del catálogo, entra en su ficha para compartir una opinión o registrar cuánto te duró."
+        href="/es/unas-semicuradas/"
+        cta="Ver productos"
+      />
+    </div><div class="mt-14 grid gap-5 md:grid-cols-3">
+      {
+        [
+          ['1 · Envías', 'Sin cuenta, nombre, email ni teléfono.'],
+          [
+            '2 · Revisamos',
+            'El estado inicial siempre es pendiente. Rechazamos spam, URLs y HTML.',
+          ],
+          [
+            '3 · Publicamos',
+            'Solo las opiniones aprobadas pueden mostrarse y contar para una valoración.',
+          ],
+        ].map(([title, body]) => (
+          <div class="rounded-card bg-lavender p-6">
+            <>
+              <h2 class="text-2xl">{title}</h2>
+              <p class="mt-3 text-muted">{body}</p>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </section>
 </BaseLayout>

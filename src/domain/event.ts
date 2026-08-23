@@ -5,13 +5,19 @@ export type AnalyticsEvent =
       sourcePage: string;
       component: string;
       position?: number;
+      campaign?: import('@/application/campaign').CampaignAttribution;
     }
   | {
       type: 'recommendation_completed';
       resultProductIds: string[];
       metadata: Record<string, string>;
     }
-  | { type: 'calculator_completed'; metadata: Record<string, number> };
+  | {
+      type: 'calculator_completed';
+      campaign?: import('@/application/campaign').CampaignAttribution;
+    }
+  | { type: 'review_submitted'; productId: string }
+  | { type: 'wear_report_submitted'; productId: string };
 
 export interface EventRepository {
   record(event: AnalyticsEvent): Promise<void>;

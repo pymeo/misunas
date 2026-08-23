@@ -4,7 +4,11 @@ export class StaticProductRepository implements ProductRepository {
   constructor(private readonly products: Product[]) {}
 
   findActive(): Promise<Product[]> {
-    return Promise.resolve(this.products.filter((product) => product.active && product.editorialStatus === 'approved'));
+    return Promise.resolve(
+      this.products.filter(
+        (product) => product.active && product.editorialStatus === 'approved',
+      ),
+    );
   }
 
   findById(id: string): Promise<Product | null> {

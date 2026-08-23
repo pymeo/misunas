@@ -5,6 +5,28 @@ import { PRODUCTS } from '@/data/products';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-<BaseLayout title="Comparar productos para uñas" description="Compara entre dos y cuatro productos para uñas por tipo, tiras, lámpara y estilo, sin precios ni valoraciones inventadas." canonicalPath="/es/comparar/" breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Comparar' }]}>
-  <section class="container-page py-10 sm:py-16"><p class="eyebrow">Comparador</p><h1 class="mt-4 max-w-4xl text-5xl leading-tight sm:text-6xl">Compara lo que realmente conocemos</h1><p class="section-intro">Elige entre 2 y 4 productos. La comparación usa el catálogo versionado y funciona sobre HTML ya renderizado; los controles solo cambian qué columnas ves.</p><div class="mt-8"><AffiliateDisclosure /></div><div class="mt-10"><ProductComparison products={PRODUCTS} sourcePage="/es/comparar/" interactive /></div></section>
+
+<BaseLayout
+  title="Comparar productos para uñas"
+  description="Compara entre dos y cuatro productos para uñas por tipo, tiras, lámpara y estilo, sin precios ni valoraciones inventadas."
+  canonicalPath="/es/comparar/"
+  breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Comparar' }]}
+>
+  <section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Comparador</p><h1
+      class="mt-4 max-w-4xl text-5xl leading-tight sm:text-6xl"
+    >
+      Compara lo que realmente conocemos
+    </h1><p class="section-intro">
+      Elige entre 2 y 4 productos. La comparación usa el catálogo versionado y
+      funciona sobre HTML ya renderizado; los controles solo cambian qué
+      columnas ves.
+    </p><div class="mt-8"><AffiliateDisclosure /></div><div class="mt-10">
+      <ProductComparison
+        products={PRODUCTS}
+        sourcePage="/es/comparar/"
+        interactive
+      />
+    </div>
+  </section>
 </BaseLayout>
