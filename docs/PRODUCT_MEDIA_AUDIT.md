@@ -1,8 +1,19 @@
 # Auditoría de imágenes de producto
 
-Investigación realizada el 2026-08-24 sobre los 34 productos activos del catálogo (10 semicuradas, 8 tornos, 8 aspiradores de polvo, 8 impresoras de uñas 3D), buscando fuentes de imagen oficiales y legítimas: web oficial de marca, PIM, media kit / press kit. **Ninguna entrada de este documento está aprobada para uso**: `status=approved` exige que un humano confirme la licencia de reutilización y descargue el asset a `public/products/`. Lo marcado `candidate` es una pista de investigación, no un permiso.
+Investigación realizada el 2026-08-24 sobre los 34 productos activos del catálogo (10 semicuradas, 8 tornos, 8 aspiradores de polvo, 8 impresoras de uñas 3D), buscando fuentes de imagen oficiales y legítimas: web oficial de marca, PIM, media kit / press kit. **Ninguna entrada de este documento está aprobada para uso**: `status=approved` exige que un humano confirme la licencia de reutilización (`rightsStatus: 'permission_granted'`) y, si es autoalojada, descargue el asset a `public/products/`. Lo marcado `candidate` es una pista de investigación, no un permiso.
 
 Fuente de datos viva: `src/data/productMedia.ts` (los 7 candidatos de abajo ya están cargados ahí). Auditoría ejecutable: `npm run media:audit`.
+
+## Modelo de datos: `delivery` (local vs remote) y `rightsStatus`
+
+`src/domain/productMedia.ts` modela cada entrada como un discriminated union por `delivery`:
+
+- **`local`** — la única vía usada hoy. La imagen vive autoalojada bajo `public/products/{productId}/…` (`localPath`), la única compatible con la CSP actual (`img-src 'self' data:`). `localPath` es obligatorio en cuanto `status: 'approved'`, pero puede estar ausente mientras la entrada es solo una `candidate` de investigación (todavía no se ha descargado nada).
+- **`remote`** — reservada para Amazon Creators API (ver más abajo). Siempre trae `imageUrl` (esa URL es la propia evidencia de investigación, exista o no la aprobación). Una entrada `remote` con `status: 'approved'` solo podría llegar a pintarse el día en que su host esté en la allowlist de `img-src` (Fase 6) — hoy ninguna entrada es `remote`, así que esto no aplica a ningún producto real todavía.
+
+Además, cada entrada declara `rightsStatus` (`not_required` / `needs_permission` / `permission_requested` / `permission_granted`), independiente de `status`. El esquema impide a nivel de tipo aprobar una imagen cuyo derecho de uso no esté confirmado: `status: 'approved'` exige `rightsStatus` en `permission_granted` o `not_required`. Así, dentro de seis meses, la respuesta a "¿por qué tenemos derecho a mostrar esta imagen?" está en el dato, no en la memoria de nadie — usa `rightsEvidence` (referencia corta, no el email entero), `approvedAt` y `approvedBy` (rol/equipo, nunca un nombre personal) para dejarlo trazado.
+
+`sourceType` también incluye ahora `'ugc'` (foto enviada por una usuaria) para dejar el dominio preparado (Fase 8), pero el esquema bloquea explícitamente que una entrada `ugc` llegue a `approved`: no existe todavía ningún flujo de moderación, así que no puede publicarse por accidente.
 
 ## Hallazgo transversal: herramientas oficiales de Amazon
 
@@ -74,13 +85,33 @@ Las ocho marcas de esta categoría siguen el mismo patrón que la mayoría de to
 - **27** sin ninguna fuente oficial localizada — en su mayoría marcas exclusivas de Amazon sin sitio corporativo propio (Kredioo, NAILGIRLS, ENGERWALL, Xoali, BICKON, WEIYI, Ponoseu, JMEOWIO, Wahrshei, BUTBU, Layhou, Adonafy, ANBEISTEE, CRIS NAILS, FREEUP, Sunseota, factildfulzhan, menglanchang, GEJLELDS, agreilduite ×2, emobwdy, Dfdieratve), más 2 casos de marca real sin coincidencia de producto (Aokitec, JODSONE).
 - Marcas con tienda/PIM propio confirmado (aunque sin permiso de imagen todavía): **ohora, NAILOG, Mylee, Beurer, MelodySusie**, y parcialmente **Aokitec** y **JODSONE** (sitios reales, pero sin este SKU en su catálogo).
 
-## Cómo aprobar un candidato
+## Cómo aprobar un candidato (fuente de marca, `delivery: 'local'`)
 
-1. Confirmar por escrito con la marca (o revisar los términos de su press/media kit) que las imágenes pueden usarse en contenido de afiliación de Tus-Uñas.
+1. Confirmar por escrito con la marca (o revisar los términos de su press/media kit) que las imágenes pueden usarse en contenido de afiliación de Tus-Uñas. Guardar esa confirmación en `rightsEvidence` (referencia corta) y actualizar `rightsStatus` a `'permission_granted'`.
 2. Descargar el asset y guardarlo en `public/products/{productId}/main.webp` (optimizado, sin depender de un CDN externo — la CSP actual solo permite `img-src 'self' data:`).
-3. En `src/data/productMedia.ts`, añadir `localPath: '/products/{productId}/main.webp'` a la entrada y cambiar `status` a `'approved'`.
-4. `ProductVisual` empieza a usar la imagen real automáticamente, en todas las superficies (cards, comparador, Top 3, recomendador, ficha) sin tocar ningún componente.
+3. En `src/data/productMedia.ts`, añadir `localPath: '/products/{productId}/main.webp'` a la entrada, cambiar `status` a `'approved'`, y rellenar `approvedAt` (fecha) y `approvedBy` (rol/equipo, nunca un nombre personal).
+4. `ProductVisual` empieza a usar la imagen real automáticamente, en todas las superficies (cards, comparador, Top 3, recomendador, ficha) sin tocar ningún componente — `getMediaSrc()` ya sabe leer tanto `local` como `remote`.
 
-## Preparado para Creators API
+## Preparado para Amazon Creators API (Fase 5)
 
-`src/application/productMediaResolver.ts` expone `creatorsApiMediaProvider: MediaProvider` con el mismo contrato que cualquier otra fuente, hoy devolviendo siempre `null` (sin llamar a ningún endpoint). El día que la cuenta tenga acceso a Amazon Creators API, esa función pasa a consultar la API, cachear el resultado y devolver una `ProductMedia` con `sourceType: 'amazon_official'` — sin cambios en `ProductVisual`, `ProductImage` ni ninguna página. Nota: según la documentación de Amazon, Creators API sirve las imágenes dinámicamente desde sus servidores; su Operating Agreement no autoriza descargarlas y autoalojarlas, así que ese provider probablemente necesite devolver un `imageUrl` remoto sujeto a las condiciones de Amazon en vez de un `localPath` — punto a revisar cuando llegue el acceso.
+`src/application/productMediaResolver.ts` expone `creatorsApiMediaProvider: MediaProvider` con el mismo contrato que cualquier otra fuente. Está controlado por el feature flag `AMAZON_CREATORS_API_ENABLED` (`src/config/media.ts`, variable de entorno `AMAZON_CREATORS_API_ENABLED=true`), **desactivado por defecto**: mientras esté a `false`, `resolve()` devuelve `null` de inmediato sin tocar caché ni red — cero llamadas falsas.
+
+También queda preparada `CreatorsApiCache` (misma librería), pensada para conservar la respuesta de la API (URL + metadatos) durante ~24h (`CREATORS_API_CACHE_TTL_MS`) antes de revalidar — nunca para descargar el fichero, que el Operating Agreement de Amazon no permite autoalojar. Hoy solo existe `InMemoryCreatorsApiCache` (usada en tests); una implementación real (KV de Cloudflare o un snapshot JSON) puede sustituirla sin tocar el provider.
+
+**Qué falta exactamente para conectar la integración real:**
+
+1. Cuenta de Afiliados con acceso aprobado a Creators API (requiere ventas cualificadas — todavía no se cumple).
+2. Credenciales de la API guardadas como secreto de Cloudflare (no en el repo).
+3. Decidir dónde vive la llamada real, sin romper el contrato `MediaProvider` (ninguna de las dos opciones cambia `ProductVisual`/`ProductImage`/ninguna página):
+   - **Recomendado**: un script de build (como `scripts/media-audit.ts`) que llama a la API, usa `CreatorsApiCache` para no reconsultar el mismo ASIN en <24h, y escribe el resultado en `src/data/productMedia.ts` como una entrada `delivery: 'remote'` — coherente con que el resto del catálogo ya es 100% estático y el sitio se prerenderiza.
+   - Alternativa: que `resolve()` pase a ser async y llame a la API en cada build de página; en ese caso los consumidores síncronos de `getProductMedia` (`ProductVisual`, `ProductCard`, `ProductComparison`, `EditorialTopPicks`, `Recommender`) tendrían que volverse async también.
+4. Cuando llegue, la URL final debe salir siempre de la respuesta oficial de la API — nunca construirse a mano a partir del ASIN (p. ej. `m.media-amazon.com/…`).
+5. Añadir el host EXACTO que devuelva esa respuesta a la allowlist de `img-src` en `public/_headers` (ver más abajo) — nunca antes, nunca con un comodín.
+
+## CSP para medios remotos (Fase 6)
+
+`public/_headers` declara `img-src 'self' data:` — sin ningún host remoto todavía, porque ninguna entrada `remote` está aprobada. Cuando Creators API se conecte de verdad, la única ampliación permitida es añadir el/los hosts exactos que devuelva su respuesta oficial (p. ej. algo bajo `media-amazon.com`, pero solo una vez confirmado, nunca adivinado). Explícitamente prohibido: `img-src https:` (comodín de esquema) o `img-src *`. `tests/seo/seo-smoke.test.ts` incluye un test de regresión que falla si alguien amplía la CSP con un comodín o con un host de Amazon adivinado antes de tiempo.
+
+## Fotografía editorial (no es foto de producto) — Fase 14
+
+Distinto de todo lo anterior: `src/domain/editorialMedia.ts` define `EditorialMedia`, una convención para fotografía editorial real (propia o de banco con licencia comercial) usada para portadas, artículos, guías o cabeceras de categoría — nunca para afirmar que es la foto de un producto concreto. Por diseño, `EditorialMedia` no tiene ningún campo que la vincule a un `productId`: por ejemplo, una manicurista usando un torno puede ilustrar el artículo "cómo usar un torno", pero nunca debe presentarse como "foto del Kredioo 35000 RPM" si no lo es. Vive bajo `public/editorial/…`, con `EditorialImage.astro` como componente de render (lazy salvo `hero`). **Todavía no existe ningún archivo real bajo `public/editorial/`**: no se ha copiado ninguna imagen de Internet para poblarlo; el esquema y el componente quedan preparados para cuando haya fotografía propia o de banco con licencia confirmada.

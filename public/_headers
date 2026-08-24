@@ -1,3 +1,10 @@
+# img-src es deliberadamente 'self' data:, no https:/*: cero imágenes remotas
+# hoy (todo el catálogo aprobado es delivery:'local', autoalojado bajo
+# /products/). Cuando Amazon Creators API se conecte de verdad (ver
+# src/application/productMediaResolver.ts y docs/PRODUCT_MEDIA_AUDIT.md),
+# esta línea debe ampliarse con el/los hosts EXACTOS que devuelva su
+# respuesta oficial — nunca con un dominio adivinado o construido a mano
+# (p. ej. m.media-amazon.com) ni con un comodín https:.
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY

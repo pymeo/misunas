@@ -1,0 +1,30 @@
+---
+import type { EditorialMedia } from '@/domain/editorialMedia';
+interface Props {
+  media: EditorialMedia;
+  /** Solo para la imagen principal above-the-fold de la página; el resto siempre lazy. */
+  hero?: boolean;
+  class?: string;
+}
+const { media, hero = false, class: className } = Astro.props;
+---
+
+<figure class:list={['relative overflow-hidden rounded-2xl', className]}>
+  <img
+    src={media.localPath}
+    alt={media.alt}
+    width={media.width}
+    height={media.height}
+    loading={hero ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={hero ? 'high' : undefined}
+    class="block size-full max-w-full object-cover"
+  />
+  {
+    media.attribution && (
+      <figcaption class="absolute right-2 bottom-2 rounded-full bg-text/60 px-2 py-1 text-[.65rem] text-white">
+        {media.attribution}
+      </figcaption>
+    )
+  }
+</figure>

@@ -135,6 +135,14 @@ export const productSchema = z
     sourceVerifiedAt: z.iso.date().optional(),
     active: z.boolean(),
     sample: z.boolean().default(false),
+    /**
+     * Allowlist editorial explícita de fichas aptas para indexación (Google).
+     * `false` por defecto: la mayoría del catálogo son fichas de investigación
+     * verificadas pero no verificadas físicamente por el equipo, así que
+     * empiezan en `noindex`. Ver `src/application/productIndexability.ts`
+     * para la política que consume este campo — nunca se decide en la vista.
+     */
+    seoIndexable: z.boolean().default(false),
   })
   .superRefine((product, context) => {
     if (product.amazonUrl && product.asin)

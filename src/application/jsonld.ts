@@ -65,9 +65,54 @@ export function serializeJsonLd(data: JsonLd): string {
   return JSON.stringify(data).replace(/</g, '\\u003c');
 }
 
+const EDITORIAL_REVIEW_AUTHOR = {
+  '@type': 'Team',
+  name: 'Equipo editorial de Tus-Uñas',
+};
+
+const notesItemList = (notes: string[]): JsonLd => ({
+  '@type': 'ItemList',
+  itemListElement: notes.map((note, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: note,
+  })),
+});
+
+export interface ProductJsonLdOptions {
+  /**
+   * URL absoluta de una imagen real/autorizada del producto (resuelta por
+   * `getProductMedia` fuera de este módulo). Nunca pasar la de una
+   * ilustración editorial: no es una fotografía del producto.
+   */
+  imageUrl?: string;
+  /**
+   * Aciertos reales y ya visibles en la página — normalmente
+   * `pick.reasons` del Top 3 (ver `EditorialVerdict`/`EditorialTopPicks`).
+   */
+  positiveNotes?: string[];
+  /**
+   * Puntos a tener en cuenta reales y ya visibles en la página — el
+   * `product.considerations` que se muestra en la ficha.
+   */
+  negativeNotes?: string[];
+}
+
+/**
+ * Tus-Uñas no vende directamente (no hay `Offer`/precio propio), así que
+ * esta ficha se optimiza como página editorial `Product`/Product Snippet:
+ * datos verificables del catálogo (`name`/`brand`/`category`/`url`), una
+ * imagen solo cuando es real y autorizada, y — cuando hay contenido
+ * editorial suficiente — una reseña propia (nunca de una persona inventada)
+ * con lo que destacamos y lo que conviene tener en cuenta, en el mismo
+ * texto que ya ve la usuaria. Nunca se genera `aggregateRating` ni
+ * `ratingValue` a partir de esta reseña editorial: esos campos siguen
+ * dependiendo exclusivamente de reseñas de usuarias reales y aprobadas.
+ */
 export function productJsonLd(
   product: Product,
   approvedReviews: ProductReview[] = [],
+  options: ProductJsonLdOptions = {},
 ): JsonLd {
   const publicReviews = approvedReviews.filter(
     (review) => review.status === 'approved',
@@ -80,6 +125,10 @@ export function productJsonLd(
     category: product.category,
     url: new URL(`/es/productos/${product.slug}/`, SITE_URL).toString(),
   };
+  if (options.imageUrl)
+    data.image = new URL(options.imageUrl, SITE_URL).toString();
+
+  const reviews: JsonLd[] = [];
   if (publicReviews.length > 0) {
     const average =
       publicReviews.reduce((sum, review) => sum + review.rating, 0) /
@@ -91,19 +140,39 @@ export function productJsonLd(
       bestRating: 5,
       worstRating: 1,
     };
-    data.review = publicReviews.map((review) => ({
-      '@type': 'Review',
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: review.rating,
-        bestRating: 5,
-        worstRating: 1,
-      },
-      ...(review.title ? { name: review.title } : {}),
-      reviewBody: review.body,
-      author: { '@type': 'Person', name: 'Usuaria de Tus-Uñas' },
-      datePublished: review.createdAt.toISOString(),
-    }));
+    reviews.push(
+      ...publicReviews.map((review) => ({
+        '@type': 'Review',
+        reviewRating: {
+          '@type': 'Rating',
+          ratingValue: review.rating,
+          bestRating: 5,
+          worstRating: 1,
+        },
+        ...(review.title ? { name: review.title } : {}),
+        reviewBody: review.body,
+        author: { '@type': 'Person', name: 'Usuaria de Tus-Uñas' },
+        datePublished: review.createdAt.toISOString(),
+      })),
+    );
   }
+
+  const positiveNotes = options.positiveNotes ?? [];
+  const negativeNotes = options.negativeNotes ?? [];
+  if (positiveNotes.length + negativeNotes.length >= 2) {
+    reviews.push({
+      '@type': 'Review',
+      author: EDITORIAL_REVIEW_AUTHOR,
+      reviewBody: product.summary,
+      ...(positiveNotes.length > 0
+        ? { positiveNotes: notesItemList(positiveNotes) }
+        : {}),
+      ...(negativeNotes.length > 0
+        ? { negativeNotes: notesItemList(negativeNotes) }
+        : {}),
+    });
+  }
+  if (reviews.length > 0) data.review = reviews;
+
   return data;
 }

@@ -11,7 +11,13 @@ import ProductVisual from '@/components/ProductVisual.astro';
 import ReviewForm from '@/components/ReviewForm.astro';
 import WearReportForm from '@/components/WearReportForm.astro';
 import { productJsonLd } from '@/application/jsonld';
+import {
+  getMediaSrc,
+  getProductMedia,
+} from '@/application/productMediaResolver';
+import { isProductSeoIndexable } from '@/application/productIndexability';
 import { getCategoryMeta } from '@/config/categories';
+import { getEditorialPick } from '@/data/editorialSelections';
 import { getRelatedProducts, PRODUCTS } from '@/data/products';
 import type { Product } from '@/domain/product';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -41,6 +47,23 @@ const printerSpecs =
   product.technicalSpecs?.kind === 'nail_printer_3d'
     ? product.technicalSpecs
     : null;
+const seoIndexable = isProductSeoIndexable(product);
+const resolvedMedia = getProductMedia(product);
+/**
+ * Solo pasamos `imageUrl` al JSON-LD cuando hay una imagen real/autorizada
+ * (`resolvedMedia.kind === 'image'`); la ilustración editorial de fallback
+ * nunca se declara como fotografía del producto. `productJsonLd` resuelve
+ * la URL final contra `SITE_URL`, así que aquí basta con la ruta/URL tal
+ * cual la devuelva el resolver (local o remota).
+ */
+const jsonLdImageUrl =
+  resolvedMedia.kind === 'image' ? getMediaSrc(resolvedMedia.media) : undefined;
+const editorialPick = getEditorialPick(product.id);
+const jsonLd = productJsonLd(product, [], {
+  ...(jsonLdImageUrl ? { imageUrl: jsonLdImageUrl } : {}),
+  positiveNotes: editorialPick?.reasons ?? [],
+  negativeNotes: product.considerations,
+});
 ---
 
 <BaseLayout
@@ -52,8 +75,8 @@ const printerSpecs =
     { label: categoryMeta.label, href: categoryMeta.href },
     { label: product.name },
   ]}
-  jsonLd={[productJsonLd(product)]}
-  noindex
+  jsonLd={[jsonLd]}
+  noindex={!seoIndexable}
 >
   <article>
     <section

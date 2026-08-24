@@ -89,6 +89,8 @@ export const businessEvents = sqliteTable(
         'review_submitted',
         'wear_report_submitted',
         'calculator_completed',
+        'top_pick_impression',
+        'comparator_used',
       ],
     }).notNull(),
     productId: text('product_id'),

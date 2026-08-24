@@ -65,4 +65,88 @@ describe('JSON-LD builders', () => {
   it('escapes opening tags before embedding in HTML', () => {
     expect(serializeJsonLd({ value: '</script>' })).not.toContain('</script>');
   });
+
+  it('only emits image when a real/authorized image URL is provided', () => {
+    const withoutImage = productJsonLd(product);
+    expect(withoutImage.image).toBeUndefined();
+    const withImage = productJsonLd(product, [], {
+      imageUrl: '/products/demo/main.webp',
+    });
+    expect(withImage.image).toBe(
+      'https://xn--tus-uas-8za.com/products/demo/main.webp',
+    );
+  });
+
+  it('never fabricates an editorial review with fewer than two real notes', () => {
+    const oneNote = productJsonLd(product, [], {
+      positiveNotes: ['Pantalla táctil'],
+    });
+    expect(serializeJsonLd(oneNote)).not.toContain('positiveNotes');
+    expect(serializeJsonLd(oneNote)).not.toMatch(/"@type":"Review"/);
+  });
+
+  it('builds an editorial review as ItemList/ListItem, attributed to the team, never a ratingValue', () => {
+    const withNotes = productJsonLd(product, [], {
+      positiveNotes: ['Pantalla táctil', 'Diseños personalizados'],
+      negativeNotes: ['El precio no figura verificado.'],
+    });
+    const reviews = withNotes.review as Record<string, unknown>[];
+    const editorial = reviews.find(
+      (entry) =>
+        (entry.author as Record<string, unknown> | undefined)?.['@type'] ===
+        'Team',
+    );
+    expect(editorial).toBeDefined();
+    expect(editorial?.author).toEqual({
+      '@type': 'Team',
+      name: 'Equipo editorial de Tus-Uñas',
+    });
+    expect(editorial?.reviewRating).toBeUndefined();
+    expect(editorial?.positiveNotes).toEqual({
+      '@type': 'ItemList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Pantalla táctil' },
+        { '@type': 'ListItem', position: 2, name: 'Diseños personalizados' },
+      ],
+    });
+    expect(editorial?.negativeNotes).toEqual({
+      '@type': 'ItemList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'El precio no figura verificado.',
+        },
+      ],
+    });
+    expect(serializeJsonLd(withNotes)).not.toMatch(/ratingValue/);
+  });
+
+  it('keeps the editorial review body as real, already-visible content (product.summary)', () => {
+    const withNotes = productJsonLd(product, [], {
+      positiveNotes: ['Uno', 'Dos'],
+    });
+    const reviews = withNotes.review as Record<string, unknown>[];
+    const editorial = reviews.find(
+      (entry) =>
+        (entry.author as Record<string, unknown> | undefined)?.['@type'] ===
+        'Team',
+    );
+    expect(editorial?.reviewBody).toBe(product.summary);
+  });
+
+  it('lets a user review and the editorial review coexist without mixing ratings', () => {
+    const combined = productJsonLd(product, [review('approved')], {
+      positiveNotes: ['Uno', 'Dos'],
+    });
+    const reviews = combined.review as Record<string, unknown>[];
+    expect(reviews).toHaveLength(2);
+    expect(combined.aggregateRating).toBeDefined();
+    const userReview = reviews.find(
+      (entry) =>
+        (entry.author as Record<string, unknown> | undefined)?.['@type'] ===
+        'Person',
+    );
+    expect(userReview?.reviewRating).toBeDefined();
+  });
 });

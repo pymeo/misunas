@@ -47,19 +47,51 @@ export class D1EventRepository implements EventRepository {
         .run();
       return;
     }
+    const { productId, metadata } = businessEventFields(event);
     await this.db
       .insert(businessEvents)
       .values({
         id: crypto.randomUUID(),
         type: event.type,
-        productId:
-          event.type === 'calculator_completed' ? null : event.productId,
-        metadata:
-          event.type === 'calculator_completed'
-            ? campaignToMetadata(event.campaign)
-            : {},
+        productId,
+        metadata,
         createdAt: new Date(),
       })
       .run();
+  }
+}
+
+type BusinessEvent = Exclude<
+  AnalyticsEvent,
+  { type: 'amazon_click' } | { type: 'recommendation_completed' }
+>;
+
+/** Exhaustivo a propósito: si se añade un tipo de evento nuevo, TS obliga a mapearlo aquí. */
+function businessEventFields(event: BusinessEvent): {
+  productId: string | null;
+  metadata: Record<string, string>;
+} {
+  switch (event.type) {
+    case 'calculator_completed':
+      return {
+        productId: null,
+        metadata: {
+          ...campaignToMetadata(event.campaign),
+          ...(event.calculator ? { calculator: event.calculator } : {}),
+        },
+      };
+    case 'review_submitted':
+    case 'wear_report_submitted':
+      return { productId: event.productId, metadata: {} };
+    case 'top_pick_impression':
+      return {
+        productId: event.productId,
+        metadata: { category: event.category, sourcePage: event.sourcePage },
+      };
+    case 'comparator_used':
+      return {
+        productId: null,
+        metadata: { category: event.category, sourcePage: event.sourcePage },
+      };
   }
 }

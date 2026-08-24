@@ -1,0 +1,86 @@
+---
+import PrinterRoiCalculator from '@/components/PrinterRoiCalculator.astro';
+import RelatedLinks from '@/components/RelatedLinks.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+---
+
+<BaseLayout
+  title="Calculadora de rentabilidad de una impresora de uñas 3D"
+  description="Estima el coste por servicio, el margen y cuántos servicios necesitas para amortizar una impresora de uñas 3D, con tus propias cifras."
+  canonicalPath="/es/calculadora-rentabilidad-impresora-unas/"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Impresoras de uñas 3D', href: '/es/impresoras-unas-3d/' },
+    { label: 'Calculadora de rentabilidad' },
+  ]}
+>
+  <section
+    class="container-page grid gap-10 py-10 sm:py-16 lg:grid-cols-[.75fr_1.25fr] lg:items-start"
+  >
+    <div class="lg:sticky lg:top-28">
+      <p class="eyebrow">Impresoras de uñas 3D</p><h1
+        class="mt-4 text-5xl leading-tight sm:text-6xl"
+      >
+        ¿Cuánto tardarías en amortizar una impresora de uñas 3D?
+      </h1><p class="section-intro">
+        Introduce tus propias cifras. El cálculo se hace en tu navegador y no
+        guardamos ninguna cantidad.
+      </p><div class="mt-7 rounded-card bg-lavender p-6">
+        <h2 class="text-2xl">Cómo calculamos</h2>
+        <p class="mt-3 text-sm leading-6 text-muted">
+          Coste por servicio = coste del cartucho ÷ servicios estimados por
+          cartucho. Margen por servicio = lo que cobrarías de más por nail art
+          menos ese coste. Servicios para amortizar = precio de la máquina ÷
+          margen por servicio; semanas aproximadas = esos servicios ÷ tus
+          clientas semanales.
+        </p>
+        <p class="mt-3 text-sm leading-6 text-muted">
+          No asumimos ningún precio de mercado: todos los valores de partida son
+          editables y están pensados solo como ejemplo de partida.
+        </p>
+      </div>
+    </div><div><PrinterRoiCalculator /></div>
+  </section>
+
+  <section class="container-page grid gap-10 py-14 lg:grid-cols-[1fr_.8fr]">
+    <div class="min-w-0">
+      <p class="eyebrow">Antes de decidir</p><h2 class="section-heading">
+        Qué hace esta calculadora y qué no
+      </h2>
+      <div class="prose-editorial mt-7 max-w-none">
+        <p>
+          Esta herramienta no consulta ningún precio real de Amazon.es ni de
+          ningún otro sitio: solo hace una cuenta con los cinco números que tú
+          introduces. Los valores de ejemplo (400 € de máquina, 20 € de
+          cartucho, 100 servicios por cartucho, 5 € de cargo extra y 8 clientas
+          semanales) son solo un punto de partida ilustrativo, no una
+          recomendación ni un precio de mercado.
+        </p>
+        <h3>Qué no incluye el cálculo</h3>
+        <ul>
+          <li>
+            El tiempo que dedicas a cada servicio, más allá del propio precio
+            que cobres.
+          </li>
+          <li>
+            Otros consumibles (geles base, selladores, limpieza) que no sean el
+            cartucho principal.
+          </li>
+          <li>Impuestos, comisiones de pago o cualquier otro gasto fijo.</li>
+        </ul>
+        <p>
+          Si el resultado indica que el cargo extra no cubre el coste del
+          consumible, revisa primero el coste real del cartucho y el número de
+          servicios que de verdad obtienes de él — lo explicamos en la guía de{
+            ' '
+          }
+          <a href="/es/impresoras-unas-3d/cartuchos-y-consumibles/">
+            cartuchos y consumibles
+          </a>.
+        </p>
+      </div>
+    </div>
+    <RelatedLinks path="/es/calculadora-rentabilidad-impresora-unas/" />
+  </section>
+</BaseLayout>

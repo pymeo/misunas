@@ -1,0 +1,75 @@
+---
+import RelatedLinks from '@/components/RelatedLinks.astro';
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+export const prerender = true;
+---
+
+<EditorialLayout
+  title="Cómo funciona una impresora de uñas 3D"
+  description="Qué hace realmente una impresora de uñas 3D, paso a paso, y por qué el nombre comercial puede llevar a confusión."
+  canonicalPath="/es/impresoras-unas-3d/como-funcionan/"
+  eyebrow="Impresoras de uñas 3D"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Impresoras de uñas 3D', href: '/es/impresoras-unas-3d/' },
+    { label: 'Cómo funcionan' },
+  ]}
+>
+  <p>
+    Una impresora de uñas 3D es, en la inmensa mayoría de los modelos que
+    circulan en Amazon, un dispositivo de <strong
+      >impresión digital de nail art</strong
+    >: un cabezal escanea o detecta la superficie de la uña y deposita un diseño
+    en tinta o gel directamente sobre ella, en segundos.
+  </p>
+  <h2>Por qué el nombre "3D" puede confundir</h2>
+  <p>
+    "Impresora 3D" es, sobre todo, un término comercial. No implica que el
+    aparato fabrique volumen o relieve físico capa a capa, como haría una
+    impresora 3D de fabricación aditiva con filamento o resina. La mayoría de
+    las fichas investigadas en este catálogo describen resolución en DPI,
+    reconocimiento de forma y velocidad de impresión, no capas de material
+    depositadas. Si un modelo concreto sí genera relieve, tendría que figurar
+    explícitamente en su ficha — no lo asumimos por defecto.
+  </p>
+  <h2>El proceso, paso a paso</h2>
+  <ol>
+    <li>
+      Preparar la uña: la mayoría de estos equipos imprimen sobre una base ya
+      lista (gel o esmalte seco), no sobre la uña desnuda. Confirma el requisito
+      exacto en las instrucciones de cada modelo.
+    </li>
+    <li>Colocar el dedo en el hueco o soporte del equipo, según su diseño.</li>
+    <li>
+      Elegir un diseño de la galería precargada o, si el modelo lo permite,
+      cargar una foto, dibujo o texto propio desde la app.
+    </li>
+    <li>
+      Si el modelo indica reconocimiento automático de la forma de la uña, el
+      equipo ajusta el diseño al contorno detectado antes de imprimir.
+    </li>
+    <li>
+      Impresión: el proceso en sí suele durar segundos, según la velocidad
+      indicada en cada ficha.
+    </li>
+    <li>
+      Sellado o secado, cuando el modelo lo integra o lo requiere como paso
+      posterior.
+    </li>
+  </ol>
+  <h2>Qué confirmamos y qué no</h2>
+  <p>
+    En esta web solo afirmamos una característica técnica cuando figura en la
+    ficha investigada del producto concreto. Cuando una función (Wi‑Fi,
+    reconocimiento automático, curado integrado) no está confirmada, preferimos
+    omitirla a inventarla — puedes verlo en la comparativa y en cada ficha,
+    donde nunca se muestra un dato en blanco ni un "no sabemos" genérico:
+    simplemente no aparece la fila.
+  </p>
+  <aside class="rounded-card bg-sand p-6 text-base text-ink">
+    <strong>Importante:</strong> ninguna ilustración de este catálogo es una fotografía
+    real del producto salvo que se indique explícitamente. Mientras no tengamos una
+    imagen autorizada, usamos una ilustración editorial identificable como tal.
+  </aside>
+  <RelatedLinks path="/es/impresoras-unas-3d/como-funcionan/" />
+</EditorialLayout>

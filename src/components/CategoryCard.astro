@@ -5,8 +5,10 @@ interface Props {
   href?: string;
   icon: string;
   tone?: 'blush' | 'lavender' | 'cream';
+  /** Sello corto opcional (p. ej. "Nuevo") para destacar una entrada puntual sin desplazar el resto de la cuadrícula. */
+  badge?: string;
 }
-const { title, description, href, icon, tone = 'blush' } = Astro.props;
+const { title, description, href, icon, tone = 'blush', badge } = Astro.props;
 const classes = {
   blush: 'bg-blush',
   lavender: 'bg-lavender',
@@ -17,12 +19,18 @@ const Tag = href ? 'a' : 'div';
 
 <Tag
   class:list={[
-    'group rounded-card border border-border p-5 no-underline',
+    'group relative rounded-card border border-border p-5 no-underline',
     classes[tone],
   ]}
   href={href}
   aria-disabled={!href}
-  ><span class="text-2xl" aria-hidden="true">{icon}</span><h3
+  >{
+    badge && (
+      <span class="absolute top-4 right-4 rounded-full bg-primary px-2.5 py-1 text-[.65rem] font-bold tracking-wide text-white uppercase">
+        {badge}
+      </span>
+    )
+  }<span class="text-2xl" aria-hidden="true">{icon}</span><h3
     class="mt-5 text-xl"
   >
     {title}

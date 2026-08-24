@@ -1,7 +1,10 @@
 ---
 import { getNailStyleTone } from '@/application/nailStyleTone';
 import { RECOMMENDER_ELIGIBLE_PRODUCT_TYPES } from '@/application/recommendation';
-import { getProductMedia } from '@/application/productMediaResolver';
+import {
+  getMediaSrc,
+  getProductMedia,
+} from '@/application/productMediaResolver';
 import { PRODUCTS } from '@/data/products';
 /**
  * Cada producto recomendable lleva embebido su `visual` (misma fuente de
@@ -17,7 +20,7 @@ const recommendableProducts = PRODUCTS.filter((product) =>
     media.kind === 'image'
       ? {
           kind: 'image' as const,
-          src: media.media.localPath ?? '',
+          src: getMediaSrc(media.media),
           alt: media.media.alt,
         }
       : {

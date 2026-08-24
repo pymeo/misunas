@@ -1,45 +1,32 @@
 <section
   class="rounded-[1.6rem] border border-border bg-surface p-5 shadow-card sm:p-8"
-  data-savings-calculator
+  data-printer-roi-calculator
 >
   <p class="mb-6 rounded-xl bg-cream p-4 text-sm text-muted">
     <strong class="text-text">Empieza con estos valores de ejemplo</strong> o cámbialos
-    por tus cifras habituales.
+    por los tuyos. No guardamos ningún dato introducido.
   </p>
   <form class="grid gap-5 sm:grid-cols-2">
     <label class="grid gap-2 font-semibold">
-      Precio por manicura en salón (€)
+      Precio pagado por la máquina (€)
       <input
         class="input-field font-normal"
         type="number"
-        name="salonPrice"
+        name="machinePrice"
         min="1"
-        max="1000"
-        step="0.01"
-        value="30"
+        max="20000"
+        step="1"
+        value="400"
         required
       />
     </label>
     <label class="grid gap-2 font-semibold">
-      Frecuencia (semanas)
+      Coste del cartucho/consumible (€)
       <input
         class="input-field font-normal"
         type="number"
-        name="frequencyWeeks"
-        min="1"
-        max="52"
-        step="0.5"
-        value="3"
-        required
-      />
-    </label>
-    <label class="grid gap-2 font-semibold">
-      Coste del producto doméstico (€)
-      <input
-        class="input-field font-normal"
-        type="number"
-        name="homeProductCost"
-        min="0"
+        name="cartridgeCost"
+        min="0.01"
         max="1000"
         step="0.01"
         value="20"
@@ -47,21 +34,47 @@
       />
     </label>
     <label class="grid gap-2 font-semibold">
-      Manicuras estimadas por paquete
+      Servicios estimados por consumible
       <input
         class="input-field font-normal"
         type="number"
-        name="manicuresPerPack"
+        name="servicesPerCartridge"
         min="1"
-        max="100"
+        max="5000"
         step="1"
-        value="2"
+        value="100"
+        required
+      />
+    </label>
+    <label class="grid gap-2 font-semibold">
+      Precio adicional que cobrarías por nail art (€)
+      <input
+        class="input-field font-normal"
+        type="number"
+        name="extraChargePerService"
+        min="0"
+        max="500"
+        step="0.5"
+        value="5"
+        required
+      />
+    </label>
+    <label class="grid gap-2 font-semibold sm:col-span-2">
+      Clientas semanales estimadas
+      <input
+        class="input-field font-normal"
+        type="number"
+        name="weeklyClients"
+        min="1"
+        max="500"
+        step="1"
+        value="8"
         required
       />
     </label>
     <button
       class="button-primary sm:col-span-2 sm:justify-self-start"
-      type="submit">Calcular ahorro</button
+      type="submit">Calcular rentabilidad</button
     >
   </form>
   <div
@@ -70,40 +83,30 @@
     data-results
   >
     <p class="text-xs font-bold tracking-[.18em] text-blush uppercase">
-      Estimación anual
+      Estimación con tus cifras
     </p>
-    <dl class="mt-4 grid gap-4 sm:grid-cols-3">
+    <dl class="mt-4 grid gap-4 sm:grid-cols-2">
       <div>
-        <dt class="text-sm text-white/70">Salón</dt><dd
+        <dt class="text-sm text-white/70">Coste por servicio</dt><dd
           class="mt-1 text-3xl font-bold"
-          data-salon
+          data-cost-per-service
         >
         </dd>
       </div>
       <div>
-        <dt class="text-sm text-white/70">En casa</dt><dd
-          class="mt-1 text-3xl font-bold"
-          data-home
-        >
-        </dd>
-      </div>
-      <div>
-        <dt class="text-sm text-white/70">Ahorro</dt><dd
+        <dt class="text-sm text-white/70">Margen por servicio</dt><dd
           class="mt-1 text-3xl font-bold text-blush"
-          data-savings
+          data-margin-per-service
         >
         </dd>
       </div>
     </dl>
-    <p class="mt-5 border-t border-white/20 pt-4 text-xs text-white/70">
-      Cálculo basado en los cuatro valores introducidos. Puedes ajustarlos para
-      comparar otros escenarios.
-    </p>
+    <p class="mt-5 border-t border-white/20 pt-4" data-breakeven></p>
   </div>
 </section>
 
 <script>
-  import { calculateAnnualSavings } from '@/application/savings';
+  import { calculatePrinterRoi } from '@/application/printerRoi';
   import { readCampaignAttribution } from '@/application/campaign';
 
   const currency = new Intl.NumberFormat('es-ES', {
@@ -111,7 +114,7 @@
     currency: 'EUR',
   });
   for (const root of document.querySelectorAll<HTMLElement>(
-    '[data-savings-calculator]',
+    '[data-printer-roi-calculator]',
   )) {
     const form = root.querySelector('form');
     const results = root.querySelector<HTMLElement>('[data-results]');
@@ -120,19 +123,26 @@
       event.preventDefault();
       if (!form.reportValidity()) return;
       const data = new FormData(form);
-      const calculated = calculateAnnualSavings({
-        salonPrice: Number(data.get('salonPrice')),
-        frequencyWeeks: Number(data.get('frequencyWeeks')),
-        homeProductCost: Number(data.get('homeProductCost')),
-        manicuresPerPack: Number(data.get('manicuresPerPack')),
+      const calculated = calculatePrinterRoi({
+        machinePrice: Number(data.get('machinePrice')),
+        cartridgeCost: Number(data.get('cartridgeCost')),
+        servicesPerCartridge: Number(data.get('servicesPerCartridge')),
+        extraChargePerService: Number(data.get('extraChargePerService')),
+        weeklyClients: Number(data.get('weeklyClients')),
       });
       const assign = (selector: string, value: number) => {
         const element = root.querySelector(selector);
         if (element) element.textContent = currency.format(value);
       };
-      assign('[data-salon]', calculated.annualSalonCost);
-      assign('[data-home]', calculated.annualHomeCost);
-      assign('[data-savings]', calculated.annualSavings);
+      assign('[data-cost-per-service]', calculated.costPerService);
+      assign('[data-margin-per-service]', calculated.marginPerService);
+      const breakeven = root.querySelector('[data-breakeven]');
+      if (breakeven)
+        breakeven.textContent =
+          calculated.servicesToBreakEven !== null &&
+          calculated.weeksToBreakEven !== null
+            ? `Necesitarías unos ${calculated.servicesToBreakEven} servicios (≈${calculated.weeksToBreakEven} semanas con tus clientas semanales) para amortizar la máquina.`
+            : 'Con estos datos el cargo adicional no cubre el coste del consumible: revisa el precio que cobrarías o el coste del cartucho antes de comprar.';
       results.classList.remove('hidden');
       navigator.sendBeacon(
         '/api/events/business/',
@@ -140,7 +150,7 @@
           [
             JSON.stringify({
               type: 'calculator_completed',
-              calculator: 'ahorro-manicura',
+              calculator: 'rentabilidad-impresora',
               campaign: readCampaignAttribution(window.location.search),
             }),
           ],

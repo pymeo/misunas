@@ -1,0 +1,68 @@
+---
+import RelatedLinks from '@/components/RelatedLinks.astro';
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+export const prerender = true;
+---
+
+<EditorialLayout
+  title="Cartuchos y consumibles de una impresora de uñas 3D"
+  description="Qué consumibles necesita normalmente una impresora de uñas 3D y por qué pesan tanto como el precio de compra en el coste real."
+  canonicalPath="/es/impresoras-unas-3d/cartuchos-y-consumibles/"
+  eyebrow="Impresoras de uñas 3D"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Impresoras de uñas 3D', href: '/es/impresoras-unas-3d/' },
+    { label: 'Cartuchos y consumibles' },
+  ]}
+>
+  <p>
+    El precio de la máquina es solo una parte del coste. Como cualquier
+    impresora, estos equipos dependen de consumibles que se agotan con el uso —
+    y ese gasto continuo es el que más se suele pasar por alto antes de comprar.
+  </p>
+  <h2>Qué consumibles suelen intervenir</h2>
+  <ul>
+    <li>
+      Cartucho o tinta de impresión: el elemento que se agota más rápido;
+      imprime un número limitado de uñas o servicios antes de necesitar
+      sustitución.
+    </li>
+    <li>
+      Gel base y/o sellador: varios de los kits investigados en esta categoría
+      incluyen geles o pegamento de limpieza como parte del paquete inicial.
+    </li>
+    <li>
+      Accesorios de limpieza del cabezal, cuando el fabricante los indica como
+      mantenimiento periódico.
+    </li>
+  </ul>
+  <h2>Por qué no publicamos una cifra fija de "dura X uñas"</h2>
+  <p>
+    El rendimiento de un cartucho depende del fabricante, del diseño impreso
+    (una ilustración densa gasta más tinta que un trazo simple) y del tamaño de
+    la uña. Varias fichas de esta categoría no confirman una cifra de
+    rendimiento verificable, así que preferimos no repetir una cifra de
+    marketing como si fuera un dato comprobado. Si tu decisión depende de ese
+    número, revísalo directamente en la ficha de Amazon.es del modelo que te
+    interese antes de comprar.
+  </p>
+  <h2>Cómo afecta esto a la rentabilidad</h2>
+  <p>
+    Si vas a cobrar el servicio, el coste real por uña —cartucho más geles—
+    determina tu margen tanto como el precio que cobres. Puedes introducir tus
+    propias cifras (coste del cartucho, servicios estimados por cartucho y
+    precio que cobrarías) en nuestra{' '}
+    <a href="/es/calculadora-rentabilidad-impresora-unas/">
+      calculadora de rentabilidad de impresora de uñas
+    </a>{' '}
+    para ver el margen aproximado y cuántos servicios necesitarías para amortizar
+    la máquina.
+  </p>
+  <aside class="rounded-card bg-sand p-6 text-base text-ink">
+    <strong>Dato real, no inventado:</strong> algunos anuncios de esta categoría mencionan
+    que un cartucho imprime varios cientos de uñas o superficies, pero es una cifra
+    del vendedor, no verificada de forma independiente por nuestro equipo — trátala
+    como orientativa.
+  </aside>
+  <RelatedLinks path="/es/impresoras-unas-3d/cartuchos-y-consumibles/" />
+</EditorialLayout>

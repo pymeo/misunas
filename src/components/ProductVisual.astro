@@ -3,7 +3,10 @@ import NailPrinterIllustration from '@/components/NailPrinterIllustration.astro'
 import NailStylePreview from '@/components/NailStylePreview.astro';
 import ProductImage from '@/components/ProductImage.astro';
 import ToolIllustration from '@/components/ToolIllustration.astro';
-import { getProductMedia } from '@/application/productMediaResolver';
+import {
+  getMediaSrc,
+  getProductMedia,
+} from '@/application/productMediaResolver';
 import type { Product } from '@/domain/product';
 interface Props {
   product: Product;
@@ -23,7 +26,7 @@ const fallbackId = `visual-fallback-${product.id}`;
   {
     resolved.kind === 'image' && (
       <ProductImage
-        src={resolved.media.localPath ?? ''}
+        src={getMediaSrc(resolved.media)}
         alt={resolved.media.alt}
         {compact}
         {eager}

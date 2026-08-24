@@ -28,6 +28,7 @@ export const SAMPLE_PRODUCTS: Product[] = [
     researchStatus: 'pending',
     active: true,
     sample: true,
+    seoIndexable: false,
   },
   {
     id: 'sample-no-lamp',
@@ -52,5 +53,6 @@ export const SAMPLE_PRODUCTS: Product[] = [
     researchStatus: 'pending',
     active: true,
     sample: true,
+    seoIndexable: false,
   },
 ];

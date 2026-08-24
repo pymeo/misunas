@@ -11,6 +11,8 @@ interface EditorialProductData {
   considerations: string[];
   useCases?: string[];
   beginnerFriendly?: boolean;
+  /** Allowlist editorial de indexación — ver `productIndexability.ts`. */
+  seoIndexable?: boolean;
 }
 
 const EDITORIAL: Record<string, EditorialProductData> = {
@@ -22,6 +24,7 @@ const EDITORIAL: Record<string, EditorialProductData> = {
     considerations: [
       'La lámpara es necesaria y no figura incluida en el paquete investigado.',
     ],
+    seoIndexable: true,
   },
   B0BKKNNV7K: {
     id: 'nailog-maze',
@@ -29,6 +32,7 @@ const EDITORIAL: Record<string, EditorialProductData> = {
     summary:
       'Diseño floral de gel semicurado con 34 tiras en varios tamaños. Necesita curado con lámpara UV/LED.',
     considerations: ['La lámpara necesaria para el curado no figura incluida.'],
+    seoIndexable: true,
   },
   B0FDGB393Z: {
     id: 'nailog-meadow',
@@ -36,6 +40,7 @@ const EDITORIAL: Record<string, EditorialProductData> = {
     summary:
       'Diseño floral Meadow en formato de gel semicurado. El paquete investigado indica 34 tiras y uso de lámpara.',
     considerations: ['La lámpara necesaria para el curado no figura incluida.'],
+    seoIndexable: true,
   },
   B0D9VCWYT8: {
     id: 'jmeowio-francesa-rosa',
@@ -101,6 +106,7 @@ const EDITORIAL: Record<string, EditorialProductData> = {
       'Es un formato precured sin lámpara, distinto del gel semicurado UV convencional.',
     ],
     useCases: ['manicura-sin-lampara'],
+    seoIndexable: true,
   },
 };
 
@@ -134,12 +140,15 @@ const SEMICURADAS_PRODUCTS: Product[] = rawCatalog.products.map((raw) => {
     sourceVerifiedAt: rawCatalog.verifiedAt,
     active: true,
     sample: false,
+    ...(editorial.seoIndexable ? { seoIndexable: true } : {}),
   });
 });
 
 interface ToolEditorialData {
   summary: string;
   considerations: string[];
+  /** Allowlist editorial de indexación — ver `productIndexability.ts`. */
+  seoIndexable?: boolean;
 }
 
 const TORNO_EDITORIAL: Record<string, ToolEditorialData> = {
@@ -170,6 +179,7 @@ const TORNO_EDITORIAL: Record<string, ToolEditorialData> = {
     considerations: [
       'Su velocidad máxima (5400 RPM) es notablemente inferior a la de los tornos profesionales de esta comparativa; pensado para uso doméstico ocasional.',
     ],
+    seoIndexable: true,
   },
   'xoali-torno-25000-rpm-12-en-1': {
     summary:
@@ -215,6 +225,7 @@ const DUST_COLLECTOR_EDITORIAL: Record<string, ToolEditorialData> = {
     considerations: [
       'La ficha investigada no confirma la potencia en vatios; consulta el dato actualizado en Amazon.es.',
     ],
+    seoIndexable: true,
   },
   'layhou-aspirador-unas-80w': {
     summary:
@@ -284,6 +295,7 @@ const TORNO_PRODUCTS: Product[] = tornosCatalog.products.map((raw) => {
     sourceVerifiedAt: tornosCatalog.verifiedAt,
     active: true,
     sample: false,
+    ...(editorial.seoIndexable ? { seoIndexable: true } : {}),
   });
 });
 
@@ -313,6 +325,7 @@ const DUST_COLLECTOR_PRODUCTS: Product[] = dustCollectorCatalog.products.map(
       sourceVerifiedAt: dustCollectorCatalog.verifiedAt,
       active: true,
       sample: false,
+      ...(editorial.seoIndexable ? { seoIndexable: true } : {}),
     });
   },
 );
@@ -403,6 +416,7 @@ const NAIL_PRINTER_PRODUCTS: Product[] = nailPrinterCatalog.products.map(
       sourceVerifiedAt: nailPrinterCatalog.verifiedAt,
       active: true,
       sample: false,
+      ...(editorial.seoIndexable ? { seoIndexable: true } : {}),
     });
   },
 );

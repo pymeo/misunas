@@ -1,12 +1,17 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
 interface Props {
   title: string;
   description: string;
   canonicalPath: string;
   eyebrow?: string;
   noindex?: boolean;
+  breadcrumbs?: BreadcrumbItem[];
 }
 const {
   title,
@@ -14,16 +19,11 @@ const {
   canonicalPath,
   eyebrow = 'Guía editorial',
   noindex = false,
+  breadcrumbs = [{ label: 'Inicio', href: '/es/' }, { label: title }],
 } = Astro.props;
 ---
 
-<BaseLayout
-  {title}
-  {description}
-  {canonicalPath}
-  {noindex}
-  breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: title }]}
->
+<BaseLayout {title} {description} {canonicalPath} {noindex} {breadcrumbs}>
   <article class="container-page py-10 sm:py-16">
     <header class="max-w-4xl">
       <p class="eyebrow">{eyebrow}</p>

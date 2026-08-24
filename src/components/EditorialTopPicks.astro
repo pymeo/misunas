@@ -32,6 +32,10 @@ const medals: Record<number, string> = { 1: '🥇', 2: '🥈', 3: '🥉' };
               'card flex min-w-0 flex-col',
               pick.rank === 1 && 'bg-blush p-7 sm:col-span-2 sm:p-9',
             ]}
+            data-top-pick={pick.rank === 1 ? '' : undefined}
+            data-product-id={pick.rank === 1 ? product.id : undefined}
+            data-category={pick.rank === 1 ? category : undefined}
+            data-source-page={pick.rank === 1 ? sourcePage : undefined}
           >
             <div
               class:list={[
@@ -101,3 +105,39 @@ const medals: Record<number, string> = { 1: '🥇', 2: '🥈', 3: '🥉' };
     </section>
   )
 }
+
+<script>
+  /**
+   * Impresión del Top Pick (Fase 15): un único beacon por tarjeta cuando el
+   * rango 1 del Top 3 entra de verdad en el viewport, no en el momento del
+   * render (que no distingue si alguien llegó a verlo).
+   */
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-top-pick]')];
+  if (cards.length > 0 && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const card = entry.target as HTMLElement;
+          navigator.sendBeacon(
+            '/api/events/business/',
+            new Blob(
+              [
+                JSON.stringify({
+                  type: 'top_pick_impression',
+                  productId: card.dataset.productId,
+                  category: card.dataset.category,
+                  sourcePage: card.dataset.sourcePage,
+                }),
+              ],
+              { type: 'application/json' },
+            ),
+          );
+          observer.unobserve(card);
+        }
+      },
+      { threshold: 0.5 },
+    );
+    for (const card of cards) observer.observe(card);
+  }
+</script>

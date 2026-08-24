@@ -1,4 +1,7 @@
-import { getProductMedia } from '../src/application/productMediaResolver';
+import {
+  getMediaSrc,
+  getProductMedia,
+} from '../src/application/productMediaResolver';
 import { getMediaEntries } from '../src/data/productMedia';
 import { PRODUCTS } from '../src/data/products';
 
@@ -24,7 +27,7 @@ const rows: AuditRow[] = activeProducts.map((product) => {
         id: product.id,
         label,
         bucket: 'REAL',
-        detail: `${resolved.media.sourceType} · ${resolved.media.localPath ?? ''}`,
+        detail: `${resolved.media.sourceType} (${resolved.media.delivery}) · ${getMediaSrc(resolved.media)}`,
       };
     const candidate = getMediaEntries(product.id).find(
       (entry) => entry.status === 'candidate',

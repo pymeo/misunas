@@ -6,6 +6,7 @@ import MethodologyNotice from '@/components/MethodologyNotice.astro';
 import ProductComparison from '@/components/ProductComparison.astro';
 import ProductGrid from '@/components/ProductGrid.astro';
 import QuickChoiceGuide from '@/components/QuickChoiceGuide.astro';
+import RelatedLinks from '@/components/RelatedLinks.astro';
 import SelectionMethodBand from '@/components/SelectionMethodBand.astro';
 import { PRODUCTS } from '@/data/products';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -122,23 +123,11 @@ const topics = [
     <CategoryExpertGuide
       heading="Nueve datos que importan de verdad"
       topics={topics}
-    /><div>
-      <p class="eyebrow">Relacionado</p><h2 class="section-heading">
-        Completa tu equipo
-      </h2><div class="mt-7 grid gap-4">
-        <a class="card no-underline" href="/es/tornos-unas/"
-          ><h3 class="text-2xl">Tornos para uñas</h3><p class="mt-2 text-muted">
-            Para preparar y rebajar gel o acrílico antes de imprimir el diseño.
-          </p></a
-        ><a class="card no-underline" href="/es/aspiradores-polvo-unas/"
-          ><h3 class="text-2xl">Aspiradores de polvo</h3><p
-            class="mt-2 text-muted"
-          >
-            Controla el polvo que genera el limado previo a la impresión.
-          </p></a
-        >
-      </div>
-    </div>
+    />
+    <RelatedLinks
+      path="/es/impresoras-unas-3d/"
+      heading="Profundiza antes de decidir"
+    />
   </section>
 
   <section class="container-page py-14">

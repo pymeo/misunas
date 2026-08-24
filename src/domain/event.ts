@@ -14,10 +14,19 @@ export type AnalyticsEvent =
     }
   | {
       type: 'calculator_completed';
+      /** Qué calculadora se completó; opcional por compatibilidad con la ya existente (ahorro salón vs. casa). */
+      calculator?: 'ahorro-manicura' | 'rentabilidad-impresora';
       campaign?: import('@/application/campaign').CampaignAttribution;
     }
   | { type: 'review_submitted'; productId: string }
-  | { type: 'wear_report_submitted'; productId: string };
+  | { type: 'wear_report_submitted'; productId: string }
+  | {
+      type: 'top_pick_impression';
+      productId: string;
+      category: string;
+      sourcePage: string;
+    }
+  | { type: 'comparator_used'; category: string; sourcePage: string };
 
 export interface EventRepository {
   record(event: AnalyticsEvent): Promise<void>;

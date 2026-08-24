@@ -6,6 +6,7 @@ import MethodologyNotice from '@/components/MethodologyNotice.astro';
 import ProductComparison from '@/components/ProductComparison.astro';
 import ProductGrid from '@/components/ProductGrid.astro';
 import QuickChoiceGuide from '@/components/QuickChoiceGuide.astro';
+import RelatedLinks from '@/components/RelatedLinks.astro';
 import SelectionMethodBand from '@/components/SelectionMethodBand.astro';
 import { PRODUCTS } from '@/data/products';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -96,33 +97,8 @@ const topics = [
     <CategoryExpertGuide
       heading="Seis datos que importan de verdad"
       topics={topics}
-    /><div>
-      <p class="eyebrow">Relacionado</p><h2 class="section-heading">
-        Completa tu equipo
-      </h2><div class="mt-7 grid gap-4">
-        <a class="card no-underline" href="/es/aspiradores-polvo-unas/"
-          ><h3 class="text-2xl">Aspiradores de polvo</h3><p
-            class="mt-2 text-muted"
-          >
-            El polvo que genera un torno se controla mejor con un aspirador de
-            sobremesa cerca de la mano.
-          </p></a
-        ><a class="card no-underline" href="/es/impresoras-unas-3d/"
-          ><h3 class="text-2xl">Impresoras de uñas 3D</h3><p
-            class="mt-2 text-muted"
-          >
-            Una vez preparada la uña, imprime el diseño en segundos con una
-            impresora digital.
-          </p></a
-        ><a class="card no-underline" href="/es/encuentra-tus-unas/"
-          ><h3 class="text-2xl">Encuentra tus uñas</h3><p
-            class="mt-2 text-muted"
-          >
-            Si buscas tiras semicuradas en vez de maquinaria, empieza aquí.
-          </p></a
-        >
-      </div>
-    </div>
+    />
+    <RelatedLinks path="/es/tornos-unas/" heading="Completa tu equipo" />
   </section>
 
   <section class="container-page py-14">

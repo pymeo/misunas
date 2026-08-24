@@ -14,9 +14,15 @@ const {
   interactive = false,
 } = Astro.props;
 const visible = products.slice(0, interactive ? products.length : 4);
+const category = products[0]?.category ?? '';
 ---
 
-<section data-comparison data-interactive={String(interactive)}>
+<section
+  data-comparison
+  data-interactive={String(interactive)}
+  data-category={category}
+  data-source-page={sourcePage}
+>
   {
     visible.length === 0 && (
       <div class="rounded-card border border-border bg-surface p-7">
@@ -133,6 +139,23 @@ const visible = products.slice(0, interactive ? products.length : 4);
   </p>
 </section>
 <script>
+  /** Un único beacon por comparador cargado, en la primera interacción real (no en la carga). */
+  const reportComparatorUsed = (root: HTMLElement) => {
+    navigator.sendBeacon(
+      '/api/events/business/',
+      new Blob(
+        [
+          JSON.stringify({
+            type: 'comparator_used',
+            category: root.dataset.category,
+            sourcePage: root.dataset.sourcePage,
+          }),
+        ],
+        { type: 'application/json' },
+      ),
+    );
+  };
+
   for (const root of document.querySelectorAll<HTMLElement>(
     '[data-comparison][data-interactive="true"]',
   )) {
@@ -140,6 +163,7 @@ const visible = products.slice(0, interactive ? products.length : 4);
       ...root.querySelectorAll<HTMLInputElement>('[data-comparison-choice]'),
     ];
     const status = root.querySelector<HTMLElement>('[data-comparison-status]');
+    let hasReportedUse = false;
     const update = (changed?: HTMLInputElement) => {
       const checked = choices.filter((choice) => choice.checked);
       if (checked.length > 4 && changed) changed.checked = false;
@@ -159,7 +183,13 @@ const visible = products.slice(0, interactive ? products.length : 4);
             : `Hay ${selected.size} productos seleccionados.`;
     };
     for (const choice of choices)
-      choice.addEventListener('change', () => update(choice));
+      choice.addEventListener('change', () => {
+        if (!hasReportedUse) {
+          hasReportedUse = true;
+          reportComparatorUsed(root);
+        }
+        update(choice);
+      });
     update();
   }
 </script>
