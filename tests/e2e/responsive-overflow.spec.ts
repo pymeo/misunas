@@ -4,6 +4,7 @@ const routes = [
   '/es/',
   '/es/encuentra-tus-unas/',
   '/es/comparar/',
+  '/es/mejores-unas-semicuradas/',
   '/es/tornos-unas/',
   '/es/aspiradores-polvo-unas/',
   '/es/productos/ohora-n-cream-cotton/',

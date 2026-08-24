@@ -7,8 +7,15 @@ interface Props {
   sourcePage: string;
   component?: string;
   position?: number;
+  label?: string;
 }
-const { product, sourcePage, component = 'amazon-cta', position } = Astro.props;
+const {
+  product,
+  sourcePage,
+  component = 'amazon-cta',
+  position,
+  label = 'Ver precio actualizado en Amazon',
+} = Astro.props;
 const href =
   product.active &&
   product.affiliateEligible &&
@@ -30,7 +37,7 @@ const href =
       data-position={position}
       aria-label={`Ver precio de ${product.name} en Amazon (abre en una pestaña nueva)`}
     >
-      Ver precio actualizado en Amazon{' '}
+      {label}{' '}
       <span class="ml-2" aria-hidden="true">
         ↗
       </span>

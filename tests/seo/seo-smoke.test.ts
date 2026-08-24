@@ -159,6 +159,35 @@ describe('SEO production smoke tests', () => {
     }
   });
 
+  it('server-renders a Top 3 editorial pick near the top of every money page', () => {
+    for (const relativePath of [
+      'es/mejores-unas-semicuradas/index.html',
+      'es/tornos-unas/index.html',
+      'es/aspiradores-polvo-unas/index.html',
+    ]) {
+      const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
+      const topPicksIndex = html.indexOf('id="nuestra-seleccion"');
+      const comparisonIndex = html.indexOf('Comparación esencial');
+      expect(topPicksIndex).toBeGreaterThan(0);
+      expect(comparisonIndex).toBeGreaterThan(topPicksIndex);
+      expect(html).toContain('🥇');
+      expect(html).toContain('Por qué lo elegimos');
+    }
+  });
+
+  it('never invents numeric scores or ratings for editorial picks', () => {
+    for (const relativePath of [
+      'es/mejores-unas-semicuradas/index.html',
+      'es/tornos-unas/index.html',
+      'es/aspiradores-polvo-unas/index.html',
+    ]) {
+      const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
+      expect(html).not.toMatch(/\d(?:[.,]\d)?\s*\/\s*10\b/);
+      expect(html).not.toMatch(/\d(?:[.,]\d)?\s*(?:estrellas|★)/i);
+      expect(html).not.toMatch(/\b\d{2,3}\s*%\s*(?:compatible|match)/i);
+    }
+  });
+
   it('uses the mandatory Amazon disclosure near commercial content', () => {
     const html = readFileSync(
       resolve(clientRoot, 'es/mejores-unas-semicuradas/index.html'),

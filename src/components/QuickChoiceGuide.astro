@@ -1,0 +1,37 @@
+---
+import { getResolvedQuickChoices } from '@/data/editorialSelections';
+import type { Product } from '@/domain/product';
+interface Props {
+  category: Product['category'];
+}
+const { category } = Astro.props;
+const choices = getResolvedQuickChoices(category);
+---
+
+{
+  choices.length > 0 && (
+    <div class="min-w-0 rounded-card border border-border bg-surface p-6 sm:p-7">
+      <p class="eyebrow">Decide en 10 segundos</p>
+      <h3 class="mt-2 text-2xl">¿Cuál elegir?</h3>
+      <dl class="mt-6 grid gap-4 sm:grid-cols-2">
+        {choices.map((choice) => (
+          <div class="min-w-0 rounded-xl bg-background p-4">
+            <dt class="text-sm text-muted">{choice.question}</dt>
+            <dd class="mt-1 font-bold break-words">
+              {choice.product ? (
+                <a
+                  class="text-primary no-underline"
+                  href={`/es/productos/${choice.product.slug}/`}
+                >
+                  → {choice.answer}
+                </a>
+              ) : (
+                <span>→ {choice.answer}</span>
+              )}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  )
+}

@@ -1,0 +1,85 @@
+---
+import AmazonCTA from '@/components/AmazonCTA.astro';
+import {
+  getCategoryEditorial,
+  getResolvedPicks,
+} from '@/data/editorialSelections';
+import type { Product } from '@/domain/product';
+interface Props {
+  category: Product['category'];
+  sourcePage: string;
+}
+const { category, sourcePage } = Astro.props;
+const editorial = getCategoryEditorial(category);
+const resolved = getResolvedPicks(category);
+const medals: Record<number, string> = { 1: '🥇', 2: '🥈', 3: '🥉' };
+---
+
+{
+  editorial && resolved.length > 0 && (
+    <section
+      id="nuestra-seleccion"
+      class="scroll-mt-24 rounded-[1.75rem] border border-border bg-surface p-5 shadow-card sm:p-8"
+    >
+      <p class="eyebrow">{editorial.eyebrow}</p>
+      <h2 class="section-heading">{editorial.title}</h2>
+      <p class="section-intro">{editorial.intro}</p>
+      <div class="mt-8 grid min-w-0 gap-5 sm:grid-cols-2">
+        {resolved.map(({ pick, product }) => (
+          <article
+            class:list={[
+              'card flex min-w-0 flex-col',
+              pick.rank === 1 && 'bg-blush p-7 sm:col-span-2 sm:p-9',
+            ]}
+          >
+            <p class="inline-flex w-fit items-center rounded-full bg-primary px-3 py-1 text-xs font-bold text-white">
+              {medals[pick.rank]} {pick.badge}
+            </p>
+            <h3
+              class:list={[
+                'mt-3 leading-snug',
+                pick.rank === 1 ? 'text-3xl' : 'text-xl',
+              ]}
+            >
+              <a class="no-underline" href={`/es/productos/${product.slug}/`}>
+                {product.brand} · {product.name}
+              </a>
+            </h3>
+            <p class="mt-3 leading-7 text-muted">{pick.verdict}</p>
+            <p class="mt-4 text-sm font-bold text-text">
+              Ideal para:{' '}
+              <span class="font-normal text-muted">
+                {pick.bestFor.join(' · ')}
+              </span>
+            </p>
+            <p class="mt-4 text-sm font-bold text-text">Por qué lo elegimos</p>
+            <ul class="mt-2 grid gap-1.5 text-sm text-muted">
+              {pick.reasons.map((reason) => (
+                <li>✓ {reason}</li>
+              ))}
+            </ul>
+            <div class="mt-auto flex flex-wrap items-center gap-2 pt-6">
+              <a
+                class="button-quiet px-2"
+                href={`/es/productos/${product.slug}/`}
+              >
+                Ver análisis
+              </a>
+              <AmazonCTA
+                {product}
+                {sourcePage}
+                component="editorial-top-picks"
+                position={pick.rank}
+                label={
+                  pick.rank === 1
+                    ? 'Ver nuestra elección en Amazon'
+                    : 'Ver precio en Amazon'
+                }
+              />
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}

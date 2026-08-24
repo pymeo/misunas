@@ -3,6 +3,7 @@ import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
 import AmazonCTA from '@/components/AmazonCTA.astro';
 import MethodologyNotice from '@/components/MethodologyNotice.astro';
 import ProductFacts from '@/components/ProductFacts.astro';
+import EditorialVerdict from '@/components/EditorialVerdict.astro';
 import ProductGrid from '@/components/ProductGrid.astro';
 import ProductReviews from '@/components/ProductReviews.astro';
 import ProductStatistics from '@/components/ProductStatistics.astro';
@@ -82,7 +83,10 @@ const dustSpecs =
       </div>
     </section>
 
-    <div class="container-page pb-8"><AffiliateDisclosure /></div>
+    <div class="container-page grid gap-8 pb-8">
+      <AffiliateDisclosure />
+      <EditorialVerdict {product} />
+    </div>
 
     <section
       class:list={[

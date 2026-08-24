@@ -1,8 +1,12 @@
 ---
 import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import CategoryExpertGuide from '@/components/CategoryExpertGuide.astro';
+import EditorialTopPicks from '@/components/EditorialTopPicks.astro';
 import MethodologyNotice from '@/components/MethodologyNotice.astro';
 import ProductComparison from '@/components/ProductComparison.astro';
 import ProductGrid from '@/components/ProductGrid.astro';
+import QuickChoiceGuide from '@/components/QuickChoiceGuide.astro';
+import SelectionMethodBand from '@/components/SelectionMethodBand.astro';
 import { PRODUCTS } from '@/data/products';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
@@ -15,6 +19,32 @@ const featured = tornos.filter((product) =>
     'bickon-torno-20000-rpm-6-en-1',
   ].includes(product.id),
 );
+const topics = [
+  {
+    title: 'Velocidad máxima (RPM)',
+    body: 'Más RPM da más margen de regulación, no significa que debas usarlo siempre al máximo: para uñas naturales o cutícula suele bastar con una velocidad baja, y el resto del rango queda para gel o acrílico grueso.',
+  },
+  {
+    title: 'Giro bidireccional',
+    body: 'Poder invertir el sentido de giro es útil según con qué mano trabajes y en qué dirección limas cada uña; con un torno unidireccional tendrás que girar tú la mano para compensar.',
+  },
+  {
+    title: 'Pedal',
+    body: 'Un pedal te permite cambiar el control del equipo sin soltar la fresa ni recurrir siempre al botón manual, algo habitual en configuraciones tipo salón.',
+  },
+  {
+    title: 'Batería o cable',
+    body: 'Si vas a moverlo entre casa y salón, o simplemente no quieres depender de un enchufe cerca de la mesa, prioriza un modelo recargable o USB frente a uno con base fija.',
+  },
+  {
+    title: 'Accesorios incluidos',
+    body: 'Más cantidad de fresas no significa automáticamente mejores puntas: importa qué necesitas hacer (rebajar gel, pulir, retirar cutícula) más que el número total.',
+  },
+  {
+    title: 'Si es tu primera vez',
+    body: 'Al empezar importa más poder regular la velocidad y trabajar de forma progresiva que comprar directamente el torno con más RPM; un modelo sencillo con buen control a baja velocidad suele ser más cómodo para aprender.',
+  },
+];
 ---
 
 <BaseLayout
@@ -32,40 +62,15 @@ const featured = tornos.filter((product) =>
     >
       Tornos para uñas: comparativa y guía para elegir
     </h1><p class="section-intro">
-      Compara velocidad máxima, accesorios incluidos, alimentación y pedal antes
-      de decidir. Ningún dato de rendimiento está inventado: procede de la ficha
-      investigada de cada producto en Amazon.es.
+      Hemos revisado los ocho tornos eléctricos para uñas disponibles en
+      Amazon.es y te explicamos cuáles elegiríamos según cómo vayas a usarlo.
     </p><div class="mt-8"><AffiliateDisclosure /></div>
   </section>
 
-  <section class="container-page pb-14">
-    <div class="rounded-[1.5rem] bg-primary p-7 text-white sm:p-9">
-      <p class="text-xs font-bold tracking-wider text-blush uppercase">
-        Respuesta rápida
-      </p><h2 class="mt-3 text-3xl sm:text-4xl">Elige primero el uso</h2><div
-        class="mt-7 grid gap-5 md:grid-cols-3"
-      >
-        <div class="border-t border-white/25 pt-4">
-          <h3 class="text-xl">Buscas máxima velocidad</h3><p
-            class="mt-2 text-sm text-white/75"
-          >
-            Compara los modelos de 35000 RPM con pantalla y varios accesorios.
-          </p>
-        </div><div class="border-t border-white/25 pt-4">
-          <h3 class="text-xl">Quieres controlar con el pie</h3><p
-            class="mt-2 text-sm text-white/75"
-          >
-            Filtra los modelos que incluyen pedal para tener las manos libres.
-          </p>
-        </div><div class="border-t border-white/25 pt-4">
-          <h3 class="text-xl">Priorizas que sea portátil</h3><p
-            class="mt-2 text-sm text-white/75"
-          >
-            Mira los modelos recargables o con alimentación USB.
-          </p>
-        </div>
-      </div>
-    </div>
+  <section class="container-page grid gap-6 pb-14">
+    <EditorialTopPicks category="tornos" sourcePage="/es/tornos-unas/" />
+    <SelectionMethodBand />
+    <QuickChoiceGuide category="tornos" />
   </section>
 
   <section class="container-page py-14">
@@ -88,38 +93,10 @@ const featured = tornos.filter((product) =>
   </section>
 
   <section class="container-page grid gap-10 py-14 lg:grid-cols-[1fr_.8fr]">
-    <div>
-      <p class="eyebrow">Cómo elegir</p><h2 class="section-heading">
-        Cinco datos que importan
-      </h2><ol class="mt-7 grid gap-5">
-        <li class="card">
-          <strong>1. Velocidad máxima (RPM)</strong><p class="mt-2 text-muted">
-            Más RPM da más margen de trabajo, pero también exige más cuidado con
-            la presión y el ángulo de la fresa.
-          </p>
-        </li><li class="card">
-          <strong>2. Alimentación</strong><p class="mt-2 text-muted">
-            Recargable, con cable o por USB: cambia dónde y cuánto tiempo puedes
-            usarlo sin interrupciones.
-          </p>
-        </li><li class="card">
-          <strong>3. Accesorios incluidos</strong><p class="mt-2 text-muted">
-            El número de fresas o puntas condiciona cuántos trabajos distintos
-            puedes hacer sin comprar accesorios aparte.
-          </p>
-        </li><li class="card">
-          <strong>4. Pedal</strong><p class="mt-2 text-muted">
-            Un pedal libera las manos para controlar la velocidad mientras
-            trabajas, algo habitual en equipos de salón.
-          </p>
-        </li><li class="card">
-          <strong>5. Portabilidad</strong><p class="mt-2 text-muted">
-            Si vas a moverlo entre casa y salón, un modelo recargable o USB
-            compacto pesa y estorba menos que uno con base fija.
-          </p>
-        </li>
-      </ol>
-    </div><div>
+    <CategoryExpertGuide
+      heading="Seis datos que importan de verdad"
+      topics={topics}
+    /><div>
       <p class="eyebrow">Relacionado</p><h2 class="section-heading">
         Completa tu equipo
       </h2><div class="mt-7 grid gap-4">

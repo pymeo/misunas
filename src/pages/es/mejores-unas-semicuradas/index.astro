@@ -1,11 +1,37 @@
 ---
 import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import CategoryExpertGuide from '@/components/CategoryExpertGuide.astro';
+import EditorialTopPicks from '@/components/EditorialTopPicks.astro';
 import MethodologyNotice from '@/components/MethodologyNotice.astro';
 import ProductComparison from '@/components/ProductComparison.astro';
 import ProductGrid from '@/components/ProductGrid.astro';
+import QuickChoiceGuide from '@/components/QuickChoiceGuide.astro';
+import SelectionMethodBand from '@/components/SelectionMethodBand.astro';
 import { FEATURED_PRODUCTS } from '@/data/products';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 export const prerender = true;
+const topics = [
+  {
+    title: 'Con o sin lámpara',
+    body: 'El gel semicurado UV/LED necesita curarse con lámpara; los formatos precured (como Mylee) se aplican sin ella. No son equivalentes: si no quieres usar lámpara, descarta directamente el semicurado UV y mira la alternativa precured.',
+  },
+  {
+    title: 'Kit completo o solo tiras',
+    body: 'Un kit de inicio reúne tiras y lámpara en el mismo paquete: cómodo si empiezas de cero. Si ya tienes lámpara, comprar solo tiras suele salir mejor que pagar por una segunda lámpara que no necesitas.',
+  },
+  {
+    title: 'Número de tiras y tamaños',
+    body: 'Más tiras por paquete no siempre significa más tamaños distintos: solo indicamos la cantidad cuando el fabricante la confirma, porque es lo que determina cuántos intentos tienes para encontrar el ajuste correcto en cada uña.',
+  },
+  {
+    title: 'Estilo',
+    body: 'Natural, francesa, floral o llamativo son etiquetas que verificamos contra el catálogo real, no una opinión sobre qué diseño es "mejor": el mejor estilo es el que realmente te vas a poner.',
+  },
+  {
+    title: 'Tu primera aplicación',
+    body: 'Si es tu primera vez, un kit con instrucciones y lámpara incluida reduce la curva de aprendizaje; con experiencia previa, puedes centrarte directamente en estilo y cantidad de tiras.',
+  },
+];
 ---
 
 <BaseLayout
@@ -24,40 +50,20 @@ export const prerender = true;
     >
       Mejores uñas semicuradas: comparativa y guía para elegir
     </h1><p class="section-intro">
-      Encuentra tu opción fijándote en tres detalles: si quieres usar lámpara,
-      si necesitas que venga incluida y qué estilo buscas.
+      Hemos revisado el catálogo de uñas semicuradas investigado en Amazon.es y
+      te explicamos cuáles elegiríamos según lo que busques.
     </p><div class="mt-8"><AffiliateDisclosure /></div>
   </section>
-  <section class="container-page pb-14">
-    <div class="rounded-[1.5rem] bg-primary p-7 text-white sm:p-9">
-      <p class="text-xs font-bold tracking-wider text-blush uppercase">
-        Respuesta rápida
-      </p><h2 class="mt-3 text-3xl sm:text-4xl">
-        Elige primero el formato
-      </h2><div class="mt-7 grid gap-5 md:grid-cols-3">
-        <div class="border-t border-white/25 pt-4">
-          <h3 class="text-xl">Ya tienes lámpara</h3><p
-            class="mt-2 text-sm text-white/75"
-          >
-            Compara estilo y número de tiras entre formatos semicurados UV/LED.
-          </p>
-        </div><div class="border-t border-white/25 pt-4">
-          <h3 class="text-xl">Quieres un kit</h3><p
-            class="mt-2 text-sm text-white/75"
-          >
-            Filtra únicamente opciones donde la lámpara figure incluida.
-          </p>
-        </div><div class="border-t border-white/25 pt-4">
-          <h3 class="text-xl">No quieres lámpara</h3><p
-            class="mt-2 text-sm text-white/75"
-          >
-            Mira formatos precured o nail wraps; no son equivalentes al
-            semicurado UV.
-          </p>
-        </div>
-      </div>
-    </div>
+
+  <section class="container-page grid gap-6 pb-14">
+    <EditorialTopPicks
+      category="unas-semicuradas"
+      sourcePage="/es/mejores-unas-semicuradas/"
+    />
+    <SelectionMethodBand />
+    <QuickChoiceGuide category="unas-semicuradas" />
   </section>
+
   <section class="container-page py-14">
     <p class="eyebrow">Comparación esencial</p><h2 class="section-heading">
       Cuatro opciones, atributos equivalentes
@@ -83,34 +89,10 @@ export const prerender = true;
     </div>
   </section>
   <section class="container-page grid gap-10 py-14 lg:grid-cols-[1fr_.8fr]">
-    <div>
-      <p class="eyebrow">Cómo elegir</p><h2 class="section-heading">
-        Cuatro preguntas útiles
-      </h2><ol class="mt-7 grid gap-5">
-        <li class="card">
-          <strong>1. ¿Quieres curado UV/LED?</strong><p class="mt-2 text-muted">
-            Descarta de entrada el formato incompatible con tu decisión.
-          </p>
-        </li><li class="card">
-          <strong>2. ¿Necesitas lámpara?</strong><p class="mt-2 text-muted">
-            “Requiere lámpara” y “la incluye” son datos diferentes.
-          </p>
-        </li><li class="card">
-          <strong>3. ¿Qué diseño usarías realmente?</strong><p
-            class="mt-2 text-muted"
-          >
-            Natural, francesa, floral o llamativo son señales verificables del
-            catálogo.
-          </p>
-        </li><li class="card">
-          <strong>4. ¿Conoces la cantidad de tiras?</strong><p
-            class="mt-2 text-muted"
-          >
-            Solo comparamos el número cuando está explícitamente confirmado.
-          </p>
-        </li>
-      </ol>
-    </div><div>
+    <CategoryExpertGuide
+      heading="Cinco datos que importan de verdad"
+      topics={topics}
+    /><div>
       <p class="eyebrow">Herramientas</p><h2 class="section-heading">
         Decide con ayuda
       </h2><div class="mt-7 grid gap-4">
