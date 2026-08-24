@@ -29,6 +29,7 @@ export const SAMPLE_PRODUCTS: Product[] = [
     active: true,
     sample: true,
     seoIndexable: false,
+    firstHandTested: false,
   },
   {
     id: 'sample-no-lamp',
@@ -54,5 +55,6 @@ export const SAMPLE_PRODUCTS: Product[] = [
     active: true,
     sample: true,
     seoIndexable: false,
+    firstHandTested: false,
   },
 ];

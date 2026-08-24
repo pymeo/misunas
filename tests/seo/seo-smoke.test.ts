@@ -24,6 +24,7 @@ const launchPages = [
   'es/impresoras-unas-3d/cartuchos-y-consumibles/index.html',
   'es/calculadora-ahorro-manicura/index.html',
   'es/calculadora-rentabilidad-impresora-unas/index.html',
+  'es/comparar/index.html',
   'es/encuentra-tus-unas/index.html',
   'es/metodologia/index.html',
   'es/sobre-nosotras/index.html',

@@ -27,6 +27,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "media:audit": "tsx scripts/media-audit.ts",
+    "affiliate:audit": "tsx scripts/affiliate-audit.ts",
+    "catalog:audit": "tsx scripts/catalog-audit.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply tus-unas --local",
     "db:migrate:remote": "wrangler d1 migrations apply tus-unas --remote",

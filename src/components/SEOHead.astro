@@ -28,6 +28,12 @@ const {
 const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
 const canonical = new URL(canonicalPath, SITE_URL).toString();
 const socialImage = new URL(image, SITE_URL).toString();
+/**
+ * Verificación de Google Search Console (Fase 17): completamente opcional.
+ * Sin token en el entorno no se renderiza nada — nunca se inventa un valor.
+ */
+const googleSiteVerification = import.meta.env
+  .PUBLIC_GOOGLE_SITE_VERIFICATION as string | undefined;
 ---
 
 <meta charset="UTF-8" />
@@ -35,6 +41,11 @@ const socialImage = new URL(image, SITE_URL).toString();
 <meta name="generator" content={Astro.generator} />
 <meta name="description" content={description} />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
+{
+  googleSiteVerification && (
+    <meta name="google-site-verification" content={googleSiteVerification} />
+  )
+}
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 <link rel="canonical" href={canonical} />
 {

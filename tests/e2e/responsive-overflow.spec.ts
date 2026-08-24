@@ -8,6 +8,8 @@ const routes = [
   '/es/tornos-unas/',
   '/es/aspiradores-polvo-unas/',
   '/es/impresoras-unas-3d/',
+  '/es/calculadora-ahorro-manicura/',
+  '/es/calculadora-rentabilidad-impresora-unas/',
   '/es/productos/ohora-n-cream-cotton/',
   '/es/productos/kredioo-torno-profesional-35000-rpm/',
   '/es/productos/anbeistee-colector-polvo-2000pa/',

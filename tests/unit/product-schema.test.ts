@@ -20,6 +20,10 @@ describe('catálogo de producto', () => {
       expect(JSON.stringify(product)).not.toMatch(/price|rating|reviewCount/iu);
     }
   });
+  it('no marca ningún producto como probado físicamente sin evidencia real (Fase 10)', () => {
+    for (const product of PRODUCTS)
+      expect(product.firstHandTested, product.id).toBe(false);
+  });
   it('mantiene IDs, slugs y ASIN únicos', () => {
     expect(new Set(PRODUCTS.map(({ id }) => id)).size).toBe(PRODUCTS.length);
     expect(new Set(PRODUCTS.map(({ slug }) => slug)).size).toBe(

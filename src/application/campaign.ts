@@ -1,5 +1,9 @@
 import { z } from 'zod';
+import type { CampaignAttribution } from '@/application/campaignAttribution';
 
+export type { CampaignAttribution } from '@/application/campaignAttribution';
+
+/** Validación server-side (Zod) del UTM que llega en un POST no fiable. Para leer/sanear la URL en el cliente, usa `readCampaignAttribution` en `@/application/campaignAttribution` (sin Zod, para no arrastrarlo al bundle del navegador). */
 export const campaignSchema = z.object({
   utmSource: z
     .string()
@@ -30,24 +34,6 @@ export const campaignSchema = z.object({
     .regex(/^[\p{L}\p{N} ._~-]+$/u)
     .optional(),
 });
-export type CampaignAttribution = z.infer<typeof campaignSchema>;
-
-export function readCampaignAttribution(search: string): CampaignAttribution {
-  const params = new URLSearchParams(search);
-  const clean = (name: string) =>
-    params
-      .get(name)
-      ?.trim()
-      .slice(0, 100)
-      .replace(/[^\p{L}\p{N} ._~-]/gu, '') || undefined;
-  const candidate = {
-    utmSource: clean('utm_source'),
-    utmMedium: clean('utm_medium'),
-    utmCampaign: clean('utm_campaign'),
-    utmContent: clean('utm_content'),
-  };
-  return campaignSchema.parse(candidate);
-}
 
 export function campaignToMetadata(
   campaign?: CampaignAttribution,

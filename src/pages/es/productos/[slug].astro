@@ -247,6 +247,24 @@ const jsonLd = productJsonLd(product, [], {
           Los atributos comerciales de esta ficha se comprobaron en Amazon.es el {
             product.sourceVerifiedAt
           }.
+        </p><p
+          class:list={[
+            'mt-4 rounded-xl p-4 text-sm leading-6',
+            product.firstHandTested
+              ? 'bg-blush text-text'
+              : 'bg-background text-muted',
+          ]}
+        >
+          {
+            product.firstHandTested ? (
+              <>✓ Probado físicamente por el equipo de Tus-Uñas.</>
+            ) : (
+              <>
+                Análisis editorial basado en características y fuentes
+                verificadas. No hemos probado físicamente este modelo.
+              </>
+            )
+          }
         </p><div class="mt-7"><MethodologyNotice /></div>
       </div><div>
         <p class="eyebrow">Preguntas frecuentes</p><h2 class="section-heading">

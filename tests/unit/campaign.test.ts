@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import {
-  campaignSchema,
-  readCampaignAttribution,
-} from '@/application/campaign';
+import { campaignSchema } from '@/application/campaign';
+import { readCampaignAttribution } from '@/application/campaignAttribution';
 
 describe('campaign attribution', () => {
   it('keeps only the four allowed UTM fields', () => {

@@ -136,6 +136,14 @@ export const productSchema = z
     active: z.boolean(),
     sample: z.boolean().default(false),
     /**
+     * `true` únicamente cuando el equipo ha probado físicamente esta unidad
+     * concreta. `false` por defecto — la mayoría del catálogo es análisis
+     * editorial a partir de la ficha investigada, no una prueba propia; la
+     * ficha (`[slug].astro`) lo dice explícitamente en ambos casos para no
+     * insinuar una prueba física que no ha ocurrido.
+     */
+    firstHandTested: z.boolean().default(false),
+    /**
      * Allowlist editorial explícita de fichas aptas para indexación (Google).
      * `false` por defecto: la mayoría del catálogo son fichas de investigación
      * verificadas pero no verificadas físicamente por el equipo, así que

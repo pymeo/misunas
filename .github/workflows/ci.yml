@@ -23,3 +23,6 @@ jobs:
       - run: npm run format:check
       - run: npm run build
       - run: npm test
+      - run: npm run catalog:audit
+      - run: npm run affiliate:audit
+      - run: npm run media:audit

@@ -61,6 +61,12 @@ No existe endpoint administrativo público. Las opiniones nuevas son `pending` y
 
 ## Configuración
 
-`AMAZON_AFFILIATE_TAG=tusunas-21` y `AMAZON_MARKETPLACE=es` son configuración no secreta centralizada. `PUBLIC_CF_WEB_ANALYTICS_TOKEN` activa el beacon oficial de Cloudflare Web Analytics cuando se proporciona. `.env.example` no contiene secretos.
+El tag de afiliado (`tusunas-21`) y el marketplace (`es`) viven fijos en `src/config/site.ts`, no como variable de entorno: no esperamos operar varios tags o mercados. `.env.example` documenta las variables realmente leídas — ninguna es obligatoria para compilar:
 
-Cloudflare Workers Builds puede usar `npm ci` y `npm run build`. No hay workflow de despliegue automático ni configuración de custom domain.
+- `PUBLIC_CF_WEB_ANALYTICS_TOKEN`: activa el beacon oficial de Cloudflare Web Analytics.
+- `PUBLIC_GOOGLE_SITE_VERIFICATION`: añade la etiqueta de verificación de Google Search Console cuando se define.
+- `AMAZON_CREATORS_API_ENABLED`: mantener en `false` (ver `docs/PRODUCT_MEDIA_AUDIT.md`).
+
+`.env.example` no contiene secretos.
+
+Cloudflare Workers Builds puede usar `npm ci` y `npm run build`. No hay workflow de despliegue automático ni configuración de custom domain — ver `docs/DEPLOYMENT.md` para el checklist manual de lanzamiento.

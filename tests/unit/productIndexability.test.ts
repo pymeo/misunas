@@ -10,6 +10,7 @@ const findProduct = (id: string): Product => {
 };
 
 const basePayload: Omit<Product, 'seoIndexable'> = {
+  firstHandTested: false,
   id: 'demo',
   slug: 'demo',
   brand: 'Demo',
