@@ -1,9 +1,31 @@
 ---
+import { getNailStyleTone } from '@/application/nailStyleTone';
 import { RECOMMENDER_ELIGIBLE_PRODUCT_TYPES } from '@/application/recommendation';
+import { getProductMedia } from '@/application/productMediaResolver';
 import { PRODUCTS } from '@/data/products';
+/**
+ * Cada producto recomendable lleva embebido su `visual` (misma fuente de
+ * verdad que ProductVisual: getProductMedia) para que el resultado, ya
+ * renderizado en el cliente, pueda mostrar la misma imagen real o el mismo
+ * estilo editorial que el resto del sitio, sin duplicar el resolver.
+ */
 const recommendableProducts = PRODUCTS.filter((product) =>
   RECOMMENDER_ELIGIBLE_PRODUCT_TYPES.includes(product.productType),
-);
+).map((product) => {
+  const media = getProductMedia(product);
+  const visual =
+    media.kind === 'image'
+      ? {
+          kind: 'image' as const,
+          src: media.media.localPath ?? '',
+          alt: media.media.alt,
+        }
+      : {
+          kind: 'editorial' as const,
+          tone: getNailStyleTone(product.styleTags),
+        };
+  return { ...product, visual };
+});
 const questions = [
   {
     name: 'style',
@@ -120,10 +142,18 @@ const questions = [
   import { buildAmazonAffiliateUrl } from '@/application/affiliate';
   import { readCampaignAttribution } from '@/application/campaign';
   import {
+    NAIL_TONE_HEX,
+    type NailStyleTone,
+  } from '@/application/nailStyleTone';
+  import {
     recommendProducts,
     type RecommendationAnswers,
   } from '@/application/recommendation';
   import type { Product } from '@/domain/product';
+  type RecommenderVisual =
+    | { kind: 'image'; src: string; alt: string }
+    | { kind: 'editorial'; tone: NailStyleTone };
+  type RecommenderProduct = Product & { visual: RecommenderVisual };
   const make = <K extends keyof HTMLElementTagNameMap>(
     tag: K,
     className?: string,
@@ -132,6 +162,48 @@ const questions = [
     if (className) node.className = className;
     return node;
   };
+  const buildEditorialVisual = (tone: NailStyleTone) => {
+    const row = make(
+      'div',
+      'absolute inset-x-[15%] top-[13%] flex justify-center gap-[7%]',
+    );
+    NAIL_TONE_HEX[tone].forEach((hex, index) => {
+      const pill = make(
+        'span',
+        `h-24 w-9 rounded-[999px] shadow-soft ${index === 0 ? '-rotate-12' : index === 2 ? 'rotate-12' : ''}`,
+      );
+      pill.style.background = hex;
+      row.appendChild(pill);
+    });
+    return row;
+  };
+  const buildVisual = (product: RecommenderProduct) => {
+    const wrap = make(
+      'div',
+      'relative aspect-[4/3] overflow-hidden rounded-2xl bg-lavender',
+    );
+    if (product.visual.kind === 'image') {
+      const img = document.createElement('img');
+      img.src = product.visual.src;
+      img.alt = product.visual.alt;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.className = 'block size-full max-w-full object-contain p-3';
+      img.addEventListener('error', () => {
+        wrap.replaceChildren(
+          buildEditorialVisual(getNailStyleToneFallback(product)),
+        );
+      });
+      wrap.appendChild(img);
+    } else {
+      wrap.appendChild(buildEditorialVisual(product.visual.tone));
+    }
+    return wrap;
+  };
+  const getNailStyleToneFallback = (
+    product: RecommenderProduct,
+  ): NailStyleTone =>
+    product.visual.kind === 'editorial' ? product.visual.tone : 'rose';
   for (const root of document.querySelectorAll<HTMLElement>(
     '[data-recommender]',
   )) {
@@ -184,7 +256,9 @@ const questions = [
       showStep(0);
       form.scrollIntoView({ block: 'start' });
     });
-    const products = JSON.parse(root.dataset.products ?? '[]') as Product[];
+    const products = JSON.parse(
+      root.dataset.products ?? '[]',
+    ) as RecommenderProduct[];
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       if (!form.reportValidity()) return;
@@ -201,7 +275,10 @@ const questions = [
       }
       recommendations.forEach((recommendation, index) => {
         const article = make('article', 'card flex flex-col');
-        const label = make('p', 'eyebrow');
+        article.appendChild(
+          buildVisual(recommendation.product as RecommenderProduct),
+        );
+        const label = make('p', 'eyebrow mt-4');
         label.textContent =
           index === 0 ? 'Tu mejor coincidencia' : 'También encaja';
         const title = make('h3', 'mt-2 text-2xl');

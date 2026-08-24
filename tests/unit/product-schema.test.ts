@@ -14,7 +14,7 @@ const findProduct = (id: string) => {
 
 describe('catálogo de producto', () => {
   it('valida las fichas reales sin precios ni ratings', () => {
-    expect(PRODUCTS).toHaveLength(26);
+    expect(PRODUCTS).toHaveLength(34);
     for (const product of PRODUCTS) {
       expect(productSchema.parse(product)).toEqual(product);
       expect(JSON.stringify(product)).not.toMatch(/price|rating|reviewCount/iu);
@@ -54,11 +54,19 @@ describe('catálogo de producto', () => {
       ),
     ).toHaveLength(8);
   });
+  it('incluye impresoras de uñas 3D como categoría/tipo real', () => {
+    expect(productCategories).toContain('impresoras-unas');
+    expect(productTypes).toContain('nail_printer_3d');
+    expect(
+      PRODUCTS.filter((product) => product.productType === 'nail_printer_3d'),
+    ).toHaveLength(8);
+  });
   it('no exige (ni inventa) campos de lámpara o tiras en maquinaria', () => {
     const machinery = PRODUCTS.filter(
       (product) =>
         product.productType === 'nail_drill' ||
-        product.productType === 'nail_dust_collector',
+        product.productType === 'nail_dust_collector' ||
+        product.productType === 'nail_printer_3d',
     );
     expect(machinery.length).toBeGreaterThan(0);
     for (const product of machinery) {
@@ -88,6 +96,18 @@ describe('catálogo de producto', () => {
       dustWithoutPower.technicalSpecs?.kind === 'nail_dust_collector' &&
         dustWithoutPower.technicalSpecs.powerWatts,
     ).toBeNull();
+    const printerWithoutDpi = findProduct(
+      'emobwdy-impresora-unas-3d-automatica',
+    );
+    expect(
+      printerWithoutDpi.technicalSpecs?.kind === 'nail_printer_3d' &&
+        printerWithoutDpi.technicalSpecs.resolutionDpi,
+    ).toBeNull();
+    const printerWithDpi = findProduct('sunseota-impresora-unas-3d-smart');
+    expect(
+      printerWithDpi.technicalSpecs?.kind === 'nail_printer_3d' &&
+        printerWithDpi.technicalSpecs.resolutionDpi,
+    ).toBe(12000);
   });
   it('rechaza technicalSpecs cuyo kind no coincide con productType', () => {
     const drill = findProduct('kredioo-torno-profesional-35000-rpm');

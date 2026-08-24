@@ -195,6 +195,97 @@ export const EDITORIAL_SELECTIONS: CategoryEditorial[] = [
     ],
   },
   {
+    category: 'impresoras-unas',
+    eyebrow: 'Nuestra selección',
+    title: 'Las impresoras de uñas 3D que miraríamos primero',
+    intro:
+      'Comparamos formato, resolución indicada, Wi‑Fi/app y reconocimiento de la forma de la uña de las ocho impresoras investigadas. Estas son las tres opciones que elegiríamos según el uso.',
+    picks: [
+      {
+        productId: 'sunseota-impresora-unas-3d-smart',
+        rank: 1,
+        badge: 'Nuestra elección premium',
+        verdict:
+          'La miraríamos primero para un uso avanzado o de salón: combina pantalla táctil, control digital, carga de diseños propios y un planteamiento claramente más completo que las opciones mini.',
+        bestFor: ['salon', 'nail-art-personalizado', 'usuario-avanzado'],
+        reasons: [
+          'Pantalla táctil',
+          'Diseños personalizados',
+          'Formato de sobremesa',
+          'Funciones integradas',
+        ],
+        shortReason:
+          'La opción más completa de la selección para quien busca una impresora de uñas seria y visualmente impactante.',
+        alternative: {
+          label: 'Si priorizas la portabilidad',
+          productId: 'factildfulzhan-impresora-unas-portatil-4800dpi',
+        },
+      },
+      {
+        productId: 'factildfulzhan-impresora-unas-portatil-4800dpi',
+        rank: 2,
+        badge: 'Mejor portátil',
+        verdict:
+          'La elegiríamos cuando la portabilidad importe: su ficha destaca 4800 DPI, reconocimiento inteligente e impresión rápida en un formato pensado para mover entre casa, viajes o salón.',
+        bestFor: ['portabilidad', 'uso-domestico', 'manicurista-movil'],
+        reasons: [
+          '4800 DPI indicados',
+          'Reconocimiento inteligente',
+          'Formato portátil',
+          'Impresión rápida indicada',
+        ],
+        shortReason:
+          'Una alternativa llamativa si quieres una impresora compacta sin renunciar a reconocimiento inteligente.',
+        alternative: {
+          label: 'Si priorizas la conectividad Wi‑Fi',
+          productId: 'menglanchang-impresora-unas-wifi-4800dpi',
+        },
+      },
+      {
+        productId: 'menglanchang-impresora-unas-wifi-4800dpi',
+        rank: 3,
+        badge: 'Mejor conectividad',
+        verdict:
+          'Nos parece especialmente atractiva para quien quiere una experiencia conectada: la ficha combina Wi‑Fi, reconocimiento de la forma de la uña y resolución indicada de 4800 DPI.',
+        bestFor: ['wifi', 'personalizacion', 'uso-domestico'],
+        reasons: [
+          'Wi‑Fi',
+          'Reconocimiento de forma',
+          '4800 DPI indicados',
+          'Formato ligero',
+        ],
+        shortReason:
+          'Interesante si priorizas Wi‑Fi, reconocimiento automático y un proceso de impresión muy digital.',
+        alternative: {
+          label: 'Si prefieres pantalla táctil y más funciones',
+          productId: 'sunseota-impresora-unas-3d-smart',
+        },
+      },
+    ],
+    quickChoices: [
+      {
+        question: 'Si quieres la opción más completa',
+        answer: 'Sunseota: pantalla táctil y formato de sobremesa.',
+        productId: 'sunseota-impresora-unas-3d-smart',
+      },
+      {
+        question: 'Si priorizas portabilidad',
+        answer: 'factildfulzhan',
+        productId: 'factildfulzhan-impresora-unas-portatil-4800dpi',
+      },
+      {
+        question: 'Si priorizas Wi‑Fi',
+        answer: 'menglanchang',
+        productId: 'menglanchang-impresora-unas-wifi-4800dpi',
+      },
+      {
+        question: 'Si buscas el formato más pequeño',
+        answer: 'GEJLELDS: mini y portátil.',
+        productId: 'gejlelds-impresora-unas-3d-mini',
+      },
+    ],
+  },
+  {
     category: 'unas-semicuradas',
     eyebrow: 'Nuestra selección',
     title: 'Nuestras 3 favoritas según lo que busques',

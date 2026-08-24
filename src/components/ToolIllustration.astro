@@ -1,11 +1,40 @@
 ---
+import type { Product } from '@/domain/product';
 interface Props {
   kind: 'nail_drill' | 'nail_dust_collector';
-  brand: string;
+  product: Product;
   compact?: boolean;
 }
-const { kind, brand, compact = false } = Astro.props;
+const { kind, product, compact = false } = Astro.props;
 const label = kind === 'nail_drill' ? 'torno' : 'aspirador de polvo';
+
+/** Variación de color determinista por marca, no aleatoria en cada build. */
+const PALETTE = ['bg-secondary', 'bg-primary', 'bg-accent'] as const;
+const hash = [...product.brand].reduce(
+  (sum, char) => sum + char.charCodeAt(0),
+  0,
+);
+const bodyColor = PALETTE[hash % PALETTE.length];
+
+const drill =
+  product.technicalSpecs?.kind === 'nail_drill' ? product.technicalSpecs : null;
+const dust =
+  product.technicalSpecs?.kind === 'nail_dust_collector'
+    ? product.technicalSpecs
+    : null;
+
+const hasPedal = drill?.pedalIncluded === true;
+const hasDisplay = drill?.display != null;
+const isPortable = drill?.rechargeable === true || drill?.usbPowered === true;
+const accessoryDots = drill?.accessoryCount
+  ? Math.min(Math.max(drill.accessoryCount, 2), 6)
+  : 3;
+const hasDrillLight = drill?.integratedLight === true;
+
+const hasDustLight = dust?.integratedLight === true;
+const hasReusableFilter = dust?.reusableFilter === true;
+const isHighPower = (dust?.powerWatts ?? 0) >= 100;
+const ventRows = dust?.fanCount ? Math.min(Math.max(dust.fanCount, 2), 3) : 2;
 ---
 
 <div
@@ -14,7 +43,7 @@ const label = kind === 'nail_drill' ? 'torno' : 'aspirador de polvo';
     compact ? 'aspect-[4/3]' : 'aspect-square',
   ]}
   role="img"
-  aria-label={`Ilustración editorial de un ${label} para uñas de ${brand}.`}
+  aria-label={`Ilustración editorial de un ${label} para uñas de ${product.brand}.`}
 >
   <div class="absolute -top-10 -right-8 size-32 rounded-full bg-cream/90">
   </div><div class="absolute -bottom-12 -left-8 size-36 rounded-full bg-blush">
@@ -31,9 +60,39 @@ const label = kind === 'nail_drill' ? 'torno' : 'aspirador de polvo';
             compact ? 'h-28 w-8' : 'h-48 w-13',
           ]}
         >
-          <span class="absolute inset-x-0 top-0 h-[58%] rounded-t-[999px] bg-secondary shadow-soft" />
+          <span
+            class:list={[
+              'absolute inset-x-0 top-0 h-[58%] rounded-t-[999px] shadow-soft',
+              bodyColor,
+            ]}
+          />
+          {hasDisplay && (
+            <span class="absolute inset-x-[22%] top-[14%] h-[10%] rounded-sm bg-white/85" />
+          )}
+          {Array.from({ length: accessoryDots }).map((_, index) => (
+            <i
+              class="absolute size-1.5 rounded-full bg-white/70"
+              style={`top:${28 + index * 6}%; left:${index % 2 === 0 ? '20%' : '65%'};`}
+            />
+          ))}
           <span class="absolute inset-x-[-15%] top-[52%] h-[14%] rounded-full bg-primary shadow-soft" />
           <span class="absolute inset-x-[20%] bottom-0 h-[34%] rounded-b-full bg-text/70" />
+          {hasPedal && (
+            <span
+              class:list={[
+                'absolute rounded-md bg-text/60',
+                compact
+                  ? '-bottom-3 -left-6 h-3 w-7'
+                  : '-bottom-5 -left-9 h-4 w-11',
+              ]}
+            />
+          )}
+          {isPortable && (
+            <i class="absolute top-[8%] right-[8%] size-2 rounded-full bg-success" />
+          )}
+          {hasDrillLight && (
+            <i class="absolute top-[6%] left-[30%] size-2 rounded-full bg-warning shadow-[0_0_6px_2px_rgba(155,103,45,.5)]" />
+          )}
         </div>
       </div>
     ) : (
@@ -43,15 +102,39 @@ const label = kind === 'nail_drill' ? 'torno' : 'aspirador de polvo';
       >
         <div
           class:list={[
-            'relative rounded-[1.4rem] bg-secondary shadow-soft',
-            compact ? 'h-24 w-20' : 'h-40 w-32',
+            'relative rounded-[1.4rem] shadow-soft',
+            bodyColor,
+            isHighPower
+              ? compact
+                ? 'h-28 w-24'
+                : 'h-48 w-36'
+              : compact
+                ? 'h-24 w-20'
+                : 'h-40 w-32',
           ]}
         >
-          <div class="absolute inset-x-[16%] top-[18%] grid grid-cols-3 gap-1.5">
-            {[0, 1, 2, 3, 4, 5].map(() => (
+          <div
+            class:list={[
+              'absolute inset-x-[16%] top-[16%] grid grid-cols-3 gap-1.5',
+            ]}
+            style={`grid-template-rows: repeat(${ventRows}, minmax(0, 1fr));`}
+          >
+            {Array.from({ length: ventRows * 3 }).map(() => (
               <span class="block aspect-square rounded-full bg-white/70" />
             ))}
           </div>
+          {hasReusableFilter ? (
+            <span class="absolute right-[12%] bottom-[10%] left-[12%] h-[14%] rounded-md border-2 border-white/70" />
+          ) : (
+            <div class="absolute right-[14%] bottom-[10%] left-[14%] flex h-[14%] gap-0.5">
+              <span class="flex-1 rounded-sm bg-white/50" />
+              <span class="flex-1 rounded-sm bg-white/50" />
+              <span class="flex-1 rounded-sm bg-white/50" />
+            </div>
+          )}
+          {hasDustLight && (
+            <i class="absolute top-[10%] right-[10%] size-2.5 rounded-full bg-warning shadow-[0_0_6px_2px_rgba(155,103,45,.5)]" />
+          )}
           <span
             class:list={[
               'absolute top-1/2 -right-[16%] -translate-y-1/2 rounded-full bg-primary',
@@ -65,6 +148,6 @@ const label = kind === 'nail_drill' ? 'torno' : 'aspirador de polvo';
   <p
     class="absolute right-4 bottom-4 left-4 text-center text-[.65rem] font-bold tracking-[.16em] text-primary uppercase"
   >
-    Vista editorial · {brand}
+    Vista ilustrada · {product.brand}
   </p>
 </div>

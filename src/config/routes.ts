@@ -9,6 +9,7 @@ export const INDEXABLE_STATIC_PATHS = [
   '/es/como-quitar-unas-semicuradas/',
   '/es/tornos-unas/',
   '/es/aspiradores-polvo-unas/',
+  '/es/impresoras-unas-3d/',
   '/es/comparar/',
   '/es/calculadora-ahorro-manicura/',
   '/es/encuentra-tus-unas/',

@@ -1,0 +1,432 @@
+{
+  "affiliateTag": "tusunas-21",
+  "marketplace": "amazon.es",
+  "verifiedAt": "2026-08-24",
+  "category": "impresoras-unas",
+  "suggestedProductType": "nail_printer_3d",
+  "seo": {
+    "primarySlug": "/es/impresoras-unas-3d/",
+    "primaryKeyword": "impresora de uñas 3D",
+    "secondaryKeywords": [
+      "impresora de uñas",
+      "máquina para imprimir uñas",
+      "impresora nail art",
+      "impresora de uñas profesional",
+      "impresora de uñas portátil"
+    ]
+  },
+  "notes": [
+    "No publicar precios, ratings, número de reseñas, stock ni Prime como datos estáticos.",
+    "Revalidar disponibilidad de los ASIN antes de publicar.",
+    "Las especificaciones con specConfidence=low/medium deben revalidarse antes de convertirlas en claims editoriales fuertes.",
+    "La imagen real de la impresora es prioritaria. Resolver mediante Amazon asset oficial, fabricante/PIM/media kit autorizado o foto propia; si no, usar fallback editorial específico.",
+    "No descargar ni copiar imágenes manualmente desde Amazon."
+  ],
+  "editorialTop3": [
+    {
+      "rank": 1,
+      "productId": "sunseota-impresora-unas-3d-smart",
+      "badge": "Nuestra elección premium",
+      "shortReason": "La opción más completa de la selección para quien busca una impresora de uñas seria y visualmente impactante.",
+      "verdict": "La miraríamos primero para un uso avanzado o de salón: combina pantalla táctil, control digital, carga de diseños propios y un planteamiento claramente más completo que las opciones mini.",
+      "bestFor": ["salon", "nail-art-personalizado", "usuario-avanzado"],
+      "reasons": [
+        "Pantalla táctil",
+        "Diseños personalizados",
+        "Formato de sobremesa",
+        "Funciones integradas"
+      ]
+    },
+    {
+      "rank": 2,
+      "productId": "factildfulzhan-impresora-unas-portatil-4800dpi",
+      "badge": "Mejor portátil",
+      "shortReason": "Una alternativa llamativa si quieres una impresora compacta sin renunciar a reconocimiento inteligente.",
+      "verdict": "La elegiríamos cuando la portabilidad importe: su ficha destaca 4800 DPI, reconocimiento inteligente e impresión rápida en un formato pensado para mover entre casa, viajes o salón.",
+      "bestFor": ["portabilidad", "uso-domestico", "manicurista-movil"],
+      "reasons": [
+        "4800 DPI indicados",
+        "Reconocimiento inteligente",
+        "Formato portátil",
+        "Impresión rápida indicada"
+      ]
+    },
+    {
+      "rank": 3,
+      "productId": "menglanchang-impresora-unas-wifi-4800dpi",
+      "badge": "Mejor conectividad",
+      "shortReason": "Interesante si priorizas Wi‑Fi, reconocimiento automático y un proceso de impresión muy digital.",
+      "verdict": "Nos parece especialmente atractiva para quien quiere una experiencia conectada: la ficha combina Wi‑Fi, reconocimiento de la forma de la uña y resolución indicada de 4800 DPI.",
+      "bestFor": ["wifi", "personalizacion", "uso-domestico"],
+      "reasons": [
+        "Wi‑Fi",
+        "Reconocimiento de forma",
+        "4800 DPI indicados",
+        "Formato ligero"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "sunseota-impresora-unas-3d-smart",
+      "brand": "Sunseota",
+      "name": "Impresora de uñas 3D automática inteligente con pantalla táctil",
+      "asin": "B0FJ247T2Y",
+      "marketplace": "amazon_es",
+      "category": "impresoras-unas",
+      "productType": "nail_printer_3d",
+      "technicalSpecs": {
+        "resolutionDpi": 12000,
+        "claimedPrintSeconds": 10,
+        "touchscreenInches": 5,
+        "appControl": true,
+        "wifi": true,
+        "automaticNailRecognition": null,
+        "portable": true,
+        "integratedCuring": true,
+        "customImageUpload": true
+      },
+      "specConfidence": "medium",
+      "useCases": ["salon", "nail-art-personalizado", "uso-domestico-avanzado"],
+      "editorialAngles": [
+        "premium",
+        "pantalla-tactil",
+        "alta-resolucion",
+        "diseños-propios"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0FJ247T2Y",
+      "affiliateUrl": "https://www.amazon.es/dp/B0FJ247T2Y/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-24",
+      "mediaResearch": {
+        "status": "pending_official_asset",
+        "exactProductImageRequired": true,
+        "preferredSources": [
+          "amazon_affiliate_asset",
+          "manufacturer_media_kit",
+          "manufacturer_pim",
+          "own"
+        ],
+        "searchQueries": [
+          "Sunseota B0FJ247T2Y official",
+          "B0FJ247T2Y nail printer images"
+        ],
+        "fallback": "editorial_nail_printer_visual"
+      }
+    },
+    {
+      "id": "factildfulzhan-impresora-unas-portatil-4800dpi",
+      "brand": "factildfulzhan",
+      "name": "Impresora de uñas portátil 4800 DPI con reconocimiento inteligente",
+      "asin": "B0FSL4QYP8",
+      "marketplace": "amazon_es",
+      "category": "impresoras-unas",
+      "productType": "nail_printer_3d",
+      "technicalSpecs": {
+        "resolutionDpi": 4800,
+        "claimedPrintSeconds": 10,
+        "touchscreenInches": null,
+        "appControl": null,
+        "wifi": null,
+        "automaticNailRecognition": true,
+        "portable": true,
+        "integratedCuring": null,
+        "customImageUpload": true
+      },
+      "specConfidence": "high",
+      "useCases": [
+        "salon",
+        "viajes",
+        "uso-domestico",
+        "nail-art-personalizado"
+      ],
+      "editorialAngles": [
+        "portatil",
+        "4800-dpi",
+        "reconocimiento-inteligente",
+        "impresion-rapida"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0FSL4QYP8",
+      "affiliateUrl": "https://www.amazon.es/dp/B0FSL4QYP8/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-24",
+      "mediaResearch": {
+        "status": "pending_official_asset",
+        "exactProductImageRequired": true,
+        "preferredSources": [
+          "amazon_affiliate_asset",
+          "manufacturer_media_kit",
+          "manufacturer_pim",
+          "own"
+        ],
+        "searchQueries": [
+          "factildfulzhan B0FSL4QYP8 official",
+          "B0FSL4QYP8 nail printer images"
+        ],
+        "fallback": "editorial_nail_printer_visual"
+      }
+    },
+    {
+      "id": "menglanchang-impresora-unas-wifi-4800dpi",
+      "brand": "menglanchang",
+      "name": "Impresora de uñas 3D inteligente Wi‑Fi 4800 DPI",
+      "asin": "B0FM89RPXW",
+      "marketplace": "amazon_es",
+      "category": "impresoras-unas",
+      "productType": "nail_printer_3d",
+      "technicalSpecs": {
+        "resolutionDpi": 4800,
+        "claimedPrintSeconds": 10,
+        "touchscreenInches": null,
+        "appControl": null,
+        "wifi": true,
+        "automaticNailRecognition": true,
+        "portable": true,
+        "integratedCuring": null,
+        "customImageUpload": null
+      },
+      "specConfidence": "high",
+      "useCases": ["uso-domestico", "nail-art-personalizado", "portatil"],
+      "editorialAngles": [
+        "wifi",
+        "4800-dpi",
+        "reconocimiento-forma",
+        "impresion-rapida"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0FM89RPXW",
+      "affiliateUrl": "https://www.amazon.es/dp/B0FM89RPXW/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-24",
+      "mediaResearch": {
+        "status": "pending_official_asset",
+        "exactProductImageRequired": true,
+        "preferredSources": [
+          "amazon_affiliate_asset",
+          "manufacturer_media_kit",
+          "manufacturer_pim",
+          "own"
+        ],
+        "searchQueries": [
+          "menglanchang B0FM89RPXW official",
+          "B0FM89RPXW nail printer images"
+        ],
+        "fallback": "editorial_nail_printer_visual"
+      }
+    },
+    {
+      "id": "gejlelds-impresora-unas-3d-mini",
+      "brand": "GEJLELDS",
+      "name": "Impresora de uñas 3D mini portátil multifunción",
+      "asin": "B0D2WT54Q1",
+      "marketplace": "amazon_es",
+      "category": "impresoras-unas",
+      "productType": "nail_printer_3d",
+      "technicalSpecs": {
+        "resolutionDpi": null,
+        "claimedPrintSeconds": null,
+        "touchscreenInches": null,
+        "appControl": null,
+        "wifi": null,
+        "automaticNailRecognition": null,
+        "portable": true,
+        "integratedCuring": null,
+        "customImageUpload": null
+      },
+      "specConfidence": "medium",
+      "useCases": ["manicurista", "estudio-unas", "uso-domestico"],
+      "editorialAngles": ["mini", "portatil", "multifuncion"],
+      "amazonUrl": "https://www.amazon.es/dp/B0D2WT54Q1",
+      "affiliateUrl": "https://www.amazon.es/dp/B0D2WT54Q1/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-24",
+      "mediaResearch": {
+        "status": "pending_official_asset",
+        "exactProductImageRequired": true,
+        "preferredSources": [
+          "amazon_affiliate_asset",
+          "manufacturer_media_kit",
+          "manufacturer_pim",
+          "own"
+        ],
+        "searchQueries": [
+          "GEJLELDS B0D2WT54Q1 official",
+          "B0D2WT54Q1 nail printer images"
+        ],
+        "fallback": "editorial_nail_printer_visual"
+      }
+    },
+    {
+      "id": "agreilduite-impresora-unas-app-galeria",
+      "brand": "agreilduite",
+      "name": "Impresora automática para uñas con app y galería de diseños",
+      "asin": "B0DPB88C1V",
+      "marketplace": "amazon_es",
+      "category": "impresoras-unas",
+      "productType": "nail_printer_3d",
+      "technicalSpecs": {
+        "resolutionDpi": null,
+        "claimedPrintSeconds": null,
+        "touchscreenInches": null,
+        "appControl": true,
+        "wifi": null,
+        "automaticNailRecognition": null,
+        "portable": true,
+        "integratedCuring": null,
+        "customImageUpload": true
+      },
+      "specConfidence": "high",
+      "useCases": ["fotos", "dibujos", "texto", "nail-art-personalizado"],
+      "editorialAngles": [
+        "app",
+        "galeria-disenos",
+        "personalizacion",
+        "portatil"
+      ],
+      "amazonUrl": "https://www.amazon.es/dp/B0DPB88C1V",
+      "affiliateUrl": "https://www.amazon.es/dp/B0DPB88C1V/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-24",
+      "mediaResearch": {
+        "status": "pending_official_asset",
+        "exactProductImageRequired": true,
+        "preferredSources": [
+          "amazon_affiliate_asset",
+          "manufacturer_media_kit",
+          "manufacturer_pim",
+          "own"
+        ],
+        "searchQueries": [
+          "agreilduite B0DPB88C1V official",
+          "B0DPB88C1V nail printer images"
+        ],
+        "fallback": "editorial_nail_printer_visual"
+      }
+    },
+    {
+      "id": "agreilduite-impresora-unas-digital-portatil",
+      "brand": "agreilduite",
+      "name": "Impresora digital 3D portátil para uñas con control móvil",
+      "asin": "B0FLHWX1BP",
+      "marketplace": "amazon_es",
+      "category": "impresoras-unas",
+      "productType": "nail_printer_3d",
+      "technicalSpecs": {
+        "resolutionDpi": null,
+        "claimedPrintSeconds": null,
+        "touchscreenInches": null,
+        "appControl": true,
+        "wifi": null,
+        "automaticNailRecognition": null,
+        "portable": true,
+        "integratedCuring": null,
+        "customImageUpload": true
+      },
+      "specConfidence": "high",
+      "useCases": ["nail-art-personalizado", "uso-domestico", "portatil"],
+      "editorialAngles": ["control-movil", "galeria-disenos", "portatil"],
+      "amazonUrl": "https://www.amazon.es/dp/B0FLHWX1BP",
+      "affiliateUrl": "https://www.amazon.es/dp/B0FLHWX1BP/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-24",
+      "mediaResearch": {
+        "status": "pending_official_asset",
+        "exactProductImageRequired": true,
+        "preferredSources": [
+          "amazon_affiliate_asset",
+          "manufacturer_media_kit",
+          "manufacturer_pim",
+          "own"
+        ],
+        "searchQueries": [
+          "agreilduite B0FLHWX1BP official",
+          "B0FLHWX1BP nail printer images"
+        ],
+        "fallback": "editorial_nail_printer_visual"
+      }
+    },
+    {
+      "id": "emobwdy-impresora-unas-3d-automatica",
+      "brand": "emobwdy",
+      "name": "Impresora de uñas 3D automática e inteligente",
+      "asin": "B0FM42VQ92",
+      "marketplace": "amazon_es",
+      "category": "impresoras-unas",
+      "productType": "nail_printer_3d",
+      "technicalSpecs": {
+        "resolutionDpi": null,
+        "claimedPrintSeconds": null,
+        "touchscreenInches": null,
+        "appControl": null,
+        "wifi": null,
+        "automaticNailRecognition": null,
+        "portable": null,
+        "integratedCuring": null,
+        "customImageUpload": null
+      },
+      "specConfidence": "low",
+      "useCases": ["nail-art", "uso-domestico"],
+      "editorialAngles": ["automatica", "inteligente"],
+      "amazonUrl": "https://www.amazon.es/dp/B0FM42VQ92",
+      "affiliateUrl": "https://www.amazon.es/dp/B0FM42VQ92/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-24",
+      "mediaResearch": {
+        "status": "pending_official_asset",
+        "exactProductImageRequired": true,
+        "preferredSources": [
+          "amazon_affiliate_asset",
+          "manufacturer_media_kit",
+          "manufacturer_pim",
+          "own"
+        ],
+        "searchQueries": [
+          "emobwdy B0FM42VQ92 official",
+          "B0FM42VQ92 nail printer images"
+        ],
+        "fallback": "editorial_nail_printer_visual"
+      }
+    },
+    {
+      "id": "dfdieratve-impresora-unas-inteligente",
+      "brand": "Dfdieratve",
+      "name": "Impresora de uñas inteligente 3D",
+      "asin": "B0GHDDCP5N",
+      "marketplace": "amazon_es",
+      "category": "impresoras-unas",
+      "productType": "nail_printer_3d",
+      "technicalSpecs": {
+        "resolutionDpi": null,
+        "claimedPrintSeconds": null,
+        "touchscreenInches": null,
+        "appControl": null,
+        "wifi": null,
+        "automaticNailRecognition": null,
+        "portable": null,
+        "integratedCuring": null,
+        "customImageUpload": null
+      },
+      "specConfidence": "low",
+      "useCases": ["nail-art", "uso-domestico"],
+      "editorialAngles": ["impresora-inteligente", "nail-art"],
+      "amazonUrl": "https://www.amazon.es/dp/B0GHDDCP5N",
+      "affiliateUrl": "https://www.amazon.es/dp/B0GHDDCP5N/ref=nosim?tag=tusunas-21",
+      "researchStatus": "verified_amazon_es",
+      "verifiedAt": "2026-08-24",
+      "mediaResearch": {
+        "status": "pending_official_asset",
+        "exactProductImageRequired": true,
+        "preferredSources": [
+          "amazon_affiliate_asset",
+          "manufacturer_media_kit",
+          "manufacturer_pim",
+          "own"
+        ],
+        "searchQueries": [
+          "Dfdieratve B0GHDDCP5N official",
+          "B0GHDDCP5N nail printer images"
+        ],
+        "fallback": "editorial_nail_printer_visual"
+      }
+    }
+  ]
+}

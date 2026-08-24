@@ -20,6 +20,10 @@ export const CATEGORY_META: Partial<Record<Product['category'], CategoryMeta>> =
       label: 'Aspiradores de polvo',
       href: '/es/aspiradores-polvo-unas/',
     },
+    'impresoras-unas': {
+      label: 'Impresoras de uñas 3D',
+      href: '/es/impresoras-unas-3d/',
+    },
   };
 
 export const DEFAULT_CATEGORY_META: CategoryMeta = {

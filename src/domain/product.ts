@@ -14,6 +14,7 @@ export const productCategories = [
   'limas',
   'tornos',
   'aspiradores-polvo-unas',
+  'impresoras-unas',
   'nail-art',
   'cuidado-de-unas',
   'accesorios',
@@ -34,12 +35,17 @@ export const productTypes = [
   'file_buffer',
   'nail_drill',
   'nail_dust_collector',
+  'nail_printer_3d',
   'nail_art',
   'nail_care',
   'accessory',
 ] as const;
 
-const MACHINERY_PRODUCT_TYPES = ['nail_drill', 'nail_dust_collector'] as const;
+const MACHINERY_PRODUCT_TYPES = [
+  'nail_drill',
+  'nail_dust_collector',
+  'nail_printer_3d',
+] as const;
 
 const nailDrillTechnicalSpecsSchema = z
   .object({
@@ -71,9 +77,25 @@ const nailDustCollectorTechnicalSpecsSchema = z
   })
   .strict();
 
+const nailPrinter3dTechnicalSpecsSchema = z
+  .object({
+    kind: z.literal('nail_printer_3d'),
+    resolutionDpi: z.number().int().positive().nullable().optional(),
+    claimedPrintSeconds: z.number().int().positive().nullable().optional(),
+    touchscreenInches: z.number().positive().nullable().optional(),
+    appControl: z.boolean().nullable().optional(),
+    wifi: z.boolean().nullable().optional(),
+    automaticNailRecognition: z.boolean().nullable().optional(),
+    portable: z.boolean().nullable().optional(),
+    integratedCuring: z.boolean().nullable().optional(),
+    customImageUpload: z.boolean().nullable().optional(),
+  })
+  .strict();
+
 export const technicalSpecsSchema = z.discriminatedUnion('kind', [
   nailDrillTechnicalSpecsSchema,
   nailDustCollectorTechnicalSpecsSchema,
+  nailPrinter3dTechnicalSpecsSchema,
 ]);
 
 export type TechnicalSpecs = z.infer<typeof technicalSpecsSchema>;
@@ -151,13 +173,14 @@ export const productSchema = z
           code: 'custom',
           path: ['requiresLamp'],
           message:
-            'La maquinaria (tornos, aspiradores) no debe declarar campos de lámpara ni número de tiras.',
+            'La maquinaria (tornos, aspiradores, impresoras 3D) no debe declarar campos de lámpara ni número de tiras.',
         });
     } else if (product.technicalSpecs) {
       context.addIssue({
         code: 'custom',
         path: ['technicalSpecs'],
-        message: 'technicalSpecs solo aplica a tornos y aspiradores.',
+        message:
+          'technicalSpecs solo aplica a tornos, aspiradores e impresoras 3D.',
       });
     }
     if (

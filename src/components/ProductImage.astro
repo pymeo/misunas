@@ -1,0 +1,40 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  compact?: boolean;
+  eager?: boolean;
+  fallbackTargetId: string;
+}
+const {
+  src,
+  alt,
+  width,
+  height,
+  compact = false,
+  eager = false,
+  fallbackTargetId,
+} = Astro.props;
+---
+
+<div
+  class:list={[
+    'relative overflow-hidden rounded-2xl bg-cream',
+    compact ? 'aspect-[4/3]' : 'aspect-square',
+  ]}
+  data-product-image
+>
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={eager ? 'high' : undefined}
+    class="block size-full max-w-full object-contain p-4"
+    onerror={`this.parentElement.hidden=true;var f=document.getElementById('${fallbackTargetId}');if(f)f.hidden=false;`}
+  />
+</div>

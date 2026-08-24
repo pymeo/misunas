@@ -78,4 +78,35 @@ describe('getProductFactRows', () => {
     );
     expect(labelsOf(rows)).toEqual(['Tipo', 'Recargable', 'Luz']);
   });
+  it('muestra todas las specs de impresora de uñas 3D cuando la ficha las confirma', () => {
+    const rows = getProductFactRows(
+      findProduct('sunseota-impresora-unas-3d-smart'),
+    );
+    expect(labelsOf(rows)).toEqual([
+      'Tipo',
+      'Formato',
+      'Resolución',
+      'Wi‑Fi',
+      'App / control móvil',
+      'Pantalla',
+      'Diseños propios',
+      'Curado integrado',
+    ]);
+    expect(rows.find((row) => row.label === 'Resolución')?.value).toBe(
+      '12.000 DPI',
+    );
+    expect(rows.find((row) => row.label === 'Formato')?.value).toBe('Portátil');
+    expect(rows).not.toContainEqual(
+      expect.objectContaining({ label: 'Lámpara' }),
+    );
+  });
+  it('omite las specs de impresora que no están confirmadas y no fabrica curado integrado', () => {
+    const rows = getProductFactRows(
+      findProduct('gejlelds-impresora-unas-3d-mini'),
+    );
+    expect(labelsOf(rows)).toEqual(['Tipo', 'Formato']);
+    expect(rows).not.toContainEqual(
+      expect.objectContaining({ label: 'Curado integrado' }),
+    );
+  });
 });

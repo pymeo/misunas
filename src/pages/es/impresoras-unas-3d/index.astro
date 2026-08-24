@@ -1,0 +1,179 @@
+---
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import CategoryExpertGuide from '@/components/CategoryExpertGuide.astro';
+import EditorialTopPicks from '@/components/EditorialTopPicks.astro';
+import MethodologyNotice from '@/components/MethodologyNotice.astro';
+import ProductComparison from '@/components/ProductComparison.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
+import QuickChoiceGuide from '@/components/QuickChoiceGuide.astro';
+import SelectionMethodBand from '@/components/SelectionMethodBand.astro';
+import { PRODUCTS } from '@/data/products';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+export const prerender = true;
+const printers = PRODUCTS.filter(
+  (product) => product.category === 'impresoras-unas',
+);
+const featured = printers.filter((product) =>
+  [
+    'sunseota-impresora-unas-3d-smart',
+    'factildfulzhan-impresora-unas-portatil-4800dpi',
+    'menglanchang-impresora-unas-wifi-4800dpi',
+    'agreilduite-impresora-unas-app-galeria',
+  ].includes(product.id),
+);
+const topics = [
+  {
+    title: 'Qué es realmente una "impresora de uñas 3D"',
+    body: 'Muchos anuncios usan "impresora de uñas 3D" como nombre comercial de un dispositivo que imprime diseños digitales directamente sobre la uña, no de una máquina que fabrica relieve físico como una impresora 3D de plástico. Antes de asumir que crea volumen o textura, comprueba si la ficha concreta lo confirma explícitamente.',
+  },
+  {
+    title: 'Portátil o de sobremesa',
+    body: 'Un formato portátil es más fácil de guardar y llevar entre casa, viajes o clientas a domicilio; uno de sobremesa suele ofrecer una base más estable y, a menudo, una pantalla más grande para elegir y ajustar el diseño con calma.',
+  },
+  {
+    title: 'App y Wi‑Fi',
+    body: 'El control por app permite elegir diseños desde el móvil, descargar catálogos nuevos y, en algunos modelos, subir imágenes propias. Si el modelo necesita Wi‑Fi para funcionar, confirma que tu app y tu red son compatibles antes de comprar.',
+  },
+  {
+    title: 'Reconocimiento automático de la forma de la uña',
+    body: 'Esta función escanea el contorno de cada uña para ajustar el diseño automáticamente y evitar que quede descentrado. No todos los modelos la indican en su ficha; si no aparece confirmada, es probable que el ajuste dependa más de la posición manual del dedo.',
+  },
+  {
+    title: 'Resolución en DPI',
+    body: 'Una resolución más alta en DPI suele traducirse en líneas y detalles más finos, especialmente en texto pequeño o ilustraciones complejas. Es un dato indicado por el fabricante o el vendedor, no una medición independiente, así que trátalo como orientativo.',
+  },
+  {
+    title: 'Carga de diseños propios',
+    body: 'Algunos modelos permiten imprimir fotos, dibujos o texto propio además de la galería precargada; otros se limitan a los diseños incluidos en la app. Si quieres personalizar más allá del catálogo, confirma esta función antes de comprar.',
+  },
+  {
+    title: 'Consumibles y cartuchos',
+    body: 'La tinta o el cartucho de impresión es un consumible con una vida útil limitada de estampados antes de necesitar sustitución. El número exacto de usos por cartucho depende de cada fabricante y no siempre figura confirmado en la ficha, así que conviene revisarlo si vas a usarla con frecuencia.',
+  },
+  {
+    title: 'Casa o salón',
+    body: 'Para un uso doméstico ocasional, un modelo portátil y sencillo suele bastar. Para un salón con varias clientas al día, pesa más la velocidad de impresión, la estabilidad sobre la mesa y el coste de consumibles a medio plazo.',
+  },
+  {
+    title: 'Qué mirar antes de gastar varios cientos de euros',
+    body: 'Revisa qué datos están realmente confirmados en la ficha (no solo en el título del anuncio), el coste y disponibilidad de recambios, la política de devolución del vendedor y si existen opiniones verificables de compradores reales antes de decidirte por un equipo de esta franja de precio.',
+  },
+];
+---
+
+<BaseLayout
+  title="Mejores impresoras de uñas 3D: qué modelo elegir"
+  description="Comparativa editorial de impresoras de uñas 3D por formato, resolución DPI, Wi‑Fi, app y reconocimiento de la forma de la uña, con atributos verificados en Amazon.es y sin puntuaciones inventadas."
+  canonicalPath="/es/impresoras-unas-3d/"
+  breadcrumbs={[
+    { label: 'Inicio', href: '/es/' },
+    { label: 'Impresoras de uñas 3D' },
+  ]}
+>
+  <section class="container-page py-10 sm:py-16">
+    <p class="eyebrow">Tecnología para manicura</p><h1
+      class="mt-4 max-w-5xl text-5xl leading-tight sm:text-6xl"
+    >
+      Mejores impresoras de uñas 3D: qué modelo elegir
+    </h1><p class="section-intro">
+      Hemos revisado las ocho impresoras de uñas 3D disponibles en Amazon.es y
+      te explicamos cuáles elegiríamos según cómo vayas a usarlas. "3D" es aquí
+      el nombre comercial habitual de la impresión digital de nail art: solo
+      hablamos de relieve físico cuando la ficha del producto lo confirma.
+    </p><div class="mt-8"><AffiliateDisclosure /></div>
+  </section>
+
+  <section class="container-page grid gap-6 pb-14">
+    <EditorialTopPicks
+      category="impresoras-unas"
+      sourcePage="/es/impresoras-unas-3d/"
+    />
+    <SelectionMethodBand />
+    <QuickChoiceGuide category="impresoras-unas" />
+  </section>
+
+  <section class="container-page py-14">
+    <p class="eyebrow">Comparación esencial</p><h2 class="section-heading">
+      Cuatro impresoras, atributos equivalentes
+    </h2><p class="section-intro">
+      Compara formato, resolución, Wi‑Fi, app, reconocimiento automático y carga
+      de diseños propios en cuatro formatos distintos.
+    </p><div class="mt-8">
+      <ProductComparison
+        products={featured}
+        sourcePage="/es/impresoras-unas-3d/"
+      />
+    </div>
+  </section>
+
+  <section class="container-page py-14">
+    <p class="eyebrow">Selección completa</p><h2 class="section-heading">
+      Las {printers.length} impresoras investigadas
+    </h2><div class="mt-8">
+      <ProductGrid
+        products={printers}
+        sourcePage="/es/impresoras-unas-3d/"
+        commercial
+      />
+    </div>
+  </section>
+
+  <section class="container-page grid gap-10 py-14 lg:grid-cols-[1fr_.8fr]">
+    <CategoryExpertGuide
+      heading="Nueve datos que importan de verdad"
+      topics={topics}
+    /><div>
+      <p class="eyebrow">Relacionado</p><h2 class="section-heading">
+        Completa tu equipo
+      </h2><div class="mt-7 grid gap-4">
+        <a class="card no-underline" href="/es/tornos-unas/"
+          ><h3 class="text-2xl">Tornos para uñas</h3><p class="mt-2 text-muted">
+            Para preparar y rebajar gel o acrílico antes de imprimir el diseño.
+          </p></a
+        ><a class="card no-underline" href="/es/aspiradores-polvo-unas/"
+          ><h3 class="text-2xl">Aspiradores de polvo</h3><p
+            class="mt-2 text-muted"
+          >
+            Controla el polvo que genera el limado previo a la impresión.
+          </p></a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-14">
+    <p class="eyebrow">Preguntas frecuentes</p><h2 class="section-heading">
+      Lo que no cabe en una tarjeta
+    </h2><div class="mt-7 grid gap-3">
+      {
+        [
+          [
+            '¿La impresora de uñas 3D crea relieve físico en la uña?',
+            '"3D" suele ser el nombre comercial del producto, no una confirmación de relieve físico. Solo lo indicamos cuando la ficha del fabricante lo especifica explícitamente; en el resto de casos, entiéndelo como impresión digital de diseños planos sobre la uña.',
+          ],
+          [
+            '¿Necesito manicura previa para usarla?',
+            'La mayoría de estos equipos imprime sobre una base ya preparada (gel o esmalte seco). Revisa las instrucciones concretas de cada modelo en su ficha de Amazon.es antes de usarlo.',
+          ],
+          [
+            '¿Cuánto dura el cartucho de tinta?',
+            'Es un consumible con un número limitado de impresiones antes de agotarse. La cifra exacta depende de cada fabricante y no siempre figura confirmada en la ficha, así que conviene revisarla si la vas a usar con frecuencia.',
+          ],
+          [
+            '¿Sirve para un salón profesional o solo para casa?',
+            'Depende del modelo: los formatos portátiles se adaptan bien a un uso doméstico u ocasional, mientras que para un volumen alto de clientas pesan más la velocidad de impresión y el coste de consumibles a medio plazo.',
+          ],
+          [
+            '¿Dónde consulto el precio?',
+            'El botón de cada producto abre su ficha de Amazon.es para consultar el precio y la disponibilidad actuales.',
+          ],
+        ].map(([question, answer]) => (
+          <details class="rounded-xl border border-border bg-surface p-5">
+            <summary class="cursor-pointer font-bold">{question}</summary>
+            <p class="mt-3 text-muted">{answer}</p>
+          </details>
+        ))
+      }
+    </div><div class="mt-8"><MethodologyNotice /></div>
+  </section>
+</BaseLayout>

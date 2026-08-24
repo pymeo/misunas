@@ -1,0 +1,102 @@
+---
+import type { Product } from '@/domain/product';
+interface Props {
+  product: Product;
+  compact?: boolean;
+}
+const { product, compact = false } = Astro.props;
+
+/** Variación de color determinista por marca, no aleatoria en cada build. */
+const PALETTE = ['bg-secondary', 'bg-primary', 'bg-accent'] as const;
+const hash = [...product.brand].reduce(
+  (sum, char) => sum + char.charCodeAt(0),
+  0,
+);
+const bodyColor = PALETTE[hash % PALETTE.length];
+
+const specs =
+  product.technicalSpecs?.kind === 'nail_printer_3d'
+    ? product.technicalSpecs
+    : null;
+
+const isPortable = specs?.portable === true;
+const hasScreen = specs?.touchscreenInches != null;
+const hasWifi = specs?.wifi === true;
+const hasApp = specs?.appControl === true;
+const hasAutoRecognition = specs?.automaticNailRecognition === true;
+const hasCuring = specs?.integratedCuring === true;
+const hasCustomUpload = specs?.customImageUpload === true;
+---
+
+<div
+  class:list={[
+    'relative overflow-hidden rounded-2xl bg-lavender',
+    compact ? 'aspect-[4/3]' : 'aspect-square',
+  ]}
+  role="img"
+  aria-label={`Ilustración editorial de una impresora de uñas 3D de ${product.brand}.`}
+>
+  <div class="absolute -top-10 -right-8 size-32 rounded-full bg-cream/90">
+  </div><div class="absolute -bottom-12 -left-8 size-36 rounded-full bg-blush">
+  </div>
+  <div
+    class="absolute inset-0 flex items-center justify-center"
+    aria-hidden="true"
+  >
+    <div class:list={['relative', compact ? 'h-28 w-28' : 'h-48 w-44']}>
+      <div
+        class:list={[
+          'absolute inset-x-[8%] bottom-0 rounded-[1.2rem] shadow-soft',
+          bodyColor,
+          isPortable ? 'top-[42%]' : 'top-[26%]',
+        ]}
+      >
+        {
+          hasScreen ? (
+            <span class="absolute inset-x-[16%] top-[10%] h-[28%] rounded-md bg-white/85" />
+          ) : (
+            hasCustomUpload && (
+              <span class="absolute inset-x-[28%] top-[14%] h-[14%] rounded-sm bg-white/70" />
+            )
+          )
+        }
+        {
+          hasWifi && (
+            <i class="absolute top-[8%] right-[10%] size-2 rounded-full bg-success" />
+          )
+        }
+        {
+          hasApp && (
+            <span class="absolute top-[6%] left-[10%] h-[16%] w-[9%] rounded-[3px] border-2 border-white/80" />
+          )
+        }
+      </div>
+      <span
+        class:list={[
+          'absolute rounded-full bg-text/70',
+          isPortable
+            ? 'inset-x-[24%] top-[28%] h-[7%]'
+            : 'inset-x-[14%] top-[14%] h-[6%]',
+        ]}></span>
+      <span
+        class="absolute bottom-[4%] left-1/2 h-[16%] w-[26%] -translate-x-1/2 rounded-[999px] bg-white/80"
+      >
+      </span>
+      {
+        hasAutoRecognition && (
+          <i class="absolute bottom-[1%] left-1/2 h-[22%] w-[34%] -translate-x-1/2 rounded-[999px] border-2 border-dashed border-primary/60" />
+        )
+      }
+      {
+        hasCuring && (
+          <i class="absolute bottom-[20%] left-1/2 size-2.5 -translate-x-1/2 rounded-full bg-warning shadow-[0_0_8px_3px_rgba(155,103,45,.45)]" />
+        )
+      }
+    </div>
+  </div>
+  <p
+    class="absolute right-4 bottom-4 left-4 text-center text-[.65rem] font-bold tracking-[.16em] text-primary uppercase"
+  >
+    Vista ilustrada · {product.brand}
+  </p>
+</div>

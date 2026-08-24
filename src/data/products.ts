@@ -1,6 +1,7 @@
 import rawCatalog from '../../tus-unas-amazon-es-products.seed.json';
 import tornosCatalog from '../../tus-unas-amazon-es-tornos.seed.json';
 import dustCollectorCatalog from '../../tus-unas-amazon-es-aspiradores-polvo.seed.json';
+import nailPrinterCatalog from '../../tus-unas-amazon-es-impresoras-unas-3d.seed.json';
 import { productSchema, type Product } from '@/domain/product';
 
 interface EditorialProductData {
@@ -316,10 +317,101 @@ const DUST_COLLECTOR_PRODUCTS: Product[] = dustCollectorCatalog.products.map(
   },
 );
 
+const NAIL_PRINTER_EDITORIAL: Record<string, ToolEditorialData> = {
+  'sunseota-impresora-unas-3d-smart': {
+    summary:
+      'Impresora de uñas 3D Sunseota de sobremesa con pantalla táctil de 5", control por app y Wi‑Fi. La ficha investigada indica 12.000 DPI de resolución, curado integrado y carga de diseños propios.',
+    considerations: [
+      'Los datos de resolución y curado integrado proceden de la ficha investigada en Amazon.es; no hemos probado este equipo personalmente.',
+      'La ficha no confirma si tiene reconocimiento automático de la forma de la uña; revísalo en Amazon.es si es un factor importante para ti.',
+    ],
+  },
+  'factildfulzhan-impresora-unas-portatil-4800dpi': {
+    summary:
+      'Impresora de uñas portátil factildfulzhan con reconocimiento inteligente de la forma de la uña. La ficha investigada indica una resolución de 4800 DPI y carga de diseños propios, en un formato pensado para moverse entre casa, viajes o salón.',
+    considerations: [
+      'Los datos de resolución, velocidad y reconocimiento proceden de la ficha investigada en Amazon.es; no hemos probado este equipo personalmente.',
+    ],
+  },
+  'menglanchang-impresora-unas-wifi-4800dpi': {
+    summary:
+      'Impresora de uñas 3D menglanchang con conexión Wi‑Fi y reconocimiento automático de la forma de la uña. La ficha investigada indica una resolución de 4800 DPI en un formato ligero y portátil.',
+    considerations: [
+      'Los datos de conectividad, reconocimiento y resolución proceden de la ficha investigada en Amazon.es; no hemos probado este equipo personalmente.',
+    ],
+  },
+  'gejlelds-impresora-unas-3d-mini': {
+    summary:
+      'Impresora de uñas 3D mini y portátil de GEJLELDS, un formato compacto pensado para manicuristas o estudios de uñas que necesiten moverla con facilidad.',
+    considerations: [
+      'La ficha investigada no confirma resolución, Wi‑Fi ni reconocimiento automático de la forma de la uña; consulta los datos actualizados en Amazon.es antes de comprar.',
+    ],
+  },
+  'agreilduite-impresora-unas-app-galeria': {
+    summary:
+      'Impresora automática para uñas de agreilduite con control por app y galería de diseños propia, pensada para imprimir fotos, dibujos o texto directamente sobre la uña.',
+    considerations: [
+      'Los datos de control por app y carga de diseños proceden de la ficha investigada en Amazon.es; no hemos probado este equipo personalmente.',
+    ],
+  },
+  'agreilduite-impresora-unas-digital-portatil': {
+    summary:
+      'Impresora digital 3D portátil de agreilduite con control móvil y carga de diseños propios, pensada para quien quiere mover el equipo entre casa y salón.',
+    considerations: [
+      'Los datos de control por app y portabilidad proceden de la ficha investigada en Amazon.es; no hemos probado este equipo personalmente.',
+    ],
+  },
+  'emobwdy-impresora-unas-3d-automatica': {
+    summary:
+      'Impresora de uñas 3D automática e inteligente de emobwdy, orientada a nail art digital en casa.',
+    considerations: [
+      'La ficha investigada no confirma resolución, conectividad ni portabilidad; consulta los datos actualizados en Amazon.es antes de comprar.',
+    ],
+  },
+  'dfdieratve-impresora-unas-inteligente': {
+    summary:
+      'Impresora de uñas inteligente 3D de Dfdieratve, pensada para nail art digital en casa sin necesitar habilidad manual previa.',
+    considerations: [
+      'La ficha investigada no confirma resolución, conectividad ni portabilidad; consulta los datos actualizados en Amazon.es antes de comprar.',
+    ],
+  },
+};
+
+const NAIL_PRINTER_PRODUCTS: Product[] = nailPrinterCatalog.products.map(
+  (raw) => {
+    const editorial = NAIL_PRINTER_EDITORIAL[raw.id];
+    if (!editorial)
+      throw new Error(`Falta información editorial para ${raw.id}`);
+    return productSchema.parse({
+      id: raw.id,
+      slug: raw.id,
+      brand: raw.brand,
+      name: raw.name,
+      asin: raw.asin,
+      category: nailPrinterCatalog.category,
+      productType: 'nail_printer_3d',
+      technicalSpecs: { kind: 'nail_printer_3d', ...raw.technicalSpecs },
+      styleTags: [],
+      useCases: raw.useCases,
+      editorialAngles: raw.editorialAngles,
+      summary: editorial.summary,
+      considerations: editorial.considerations,
+      amazonMarketplace: 'es',
+      affiliateEligible: true,
+      editorialStatus: 'approved',
+      researchStatus: 'verified-amazon-es',
+      sourceVerifiedAt: nailPrinterCatalog.verifiedAt,
+      active: true,
+      sample: false,
+    });
+  },
+);
+
 export const PRODUCTS: Product[] = [
   ...SEMICURADAS_PRODUCTS,
   ...TORNO_PRODUCTS,
   ...DUST_COLLECTOR_PRODUCTS,
+  ...NAIL_PRINTER_PRODUCTS,
 ];
 
 export const FEATURED_PRODUCTS = PRODUCTS.filter((product) =>

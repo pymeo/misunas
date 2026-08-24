@@ -20,6 +20,7 @@ const TYPE_LABELS: Record<Product['productType'], string> = {
   file_buffer: 'Lima o pulidor',
   nail_drill: 'Torno',
   nail_dust_collector: 'Aspirador de polvo',
+  nail_printer_3d: 'Impresora de uñas 3D',
   nail_art: 'Nail art',
   nail_care: 'Cuidado de uñas',
   accessory: 'Accesorio',
@@ -124,6 +125,45 @@ function getDustCollectorRows(product: Product): ProductFactRow[] {
   return rows;
 }
 
+function getNailPrinterRows(product: Product): ProductFactRow[] {
+  const specs =
+    product.technicalSpecs?.kind === 'nail_printer_3d'
+      ? product.technicalSpecs
+      : null;
+  const rows: ProductFactRow[] = [
+    { label: 'Tipo', value: TYPE_LABELS[product.productType] },
+  ];
+  if (isPresent(specs?.portable))
+    rows.push({
+      label: 'Formato',
+      value: specs.portable ? 'Portátil' : 'Sobremesa',
+    });
+  if (isPresent(specs?.resolutionDpi))
+    rows.push({
+      label: 'Resolución',
+      value: `${specs.resolutionDpi.toLocaleString('es-ES')} DPI`,
+    });
+  const wifi = yesNoRow('Wi‑Fi', specs?.wifi);
+  if (wifi) rows.push(wifi);
+  const appControl = yesNoRow('App / control móvil', specs?.appControl);
+  if (appControl) rows.push(appControl);
+  const recognition = yesNoRow(
+    'Reconocimiento automático',
+    specs?.automaticNailRecognition,
+  );
+  if (recognition) rows.push(recognition);
+  if (isPresent(specs?.touchscreenInches))
+    rows.push({
+      label: 'Pantalla',
+      value: `Táctil ${specs.touchscreenInches}"`,
+    });
+  const customUpload = yesNoRow('Diseños propios', specs?.customImageUpload);
+  if (customUpload) rows.push(customUpload);
+  if (specs?.integratedCuring === true)
+    rows.push({ label: 'Curado integrado', value: 'Sí' });
+  return rows;
+}
+
 /**
  * Fuente única de las filas mostradas en ProductFacts (ficha) y en
  * ProductComparison (comparador), para que nunca diverjan entre sí.
@@ -133,5 +173,7 @@ export function getProductFactRows(product: Product): ProductFactRow[] {
   if (product.productType === 'nail_drill') return getNailDrillRows(product);
   if (product.productType === 'nail_dust_collector')
     return getDustCollectorRows(product);
+  if (product.productType === 'nail_printer_3d')
+    return getNailPrinterRows(product);
   return getSemicuradasRows(product);
 }

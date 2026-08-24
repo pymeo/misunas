@@ -7,9 +7,11 @@ const routes = [
   '/es/mejores-unas-semicuradas/',
   '/es/tornos-unas/',
   '/es/aspiradores-polvo-unas/',
+  '/es/impresoras-unas-3d/',
   '/es/productos/ohora-n-cream-cotton/',
   '/es/productos/kredioo-torno-profesional-35000-rpm/',
   '/es/productos/anbeistee-colector-polvo-2000pa/',
+  '/es/productos/sunseota-impresora-unas-3d-smart/',
 ];
 
 const widths = [320, 360, 375, 390, 430, 768, 1024, 1440];

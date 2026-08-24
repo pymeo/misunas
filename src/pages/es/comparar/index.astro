@@ -13,11 +13,14 @@ const tornos = PRODUCTS.filter((product) => product.category === 'tornos');
 const dustCollectors = PRODUCTS.filter(
   (product) => product.category === 'aspiradores-polvo-unas',
 );
+const nailPrinters = PRODUCTS.filter(
+  (product) => product.category === 'impresoras-unas',
+);
 ---
 
 <BaseLayout
   title="Comparar productos para uñas"
-  description="Compara entre dos y cuatro productos para uñas por categoría: semicuradas, tornos o aspiradores de polvo, desde cualquier dispositivo."
+  description="Compara entre dos y cuatro productos para uñas por categoría: semicuradas, tornos, aspiradores de polvo o impresoras de uñas 3D, desde cualquier dispositivo."
   canonicalPath="/es/comparar/"
   breadcrumbs={[{ label: 'Inicio', href: '/es/' }, { label: 'Comparar' }]}
 >
@@ -61,6 +64,18 @@ const dustCollectors = PRODUCTS.filter(
     </h2><div class="mt-8">
       <ProductComparison
         products={dustCollectors}
+        sourcePage="/es/comparar/"
+        interactive
+      />
+    </div>
+  </section>
+
+  <section class="container-page py-10">
+    <p class="eyebrow">Tecnología</p><h2 class="section-heading">
+      Impresoras de uñas 3D
+    </h2><div class="mt-8">
+      <ProductComparison
+        products={nailPrinters}
         sourcePage="/es/comparar/"
         interactive
       />

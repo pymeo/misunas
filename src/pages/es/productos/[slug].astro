@@ -28,12 +28,17 @@ const { product } = Astro.props;
 const related = getRelatedProducts(product);
 const isMachinery =
   product.productType === 'nail_drill' ||
-  product.productType === 'nail_dust_collector';
+  product.productType === 'nail_dust_collector' ||
+  product.productType === 'nail_printer_3d';
 const categoryMeta = getCategoryMeta(product.category);
 const drillSpecs =
   product.technicalSpecs?.kind === 'nail_drill' ? product.technicalSpecs : null;
 const dustSpecs =
   product.technicalSpecs?.kind === 'nail_dust_collector'
+    ? product.technicalSpecs
+    : null;
+const printerSpecs =
+  product.technicalSpecs?.kind === 'nail_printer_3d'
     ? product.technicalSpecs
     : null;
 ---
@@ -276,6 +281,31 @@ const dustSpecs =
                         : dustSpecs?.reusableFilter === false
                           ? 'No; el filtro de este modelo es desechable.'
                           : 'La ficha investigada no confirma el tipo de filtro.'}
+                  </p>
+                </details>
+              </>
+            ) : product.productType === 'nail_printer_3d' ? (
+              <>
+                <details class="rounded-xl border border-border bg-surface p-5">
+                  <summary class="cursor-pointer font-bold">
+                    ¿Qué resolución de impresión tiene?
+                  </summary>
+                  <p class="mt-3 text-muted">
+                    {printerSpecs?.resolutionDpi != null
+                      ? `Según la ficha investigada, imprime a ${printerSpecs.resolutionDpi.toLocaleString('es-ES')} DPI.`
+                      : 'La ficha investigada no confirma la resolución de impresión; consulta el dato actualizado en Amazon.es.'}
+                  </p>
+                </details>
+                <details class="rounded-xl border border-border bg-surface p-5">
+                  <summary class="cursor-pointer font-bold">
+                    ¿Puedo subir mis propios diseños?
+                  </summary>
+                  <p class="mt-3 text-muted">
+                    {printerSpecs?.customImageUpload === true
+                      ? 'Sí, la ficha investigada indica que permite cargar fotos, dibujos u otros diseños propios además de la galería precargada.'
+                      : printerSpecs?.customImageUpload === false
+                        ? 'No; este modelo solo permite elegir entre los diseños precargados.'
+                        : 'La ficha investigada no confirma si permite cargar diseños propios.'}
                   </p>
                 </details>
               </>

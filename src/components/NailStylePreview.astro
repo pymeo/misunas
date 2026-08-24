@@ -1,25 +1,21 @@
 ---
+import { getNailStyleTone } from '@/application/nailStyleTone';
 import type { Product } from '@/domain/product';
 interface Props {
   product: Product;
   compact?: boolean;
 }
 const { product, compact = false } = Astro.props;
-const tags = new Set(product.styleTags);
-const tone =
-  tags.has('llamativa') || tags.has('leopardo')
-    ? 'bold'
-    : tags.has('floral')
-      ? 'floral'
-      : tags.has('francesa')
-        ? 'french'
-        : tags.has('nude') || tags.has('natural')
-          ? 'nude'
-          : 'rose';
+const tone = getNailStyleTone(product.styleTags);
 const nailColors = {
   bold: ['bg-primary', 'bg-accent', 'bg-secondary'],
   floral: ['bg-white', 'bg-blush', 'bg-white'],
   french: ['bg-[#e9b9ae]', 'bg-[#edc7bd]', 'bg-[#e2aea5]'],
+  ombre: [
+    'bg-gradient-to-b from-[#f7d9d4] to-[#c96a7c]',
+    'bg-gradient-to-b from-[#f7d9d4] to-[#c96a7c]',
+    'bg-gradient-to-b from-[#f7d9d4] to-[#c96a7c]',
+  ],
   nude: ['bg-[#d8a99d]', 'bg-[#e6bdb2]', 'bg-[#c9948c]'],
   rose: ['bg-[#cf8495]', 'bg-[#e4a2ad]', 'bg-[#a96d82]'],
 }[tone];
@@ -73,6 +69,6 @@ const nailColors = {
   <p
     class="absolute right-4 bottom-4 left-4 text-center text-[.65rem] font-bold tracking-[.16em] text-primary uppercase"
   >
-    Vista editorial · {product.brand}
+    Vista del estilo · {product.brand}
   </p>
 </div>

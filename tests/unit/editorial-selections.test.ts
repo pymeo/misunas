@@ -10,6 +10,7 @@ const PUBLISHED_CATEGORIES = [
   'tornos',
   'aspiradores-polvo-unas',
   'unas-semicuradas',
+  'impresoras-unas',
 ] as const;
 
 const findProduct = (id: string) =>
@@ -120,6 +121,12 @@ describe('editorial selections', () => {
           }
           const stripValue = /^(\d+)\s*tiras$/.exec(reason)?.[1];
           if (stripValue) expect(product.stripCount).toBe(Number(stripValue));
+          const dpiValue = /^([\d.]+)\s*DPI/.exec(reason)?.[1];
+          if (dpiValue && product.technicalSpecs?.kind === 'nail_printer_3d') {
+            expect(product.technicalSpecs.resolutionDpi).toBe(
+              Number(dpiValue.replaceAll('.', '')),
+            );
+          }
         }
       }
     }

@@ -1,23 +1,55 @@
 ---
+import NailPrinterIllustration from '@/components/NailPrinterIllustration.astro';
 import NailStylePreview from '@/components/NailStylePreview.astro';
+import ProductImage from '@/components/ProductImage.astro';
 import ToolIllustration from '@/components/ToolIllustration.astro';
+import { getProductMedia } from '@/application/productMediaResolver';
 import type { Product } from '@/domain/product';
 interface Props {
   product: Product;
   compact?: boolean;
+  eager?: boolean;
 }
-const { product, compact = false } = Astro.props;
+const { product, compact = false, eager = false } = Astro.props;
+const resolved = getProductMedia(product);
+const isMachinery =
+  product.productType === 'nail_drill' ||
+  product.productType === 'nail_dust_collector';
+const isNailPrinter = product.productType === 'nail_printer_3d';
+const fallbackId = `visual-fallback-${product.id}`;
 ---
 
-{
-  product.productType === 'nail_drill' ||
-  product.productType === 'nail_dust_collector' ? (
-    <ToolIllustration
-      kind={product.productType}
-      brand={product.brand}
-      compact={compact}
-    />
-  ) : (
-    <NailStylePreview product={product} compact={compact} />
-  )
-}
+<div class="relative min-w-0">
+  {
+    resolved.kind === 'image' && (
+      <ProductImage
+        src={resolved.media.localPath ?? ''}
+        alt={resolved.media.alt}
+        {compact}
+        {eager}
+        fallbackTargetId={fallbackId}
+        {...(resolved.media.width === undefined
+          ? {}
+          : { width: resolved.media.width })}
+        {...(resolved.media.height === undefined
+          ? {}
+          : { height: resolved.media.height })}
+      />
+    )
+  }
+  <div id={fallbackId} hidden={resolved.kind === 'image'}>
+    {
+      isMachinery ? (
+        <ToolIllustration
+          kind={product.productType as 'nail_drill' | 'nail_dust_collector'}
+          product={product}
+          compact={compact}
+        />
+      ) : isNailPrinter ? (
+        <NailPrinterIllustration product={product} compact={compact} />
+      ) : (
+        <NailStylePreview product={product} compact={compact} />
+      )
+    }
+  </div>
+</div>

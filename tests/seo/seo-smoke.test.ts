@@ -16,6 +16,7 @@ const launchPages = [
   'es/como-quitar-unas-semicuradas/index.html',
   'es/tornos-unas/index.html',
   'es/aspiradores-polvo-unas/index.html',
+  'es/impresoras-unas-3d/index.html',
   'es/calculadora-ahorro-manicura/index.html',
   'es/encuentra-tus-unas/index.html',
   'es/metodologia/index.html',
@@ -63,6 +64,7 @@ describe('SEO production smoke tests', () => {
     expect(sitemap).toContain('/es/unas-semicuradas-francesas/');
     expect(sitemap).toContain('/es/tornos-unas/');
     expect(sitemap).toContain('/es/aspiradores-polvo-unas/');
+    expect(sitemap).toContain('/es/impresoras-unas-3d/');
     expect(sitemap).not.toContain('tus-uñas.com');
     expect(sitemap).not.toMatch(
       /plantilla-review|protocolo-pruebas|\/productos\/|\/api\/|\/privacidad\//,
@@ -92,6 +94,7 @@ describe('SEO production smoke tests', () => {
       'es/productos/jmeowio-francesa-rosa/index.html',
       'es/productos/kredioo-torno-profesional-35000-rpm/index.html',
       'es/productos/anbeistee-colector-polvo-2000pa/index.html',
+      'es/productos/sunseota-impresora-unas-3d-smart/index.html',
     ]) {
       expect(readFileSync(resolve(clientRoot, relativePath), 'utf8')).toContain(
         '<meta name="robots" content="noindex, nofollow">',
@@ -104,8 +107,10 @@ describe('SEO production smoke tests', () => {
       'es/index.html',
       'es/productos/jmeowio-francesa-rosa/index.html',
       'es/productos/kredioo-torno-profesional-35000-rpm/index.html',
+      'es/productos/sunseota-impresora-unas-3d-smart/index.html',
       'es/tornos-unas/index.html',
       'es/aspiradores-polvo-unas/index.html',
+      'es/impresoras-unas-3d/index.html',
     ]) {
       const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
       const scripts = [
@@ -148,10 +153,11 @@ describe('SEO production smoke tests', () => {
     expect(recommender).not.toMatch(/nail_drill|nail_dust_collector/);
   });
 
-  it('ships working tornos and aspiradores landing pages with real CTAs', () => {
+  it('ships working tornos, aspiradores and impresoras landing pages with real CTAs', () => {
     for (const relativePath of [
       'es/tornos-unas/index.html',
       'es/aspiradores-polvo-unas/index.html',
+      'es/impresoras-unas-3d/index.html',
     ]) {
       const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
       expect(html).toContain('?tag=tusunas-21');
@@ -164,6 +170,7 @@ describe('SEO production smoke tests', () => {
       'es/mejores-unas-semicuradas/index.html',
       'es/tornos-unas/index.html',
       'es/aspiradores-polvo-unas/index.html',
+      'es/impresoras-unas-3d/index.html',
     ]) {
       const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
       const topPicksIndex = html.indexOf('id="nuestra-seleccion"');
@@ -180,11 +187,41 @@ describe('SEO production smoke tests', () => {
       'es/mejores-unas-semicuradas/index.html',
       'es/tornos-unas/index.html',
       'es/aspiradores-polvo-unas/index.html',
+      'es/impresoras-unas-3d/index.html',
     ]) {
       const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
       expect(html).not.toMatch(/\d(?:[.,]\d)?\s*\/\s*10\b/);
       expect(html).not.toMatch(/\d(?:[.,]\d)?\s*(?:estrellas|★)/i);
       expect(html).not.toMatch(/\b\d{2,3}\s*%\s*(?:compatible|match)/i);
+    }
+  });
+
+  it('never hotlinks a remote image (CSP only allows img-src self/data:)', () => {
+    for (const relativePath of [
+      'es/index.html',
+      'es/mejores-unas-semicuradas/index.html',
+      'es/tornos-unas/index.html',
+      'es/aspiradores-polvo-unas/index.html',
+      'es/impresoras-unas-3d/index.html',
+      'es/comparar/index.html',
+      'es/encuentra-tus-unas/index.html',
+      'es/productos/kredioo-torno-profesional-35000-rpm/index.html',
+      'es/productos/sunseota-impresora-unas-3d-smart/index.html',
+    ]) {
+      const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
+      expect(html).not.toMatch(/<img[^>]+src="https?:\/\//);
+    }
+  });
+
+  it('always renders a product visual (real image or editorial fallback), never an empty slot', () => {
+    for (const relativePath of [
+      'es/productos/kredioo-torno-profesional-35000-rpm/index.html',
+      'es/productos/anbeistee-colector-polvo-2000pa/index.html',
+      'es/productos/ohora-n-cream-cotton/index.html',
+      'es/productos/sunseota-impresora-unas-3d-smart/index.html',
+    ]) {
+      const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
+      expect(html).toMatch(/role="img"/);
     }
   });
 
