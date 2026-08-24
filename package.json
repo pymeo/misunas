@@ -29,6 +29,7 @@
     "media:audit": "tsx scripts/media-audit.ts",
     "affiliate:audit": "tsx scripts/affiliate-audit.ts",
     "catalog:audit": "tsx scripts/catalog-audit.ts",
+    "seo:weekly": "tsx scripts/seo-weekly-report.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply tus-unas --local",
     "db:migrate:remote": "wrangler d1 migrations apply tus-unas --remote",
@@ -43,6 +44,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.2.4",
     "drizzle-orm": "^0.45.2",
+    "google-auth-library": "^11.0.2",
     "tailwindcss": "^4.3.3",
     "zod": "^4.4.3"
   },

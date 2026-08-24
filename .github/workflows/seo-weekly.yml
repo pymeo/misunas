@@ -1,0 +1,41 @@
+name: SEO Weekly Report
+
+on:
+  schedule:
+    # Lunes 07:00 UTC (~08:00/09:00 en España según horario de verano).
+    - cron: '0 7 * * 1'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Generar informe SEO semanal
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+        run: npm run seo:weekly | tee seo-report.md
+      - name: Añadir al resumen del job
+        if: always()
+        run: cat seo-report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Crear o actualizar issue semanal
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="SEO semanal — $(date -u +%F)"
+          existing=$(gh issue list --search "in:title \"$title\"" --state all --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --body-file seo-report.md
+          else
+            gh issue create --title "$title" --body-file seo-report.md
+          fi
