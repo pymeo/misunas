@@ -23,7 +23,7 @@ jobs:
       - name: Generar informe SEO semanal
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-          GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+          GSC_SITE_URL: ${{ vars.GSC_SITE_URL }}
         run: npm run seo:weekly | tee seo-report.md
       - name: Añadir al resumen del job
         if: always()
