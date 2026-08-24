@@ -6,12 +6,6 @@
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
-	"routes": [
-		{
-			"pattern": "xn--tus-uas-8za.com",
-			"custom_domain": true
-		}
-	],
 	"assets": {
 		"binding": "STATIC_ASSETS",
 		"directory": "./dist",
