@@ -1,0 +1,95 @@
+name: Amazon Media Refresh
+
+# Una página prerenderizada conserva la URL de imagen que tenía al
+# construirse, así que cumplir la regla de caching de Amazon (1 día para
+# Images/ItemInfo/DetailPageURL) exige reconstruir a diario. Este workflow
+# hace sync + build + gate + deploy una vez al día.
+#
+# Se salta a sí mismo si faltan los Secrets, para no fallar cada día en un
+# repositorio sin credenciales configuradas. Ver docs/AMAZON_CREATORS_API.md.
+
+on:
+  schedule:
+    # 05:30 UTC: antes del tráfico español y del informe SEO de los lunes.
+    - cron: '30 5 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: amazon-media-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Comprobar que los Secrets están configurados
+        id: preflight
+        env:
+          CREDENTIAL_ID: ${{ secrets.AMAZON_CREATORS_CREDENTIAL_ID }}
+          CREDENTIAL_SECRET: ${{ secrets.AMAZON_CREATORS_CREDENTIAL_SECRET }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          # Solo se comprueba la PRESENCIA; nunca se imprime ningún valor.
+          if [ -z "$CREDENTIAL_ID" ] || [ -z "$CREDENTIAL_SECRET" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Faltan los Secrets de Amazon Creators API: nada que refrescar." >> "$GITHUB_STEP_SUMMARY"
+          elif [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Falta CLOUDFLARE_API_TOKEN: no se puede desplegar." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.preflight.outputs.ready == 'true'
+        run: npm ci
+
+      - name: Sincronizar media de Amazon
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          AMAZON_CREATORS_API_ENABLED: 'true'
+          AMAZON_CREATORS_CREDENTIAL_ID: ${{ secrets.AMAZON_CREATORS_CREDENTIAL_ID }}
+          AMAZON_CREATORS_CREDENTIAL_SECRET: ${{ secrets.AMAZON_CREATORS_CREDENTIAL_SECRET }}
+          AMAZON_CREATORS_VERSION: ${{ vars.AMAZON_CREATORS_VERSION || 'v3.2' }}
+        run: npm run amazon:sync | tee amazon-sync.log
+
+      - name: Auditar media y enlaces
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          AMAZON_CREATORS_API_ENABLED: 'true'
+        run: |
+          npm run media:audit
+          npm run affiliate:audit
+
+      - name: Construir y verificar frescura
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          AMAZON_CREATORS_API_ENABLED: 'true'
+        run: |
+          npm run build
+          npm run amazon:gate
+
+      - name: Desplegar en Cloudflare
+        if: steps.preflight.outputs.ready == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+
+      - name: Resumen
+        if: steps.preflight.outputs.ready == 'true'
+        run: |
+          {
+            echo '## Amazon media refresh'
+            echo '```'
+            cat amazon-sync.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

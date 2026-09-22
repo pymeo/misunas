@@ -1,5 +1,19 @@
 # Auditoría de imágenes de producto
 
+> **Estado actualizado (2026-09-22).** Amazon Creators API **ya está
+> implementada e integrada**: ver **[`AMAZON_CREATORS_API.md`](./AMAZON_CREATORS_API.md)**
+> para la arquitectura, la autenticación y los comandos. Con la integración
+> activa, cualquier producto con ASIN válido recibe automáticamente su
+> imagen oficial `delivery: 'remote'` desde `m.media-amazon.com` (ya
+> autorizado en `img-src`), y el fallback editorial sigue cubriendo los
+> productos que Amazon no resuelve.
+>
+> Lo que sigue a continuación es el **registro de investigación original del
+> 2026-08-24** sobre fuentes de marca alternativas. Se conserva íntegro
+> porque sigue siendo la memoria de por qué cada candidato de marca está o no
+> aprobado; las columnas que dicen "Amazon Creators API tras aprobación" son
+> precisamente el camino que ya se ha recorrido.
+
 Investigación realizada el 2026-08-24 sobre los 34 productos activos del catálogo (10 semicuradas, 8 tornos, 8 aspiradores de polvo, 8 impresoras de uñas 3D), buscando fuentes de imagen oficiales y legítimas: web oficial de marca, PIM, media kit / press kit. **Ninguna entrada de este documento está aprobada para uso**: `status=approved` exige que un humano confirme la licencia de reutilización (`rightsStatus: 'permission_granted'`) y, si es autoalojada, descargue el asset a `public/products/`. Lo marcado `candidate` es una pista de investigación, no un permiso.
 
 Fuente de datos viva: `src/data/productMedia.ts` (los 7 candidatos de abajo ya están cargados ahí). Auditoría ejecutable: `npm run media:audit`.
@@ -9,7 +23,7 @@ Fuente de datos viva: `src/data/productMedia.ts` (los 7 candidatos de abajo ya e
 `src/domain/productMedia.ts` modela cada entrada como un discriminated union por `delivery`:
 
 - **`local`** — la única vía usada hoy. La imagen vive autoalojada bajo `public/products/{productId}/…` (`localPath`), la única compatible con la CSP actual (`img-src 'self' data:`). `localPath` es obligatorio en cuanto `status: 'approved'`, pero puede estar ausente mientras la entrada es solo una `candidate` de investigación (todavía no se ha descargado nada).
-- **`remote`** — reservada para Amazon Creators API (ver más abajo). Siempre trae `imageUrl` (esa URL es la propia evidencia de investigación, exista o no la aprobación). Una entrada `remote` con `status: 'approved'` solo podría llegar a pintarse el día en que su host esté en la allowlist de `img-src` (Fase 6) — hoy ninguna entrada es `remote`, así que esto no aplica a ningún producto real todavía.
+- **`remote`** — la vía de Amazon Creators API. Siempre trae `imageUrl` (esa URL es la propia evidencia, exista o no la aprobación). **Ya operativa**: `m.media-amazon.com` está en la allowlist de `img-src` de `public/_headers`, y las entradas `remote` las genera `npm run amazon:sync` a partir de la respuesta oficial de la API — nunca se escriben a mano en `src/data/productMedia.ts`, que sigue conteniendo solo entradas `local` de investigación de marca.
 
 Además, cada entrada declara `rightsStatus` (`not_required` / `needs_permission` / `permission_requested` / `permission_granted`), independiente de `status`. El esquema impide a nivel de tipo aprobar una imagen cuyo derecho de uso no esté confirmado: `status: 'approved'` exige `rightsStatus` en `permission_granted` o `not_required`. Así, dentro de seis meses, la respuesta a "¿por qué tenemos derecho a mostrar esta imagen?" está en el dato, no en la memoria de nadie — usa `rightsEvidence` (referencia corta, no el email entero), `approvedAt` y `approvedBy` (rol/equipo, nunca un nombre personal) para dejarlo trazado.
 
@@ -17,7 +31,9 @@ Además, cada entrada declara `rightsStatus` (`not_required` / `needs_permission
 
 ## Hallazgo transversal: herramientas oficiales de Amazon
 
-Amazon retiró las **Native Shopping Ads** (25 ago 2023) y la función "Imagen"/"Texto+Imagen" de **SiteStripe** (1 dic 2023). Hoy la única vía oficial de Amazon para servir imágenes de producto sin scrapear el HTML es la **Product Advertising API / Amazon Creators API** (que sustituyó a PA-API el 31 ene 2025), que exige una cuenta de Afiliados ya aprobada con ventas cualificadas — esta cuenta todavía no tiene acceso. Además, según su documentación, Creators API sirve las imágenes dinámicamente desde Amazon; **no autoriza descargarlas y autoalojarlas**. Por eso `creatorsApiMediaProvider` (en `src/application/productMediaResolver.ts`) queda como _provider_ preparado pero inactivo — ver sección "Preparado para Creators API" más abajo.
+Amazon retiró las **Native Shopping Ads** (25 ago 2023) y la función "Imagen"/"Texto+Imagen" de **SiteStripe** (1 dic 2023). Hoy la única vía oficial de Amazon para servir imágenes de producto sin scrapear el HTML es **Amazon Creators API**, que sustituyó a PA-API 5.0 (deprecada el 30 abr 2026, retirada el 15 may 2026) y exige una cuenta de Afiliados aprobada con ventas cualificadas (el umbral subió de 3 a 10 ventas / 30 días). Su documentación confirma que sirve las imágenes dinámicamente desde Amazon: **no autoriza descargarlas y autoalojarlas**, así que se enlazan desde su URL oficial y nunca se copian.
+
+`creatorsApiMediaProvider` (en `src/application/productMediaResolver.ts`) **ya es una integración real**, no un _stub_: consulta el snapshot que genera `npm run amazon:sync`. Sigue tras el flag `AMAZON_CREATORS_API_ENABLED`, y con el flag apagado el comportamiento es idéntico al anterior (fallback editorial para todo). Detalles completos en [`AMAZON_CREATORS_API.md`](./AMAZON_CREATORS_API.md).
 
 ## Resultado por producto
 

@@ -26,3 +26,7 @@ jobs:
       - run: npm run catalog:audit
       - run: npm run affiliate:audit
       - run: npm run media:audit
+      # Sin credenciales de Amazon el snapshot está vacío y el gate pasa: lo
+      # que se comprueba aquí es que el build por defecto sigue siendo válido
+      # y que el gate no bloquea un checkout limpio.
+      - run: npm run amazon:gate

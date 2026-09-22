@@ -10,6 +10,7 @@ npm run typecheck && npm run lint && npm run format:check
 npm test
 npm run catalog:audit && npm run affiliate:audit && npm run media:audit
 npm run build
+npm run amazon:gate
 ```
 
 Todo debe salir en verde. Si algo falla, no continúes.
@@ -44,23 +45,39 @@ El canonical técnico es un único host: `https://xn--tus-uas-8za.com` (`SITE_UR
 
 Ver `.env.example`. Ninguna es obligatoria para compilar. En Cloudflare (Workers & Pages → tus-unas → Settings → Variables):
 
-| Variable                                                                  | Obligatoria                    | Notas                                                                                          |
-| ------------------------------------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------- |
-| `PUBLIC_CF_WEB_ANALYTICS_TOKEN`                                           | No                             | Activa el beacon de Cloudflare Web Analytics. Sin ella, no se manda el script (no rompe nada). |
-| `PUBLIC_GOOGLE_SITE_VERIFICATION`                                         | No                             | Añade el `<meta name="google-site-verification">`. Rellenar tras el paso 5.                    |
-| `AMAZON_CREATORS_API_ENABLED`                                             | No                             | Dejar en `false`/sin definir. No hay credenciales todavía — ver `docs/PRODUCT_MEDIA_AUDIT.md`. |
-| `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_DATABASE_ID`, `CLOUDFLARE_API_TOKEN` | Solo para tooling de D1 remoto | No las necesita el build ni el Worker en producción.                                           |
+| Variable                                                                  | Obligatoria                    | Notas                                                                                                       |
+| ------------------------------------------------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `PUBLIC_CF_WEB_ANALYTICS_TOKEN`                                           | No                             | Activa el beacon de Cloudflare Web Analytics. Sin ella, no se manda el script (no rompe nada).              |
+| `PUBLIC_GOOGLE_SITE_VERIFICATION`                                         | No                             | Añade el `<meta name="google-site-verification">`. Rellenar tras el paso 5.                                 |
+| `AMAZON_CREATORS_API_ENABLED`                                             | No                             | `true` activa la media oficial de Amazon. Requiere credenciales — ver `docs/AMAZON_CREATORS_API.md`.        |
+| `AMAZON_CREATORS_CREDENTIAL_ID`, `AMAZON_CREATORS_CREDENTIAL_SECRET`      | Solo si la anterior es `true`  | Solo en `.dev.vars` (local) o Secrets del CI. **Nunca** como Secret del Worker: la integración es de build. |
+| `AMAZON_CREATORS_VERSION`                                                 | No                             | Región de la credencial. `v3.2` (Europa) por defecto.                                                       |
+| `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_DATABASE_ID`, `CLOUDFLARE_API_TOKEN` | Solo para tooling de D1 remoto | No las necesita el build ni el Worker en producción.                                                        |
 
 No hay secretos en el repositorio ni en `.env.example`.
 
-## 4. Desplegar (manual, solo cuando decidas publicar)
+## 4. Desplegar
 
 ```sh
-npm run build
 npm run deploy
 ```
 
-(`deploy` ya encadena `build && wrangler deploy`.) No se ha ejecutado en esta tarea — el enunciado prohíbe desplegar a producción desde aquí.
+`deploy` encadena, en este orden y con `&&`:
+
+1. `amazon:sync` — consulta Creators API y regenera el snapshot (o escribe uno
+   vacío si la integración está desactivada).
+2. `build` — prerenderiza con los datos de ese snapshot.
+3. `amazon:gate` — **aborta** si el snapshot está caducado (>24 h), ausente o
+   vacío con la integración activa. Es la defensa contra publicar datos de
+   Amazon fuera de su política de caching.
+4. `wrangler deploy`.
+
+Con la integración de Amazon activa, el HTML publicado contiene URLs de
+imagen que solo pueden conservarse 1 día, así que hay que **redesplegar a
+diario**: lo hace `.github/workflows/amazon-media-refresh.yml`, que necesita
+los Secrets `AMAZON_CREATORS_CREDENTIAL_ID`,
+`AMAZON_CREATORS_CREDENTIAL_SECRET` y `CLOUDFLARE_API_TOKEN` en GitHub (se
+salta a sí mismo si faltan).
 
 ## 5. Google Search Console (manual, después de publicar)
 
@@ -71,8 +88,11 @@ npm run deploy
 
 ## 6. Qué queda fuera de esta tarea a propósito
 
-- Amazon Creators API: sin credenciales, provider desactivado por diseño (`AMAZON_CREATORS_API_ENABLED=false`). No es un bloqueante de lanzamiento.
+- Amazon Creators API: **implementada**. Queda fuera únicamente el paso que
+  exige una credencial humana: poner el Credential ID/Secret en `.dev.vars` o
+  en los Secrets del CI y poner `AMAZON_CREATORS_API_ENABLED=true`. Mientras
+  eso no ocurra, el sitio funciona igual con el fallback editorial. Ver
+  `docs/AMAZON_CREATORS_API.md`.
 - `npm run db:migrate:remote`: no ejecutado (toca D1 real).
-- `npm run deploy`: no ejecutado (despliegue real).
 - DNS / zona en Cloudflare: no se puede tocar desde este entorno.
 - E2E de responsive con navegador real (Playwright): el sandbox de esta tarea no tiene las librerías del sistema que necesita Chromium headless (`libnspr4.so`); la verificación de "sin scroll horizontal" se hizo por inspección de build + análisis estático, no con un navegador real. Ejecuta `npm run test:e2e` en un entorno con esas dependencias antes de confiar ciegamente en el layout a 320–1440px.
