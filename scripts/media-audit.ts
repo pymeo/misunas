@@ -1,3 +1,7 @@
+// Primer import a propósito: deja `.dev.vars` en process.env antes de que
+// cualquier otro módulo lea AMAZON_CREATORS_API_ENABLED al evaluarse.
+import './lib/devVars';
+
 import {
   getAmazonImageVariants,
   getMediaSrc,

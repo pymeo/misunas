@@ -1,7 +1,15 @@
+// Primer import a propósito: deja `.dev.vars` en process.env antes de que
+// cualquier otro módulo lea AMAZON_CREATORS_API_ENABLED al evaluarse.
+import './lib/devVars';
+
 import { buildAmazonAffiliateUrl } from '../src/application/affiliate';
 import { resolveAmazonProductUrl } from '../src/application/amazonProductUrl';
 import { AMAZON_CONFIG } from '../src/config/site';
-import { AMAZON_MEDIA_SNAPSHOT } from '../src/data/amazonMediaSnapshot';
+import { AMAZON_CREATORS_API_ENABLED } from '../src/config/media';
+import {
+  AMAZON_MEDIA_SNAPSHOT,
+  getAmazonSnapshotEntry,
+} from '../src/data/amazonMediaSnapshot';
 import { PRODUCTS } from '../src/data/products';
 
 const MARKETPLACE_HOSTS: Record<string, string> = { es: 'www.amazon.es' };
@@ -133,9 +141,21 @@ let asinFallbackCount = 0;
 for (const product of activeProducts) {
   if (!product.affiliateEligible) continue;
   const rendered = resolveAmazonProductUrl(product);
-  const fallback = buildAmazonAffiliateUrl(product);
   if (!rendered) continue;
-  if (rendered === fallback) {
+
+  /**
+   * La procedencia se decide por el DATO, no comparando cadenas: una
+   * detailPageURL oficial puede coincidir carácter a carácter con la
+   * construida desde el ASIN, y contarla entonces como "fallback" falsearía
+   * el informe.
+   */
+  const entry = getAmazonSnapshotEntry(product.asin);
+  const fromOfficial =
+    AMAZON_CREATORS_API_ENABLED &&
+    entry !== null &&
+    entry.productId === product.id &&
+    entry.detailPageURL !== undefined;
+  if (!fromOfficial) {
     asinFallbackCount++;
     continue;
   }

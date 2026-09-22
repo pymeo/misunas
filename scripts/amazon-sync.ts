@@ -52,23 +52,6 @@ const SNAPSHOT_PATH = resolve('src/data/generated/amazon-media-snapshot.json');
 const MARKETPLACE = CREATORS_API_MARKETPLACE_HOSTS[AMAZON_CONFIG.marketplace];
 const dryRun = process.argv.includes('--dry-run');
 
-/**
- * Carga `.dev.vars` si existe, sin dependencias y sin imprimir valores. Es
- * el fichero que usa Wrangler para el entorno local, y el sitio recomendado
- * para las credenciales en una máquina de desarrollo (está en `.gitignore`).
- */
-function loadDevVars(): void {
-  const path = resolve('.dev.vars');
-  if (!existsSync(path)) return;
-  for (const line of readFileSync(path, 'utf8').split('\n')) {
-    const match = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/.exec(line);
-    if (!match?.[1] || line.trimStart().startsWith('#')) continue;
-    const value = (match[2] ?? '').replace(/^["']|["']$/g, '');
-    process.env[match[1]] ??= value;
-  }
-  console.log('· Cargado .dev.vars (valores no se imprimen).');
-}
-
 function writeSnapshot(snapshot: AmazonMediaSnapshot): void {
   mkdirSync(dirname(SNAPSHOT_PATH), { recursive: true });
   const temporary = `${SNAPSHOT_PATH}.tmp`;
@@ -89,8 +72,6 @@ function emptySnapshot(): AmazonMediaSnapshot {
 }
 
 async function main(): Promise<number> {
-  loadDevVars();
-
   const eligible = PRODUCTS.filter(
     (product) =>
       product.asin !== undefined &&

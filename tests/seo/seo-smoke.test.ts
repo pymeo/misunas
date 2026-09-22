@@ -303,7 +303,15 @@ describe('SEO production smoke tests', () => {
     }
   });
 
-  it('never hotlinks a remote image (CSP only allows img-src self/data:)', () => {
+  /**
+   * Antes: "ninguna imagen remota, punto" — correcto cuando todo el catálogo
+   * era autoalojado. Ahora Amazon Creators API sirve fotografías desde su
+   * propio host (el Operating Agreement no permite descargarlas), así que lo
+   * que se protege es lo que de verdad importa: que TODA imagen remota venga
+   * de un host de `AMAZON_IMAGE_HOSTS`, el mismo conjunto que autoriza la
+   * CSP. Una URL de cualquier otro host sigue siendo un fallo.
+   */
+  it('only hotlinks remote images from the CSP-allowlisted Amazon hosts', () => {
     for (const relativePath of [
       'es/index.html',
       'es/mejores-unas-semicuradas/index.html',
@@ -316,7 +324,18 @@ describe('SEO production smoke tests', () => {
       'es/productos/sunseota-impresora-unas-3d-smart/index.html',
     ]) {
       const html = readFileSync(resolve(clientRoot, relativePath), 'utf8');
-      expect(html).not.toMatch(/<img[^>]+src="https?:\/\//);
+      const remoteSources = [
+        ...html.matchAll(/<img[^>]+src="(https?:\/\/[^"]+)"/g),
+      ].map((match) => new URL(match[1] ?? '').hostname);
+      const notAllowed = remoteSources.filter(
+        (host) => !(AMAZON_IMAGE_HOSTS as readonly string[]).includes(host),
+      );
+      expect(
+        notAllowed,
+        `${relativePath}: hosts remotos no autorizados`,
+      ).toEqual([]);
+      /** Y nunca por http. */
+      expect(html).not.toMatch(/<img[^>]+src="http:\/\//);
     }
   });
 

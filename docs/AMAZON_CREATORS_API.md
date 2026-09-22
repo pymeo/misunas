@@ -111,6 +111,27 @@ AMAZON_CREATORS_CREDENTIAL_SECRET=...
 AMAZON_CREATORS_VERSION=v3.2
 ```
 
+### Quién lee `.dev.vars` (comprobado, no supuesto)
+
+Dos mundos distintos necesitan las variables, y solo uno las recoge solo:
+
+- **`astro build` SÍ lee `.dev.vars`** por su cuenta, a través del platform
+  proxy de Wrangler que usa `@astrojs/cloudflare`. Verificado empíricamente:
+  con el mismo snapshot de 34 entradas, el build produce 15 imágenes remotas
+  en `/es/impresoras-unas-3d/` con `.dev.vars` presente y **0** sin él. No
+  hace falta exportar nada al shell.
+- **Los scripts ejecutados con `tsx` NO**: no pasan por Astro ni por Wrangler.
+  Por eso `scripts/lib/devVars.ts` los carga explícitamente, y se importa como
+  **primer import** de `amazon-sync`, `media-audit`, `affiliate-audit` y
+  `amazon-freshness-gate`. Tiene que ser el primero porque
+  `src/config/media.ts` calcula `AMAZON_CREATORS_API_ENABLED` al evaluarse, y
+  ESM evalúa los imports antes del cuerpo del script. Sin esto, `media:audit`
+  informaba "Integration enabled: no" y "0 imágenes" mientras el build sí las
+  renderizaba.
+
+Una variable ya presente en el entorno gana sobre el fichero: así el CI (que
+no tiene `.dev.vars`) y un `VAR=x npm run …` puntual siguen mandando.
+
 `CreatorsApiCredentials` sobrescribe `toJSON` y `toString` para devolver
 `[REDACTED]`: un `console.log`, un `JSON.stringify` o una plantilla de error
 no pueden volcar el secreto por accidente. Los mensajes de error nombran

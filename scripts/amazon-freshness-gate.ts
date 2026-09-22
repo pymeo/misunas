@@ -13,6 +13,10 @@
  * Cuando la integración está desactivada no bloquea nada: un snapshot vacío
  * es el estado legítimo de un build sin Amazon.
  */
+// Primer import a propósito: deja `.dev.vars` en process.env antes de que
+// cualquier otro módulo lea AMAZON_CREATORS_API_ENABLED al evaluarse.
+import './lib/devVars';
+
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

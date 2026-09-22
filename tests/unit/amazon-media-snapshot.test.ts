@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { CREATORS_API_CACHE_TTL_MS } from '@/config/amazonCreators';
 import { loadAmazonMediaSnapshot } from '@/data/amazonMediaSnapshot';
 import { amazonMediaSnapshotSchema } from '@/domain/amazonMediaSnapshot';
+import rawSnapshotForTest from '@/data/generated/amazon-media-snapshot.json';
 
 const NOW = Date.parse('2026-09-22T12:00:00.000Z');
 
@@ -107,9 +108,24 @@ describe('loadAmazonMediaSnapshot', () => {
     expect(result.problem).toBeNull();
   });
 
-  it('null/undefined tampoco rompen', () => {
+  it('null y una entrada no-objeto no rompen: se ignoran', () => {
     expect(loadAmazonMediaSnapshot(null, NOW).byAsin.size).toBe(0);
-    expect(loadAmazonMediaSnapshot(undefined, NOW).byAsin.size).toBe(0);
+    expect(loadAmazonMediaSnapshot(42, NOW).byAsin.size).toBe(0);
+    expect(loadAmazonMediaSnapshot('no soy un snapshot', NOW).byAsin.size).toBe(
+      0,
+    );
+  });
+
+  it('sin argumento usa el snapshot del repositorio, no un objeto vacío', () => {
+    /**
+     * `undefined` activa el parámetro por defecto, que ES el snapshot
+     * generado. Antes esto se afirmaba como "devuelve 0 entradas", y pasaba
+     * solo porque el snapshot del checkout estaba vacío: un falso positivo
+     * que se rompía en cuanto había datos reales.
+     */
+    const withDefault = loadAmazonMediaSnapshot(undefined, NOW);
+    const explicit = loadAmazonMediaSnapshot(rawSnapshotForTest, NOW);
+    expect(withDefault.byAsin.size).toBe(explicit.byAsin.size);
   });
 
   it('rechaza una versión de esquema desconocida (snapshot de otro formato)', () => {
