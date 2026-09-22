@@ -14,3 +14,13 @@ blob-report/
 playwright/.cache/
 seo-report.md
 tus-unas-seo-*.json
+
+# Credenciales locales de Wrangler (.dev.vars) — nunca versionadas.
+.dev.vars
+.dev.vars*
+
+# Snapshot de Amazon Creators API: se regenera con "npm run amazon:sync".
+# NO se versiona a propósito — la política oficial de caching de Amazon
+# autoriza conservar Images/ItemInfo/DetailPageURL 1 día, así que un fichero
+# en Git quedaría fuera de norma a las 24 h. Ver docs/AMAZON_CREATORS_API.md.
+src/data/generated/

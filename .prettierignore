@@ -1,0 +1,9 @@
+# Generado por "npm run amazon:sync" / "npm run prepare": no se formatea ni
+# se versiona (ver .gitignore).
+src/data/generated/
+dist/
+.astro/
+.wrangler/
+coverage/
+test-results/
+playwright-report/

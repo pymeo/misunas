@@ -1,4 +1,6 @@
+import { CREATORS_API_CACHE_TTL_MS as CONFIGURED_CREATORS_API_CACHE_TTL_MS } from '@/config/amazonCreators';
 import { AMAZON_CREATORS_API_ENABLED } from '@/config/media';
+import { getAmazonSnapshotEntry } from '@/data/amazonMediaSnapshot';
 import { getMediaEntries } from '@/data/productMedia';
 import type { Product } from '@/domain/product';
 import type { ProductMedia, RemoteProductMedia } from '@/domain/productMedia';
@@ -32,15 +34,22 @@ interface CreatorsApiCacheEntry {
   cachedAt: number;
 }
 
-/** ~24h: Amazon no autoriza descargar sus imágenes, solo enlazarlas dinámicamente, así que lo cacheable es la respuesta (URL + metadatos), no el fichero — y por poco tiempo, por si la URL rota o caduca. */
-export const CREATORS_API_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+/**
+ * TTL de la respuesta de Creators API: 24 h, el máximo que autoriza la tabla
+ * oficial de caching de Amazon para Images/ItemInfo/DetailPageURL (Offers
+ * solo permite 1 h, y por eso no pedimos precios). La constante vive en
+ * `src/config/amazonCreators.ts`; se reexporta aquí porque este módulo era
+ * su origen histórico y los consumidores (y los tests) la importan de aquí.
+ */
+export const CREATORS_API_CACHE_TTL_MS = CONFIGURED_CREATORS_API_CACHE_TTL_MS;
 
 /**
- * Abstracción de caché para el futuro cliente de Amazon Creators API. Hoy
- * solo existe `InMemoryCreatorsApiCache` (usada en tests); una
- * implementación real (KV de Cloudflare, o un snapshot JSON regenerado por
- * un script de build) puede sustituirla sin tocar `creatorsApiMediaProvider`
- * ni ningún componente de UI.
+ * Abstracción de caché de Creators API. La caché DURABLE que usa el build es
+ * el snapshot de `src/data/generated/amazon-media-snapshot.json` (ver
+ * `src/data/amazonMediaSnapshot.ts`), regenerado por `npm run amazon:sync`.
+ * Esta interfaz sigue siendo el contrato para cachés de proceso —
+ * `InMemoryCreatorsApiCache` la implementa y la usa el propio sync para no
+ * reconsultar un ASIN ya resuelto dentro de la misma ejecución.
  */
 export interface CreatorsApiCache {
   get(asin: string): Promise<RemoteProductMedia | null>;
@@ -67,46 +76,50 @@ export class InMemoryCreatorsApiCache implements CreatorsApiCache {
 }
 
 /**
- * Amazon retiró SiteStripe "Image"/"Texto+Imagen" y las Native Shopping Ads
- * a finales de 2023; hoy la única vía oficial de Amazon para imágenes de
- * producto es la Product Advertising API (Creators API), que exige una
- * cuenta de Afiliados ya aprobada con ventas cualificadas — esta cuenta
- * todavía no tiene acceso, y `AMAZON_CREATORS_API_ENABLED` (Fase 5, ver
- * `src/config/media.ts`) está desactivado por defecto.
+ * Provider de Amazon Creators API.
  *
- * Mientras el flag esté a `false`, `resolve()` no toca la caché ni hace
- * ninguna llamada de red: devuelve `null` de inmediato y `getProductMedia`
- * cae al resto de fuentes / fallback editorial, exactamente igual que hoy.
+ * Deliberadamente SÍNCRONO. La llamada real a Amazon ocurre antes del build
+ * (`npm run amazon:sync`), que deja el resultado en un snapshot local; aquí
+ * solo se consulta ese snapshot en memoria. Esa decisión es lo que permite
+ * que `ProductVisual`, `ProductCard`, `ProductComparison`,
+ * `EditorialTopPicks` y `Recommender` sigan siendo síncronos y que las
+ * páginas sigan siendo `prerender = true`: el SEO estático se mantiene y una
+ * caída de Amazon no puede devolver un 500, porque en tiempo de respuesta no
+ * se habla con Amazon.
  *
- * Cuando haya acceso, la integración real puede tomar dos formas sin romper
- * este contrato (misma firma `MediaProvider`, ninguna UI cambia):
- *  1. Un script de build (como `scripts/media-audit.ts`) que llama a la API,
- *     usa una implementación real de `CreatorsApiCache` para no reconsultar
- *     el mismo ASIN en <24h, y escribe el resultado en
- *     `src/data/productMedia.ts` como una entrada `delivery: 'remote'` más
- *     — coherente con que el resto del catálogo ya es 100% estático.
- *     Recomendado, dado que el sitio se prerenderiza (`prerender = true` en
- *     casi todas las páginas).
- *  2. Que `resolve()` pase a ser async y llame a la API en el momento del
- *     build de cada página; en ese caso los consumidores síncronos de
- *     `getProductMedia` (ProductVisual, ProductCard, ProductComparison,
- *     EditorialTopPicks, Recommender) tendrían que volverse async también.
- * En ambos casos, la URL debe venir siempre de la respuesta oficial de la
- * API — nunca construirse a mano a partir del ASIN (p. ej.
- * `m.media-amazon.com/...`) — y nunca se descarga el fichero para
- * autoalojarlo (eso violaría el Operating Agreement de Amazon).
+ * Tres condiciones para devolver una imagen, en este orden:
+ *  1. `AMAZON_CREATORS_API_ENABLED` activo (si no, ni se mira el snapshot).
+ *  2. Hay una entrada fresca para el ASIN del producto (`getAmazonSnapshotEntry`
+ *     ya descarta las que superan la TTL de 24 h).
+ *  3. La entrada corresponde a ESTE producto (`productId`), no solo al mismo
+ *     ASIN — cinturón y tirantes contra un snapshot desincronizado del
+ *     catálogo.
  */
 export const creatorsApiMediaProvider: MediaProvider = {
   id: 'creators-api',
-  resolve() {
+  resolve(product) {
     if (!AMAZON_CREATORS_API_ENABLED) return null;
-    // TODO(creators-api): cuando existan credenciales, sustituir esta rama
-    // (o el script de build que la alimente) por la llamada real más una
-    // lectura de `CreatorsApiCache`. Hasta entonces sigue devolviendo null
-    // a propósito: no hay llamadas falsas ni URLs construidas a mano.
-    return null;
+    const entry = getAmazonSnapshotEntry(product.asin);
+    if (!entry) return null;
+    if (entry.productId !== product.id) return null;
+    return entry.media;
   },
 };
+
+/**
+ * Variantes oficiales para la pequeña galería de la ficha individual. Vacío
+ * mientras no haya snapshot fresco: la galería desaparece sin dejar hueco.
+ * No se usa en grids ni comparativas — ahí solo la principal, para no
+ * multiplicar peticiones de imagen.
+ */
+export function getAmazonImageVariants(
+  product: Product,
+): { url: string; width: number; height: number }[] {
+  if (!AMAZON_CREATORS_API_ENABLED) return [];
+  const entry = getAmazonSnapshotEntry(product.asin);
+  if (!entry || entry.productId !== product.id) return [];
+  return entry.variants;
+}
 
 /**
  * URL/ruta que debe recibir `<img src>`, sea cual sea el `delivery` —

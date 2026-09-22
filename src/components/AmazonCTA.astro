@@ -1,5 +1,5 @@
 ---
-import { buildAmazonAffiliateUrl } from '@/application/affiliate';
+import { resolveAmazonProductUrl } from '@/application/amazonProductUrl';
 import type { Product } from '@/domain/product';
 
 interface Props {
@@ -20,7 +20,7 @@ const href =
   product.active &&
   product.affiliateEligible &&
   product.editorialStatus === 'approved'
-    ? buildAmazonAffiliateUrl(product)
+    ? resolveAmazonProductUrl(product)
     : null;
 ---
 

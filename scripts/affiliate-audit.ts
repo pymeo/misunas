@@ -1,5 +1,7 @@
 import { buildAmazonAffiliateUrl } from '../src/application/affiliate';
+import { resolveAmazonProductUrl } from '../src/application/amazonProductUrl';
 import { AMAZON_CONFIG } from '../src/config/site';
+import { AMAZON_MEDIA_SNAPSHOT } from '../src/data/amazonMediaSnapshot';
 import { PRODUCTS } from '../src/data/products';
 
 const MARKETPLACE_HOSTS: Record<string, string> = { es: 'www.amazon.es' };
@@ -114,9 +116,70 @@ console.log(`Wrong marketplace: ${wrongMarketplaceCount}`);
 console.log(`Missing tag: ${missingTagCount}`);
 console.log('');
 
-if (issues.length > 0) {
+/**
+ * Segunda pasada: el enlace REALMENTE renderizado por `AmazonCTA`, que
+ * prefiere la `detailPageURL` oficial de Creators API cuando existe.
+ *
+ * Se audita por separado, y no sustituyendo la pasada anterior, porque las
+ * expectativas son distintas: la URL construida desde el ASIN debe estar
+ * limpia de parámetros, mientras que la oficial de Amazon puede traer los
+ * suyos (`linkCode`, `ref`…) y eso es correcto. Lo que se exige aquí es lo
+ * que de verdad importa: host español, el ASIN correcto y nuestro tag.
+ */
+const officialIssues: Issue[] = [];
+let officialLinkCount = 0;
+let asinFallbackCount = 0;
+
+for (const product of activeProducts) {
+  if (!product.affiliateEligible) continue;
+  const rendered = resolveAmazonProductUrl(product);
+  const fallback = buildAmazonAffiliateUrl(product);
+  if (!rendered) continue;
+  if (rendered === fallback) {
+    asinFallbackCount++;
+    continue;
+  }
+  officialLinkCount++;
+
+  const url = new URL(rendered);
+  const expectedHost = MARKETPLACE_HOSTS[product.amazonMarketplace];
+  if (url.hostname !== expectedHost)
+    officialIssues.push({
+      productId: product.id,
+      reason: `detailPageURL oficial con host inesperado: ${url.hostname}`,
+    });
+  else if (
+    product.asin &&
+    !url.pathname.toUpperCase().includes(product.asin.toUpperCase())
+  )
+    officialIssues.push({
+      productId: product.id,
+      reason: `detailPageURL oficial no contiene el ASIN ${product.asin}: ${url.pathname}`,
+    });
+  else if (url.searchParams.get('tag') !== AMAZON_CONFIG.affiliateTag)
+    officialIssues.push({
+      productId: product.id,
+      reason: `detailPageURL oficial sin nuestro tag (${AMAZON_CONFIG.affiliateTag})`,
+    });
+}
+
+console.log('AMAZON CREATORS API — ENLACES OFICIALES');
+console.log('');
+console.log(
+  `Snapshot de Amazon: ${
+    AMAZON_MEDIA_SNAPSHOT.snapshot?.amazonQueried
+      ? `${String(AMAZON_MEDIA_SNAPSHOT.byAsin.size)} entrada(s) fresca(s)`
+      : 'vacío (integración desactivada o sin credenciales)'
+  }`,
+);
+console.log(`Enlaces desde detailPageURL oficial: ${officialLinkCount}`);
+console.log(`Enlaces construidos desde el ASIN: ${asinFallbackCount}`);
+console.log('');
+
+const allIssues = [...issues, ...officialIssues];
+if (allIssues.length > 0) {
   console.error('Issues:');
-  for (const issue of issues)
+  for (const issue of allIssues)
     console.error(`  [${issue.productId}] ${issue.reason}`);
   console.log('');
   console.error('FAIL');

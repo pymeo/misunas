@@ -1,16 +1,22 @@
-# img-src es deliberadamente 'self' data:, no https:/*: cero imágenes remotas
-# hoy (todo el catálogo aprobado es delivery:'local', autoalojado bajo
-# /products/). Cuando Amazon Creators API se conecte de verdad (ver
-# src/application/productMediaResolver.ts y docs/PRODUCT_MEDIA_AUDIT.md),
-# esta línea debe ampliarse con el/los hosts EXACTOS que devuelva su
-# respuesta oficial — nunca con un dominio adivinado o construido a mano
-# (p. ej. m.media-amazon.com) ni con un comodín https:.
+# img-src sigue siendo una allowlist cerrada, nunca https: ni un comodín.
+#
+# Además de 'self' data: (el catálogo autoalojado bajo /products/), ahora
+# incluye m.media-amazon.com: el host desde el que Amazon Creators API sirve
+# oficialmente las imágenes de producto (documentado en
+# affiliate-program.amazon.com/creatorsapi/docs/en-us/api-reference/resources/images).
+# Las imágenes de Amazon NO se descargan ni se autoalojan — el Operating
+# Agreement solo autoriza enlazarlas desde su propia URL.
+#
+# Esta lista es exactamente la misma que AMAZON_IMAGE_HOSTS en
+# src/config/amazonCreators.ts, y el sync rechaza (y reporta) cualquier URL
+# de un host que no figure ahí, de modo que un host nuevo se añade aquí de
+# forma deliberada en vez de fallar en silencio contra la CSP.
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-  Content-Security-Policy: default-src 'self'; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data: https://m.media-amazon.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

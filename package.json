@@ -15,6 +15,8 @@
     "node": ">=22.0.0"
   },
   "scripts": {
+    "prepare": "node scripts/amazon-prepare.mjs",
+    "prebuild": "node scripts/amazon-prepare.mjs",
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev --host 0.0.0.0",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "wrangler dev",
@@ -27,6 +29,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "media:audit": "tsx scripts/media-audit.ts",
+    "amazon:sync": "tsx scripts/amazon-sync.ts",
+    "amazon:gate": "tsx scripts/amazon-freshness-gate.ts",
     "affiliate:audit": "tsx scripts/affiliate-audit.ts",
     "catalog:audit": "tsx scripts/catalog-audit.ts",
     "seo:weekly": "tsx scripts/seo-weekly-report.ts",
@@ -36,7 +40,7 @@
     "db:seed:local": "wrangler d1 execute tus-unas --local --file=./scripts/seed-local.sql",
     "db:reset:local": "node ./scripts/reset-local.mjs",
     "reviews:moderate": "node ./scripts/moderate-review.mjs",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run amazon:sync && npm run build && npm run amazon:gate && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.2.3",
