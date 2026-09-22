@@ -52,6 +52,15 @@ export const CONTENT_RELATIONS: Record<string, RelatedContentLink[]> = {
         'Si buscas tiras semicuradas en vez de maquinaria, empieza aquí.',
     },
   ],
+  /**
+   * `/precio/` no tenía NINGÚN enlace interno entrante en todo el sitio
+   * (estaba en el sitemap y era indexable, pero huérfana), así que entra
+   * aquí. Para no pasar de 5 tarjetas, `cartuchos-y-consumibles` sale de
+   * este bloque: conserva su enlace contextual en prosa desde el punto
+   * "Consumibles y cartuchos" de la guía del hub, más los de
+   * `como-funcionan` y `profesionales`. Los cinco hijos del cluster tienen
+   * enlace desde el hub — unos en prosa, otros en tarjeta.
+   */
   '/es/impresoras-unas-3d/': [
     {
       href: '/es/impresoras-unas-3d/como-funcionan/',
@@ -60,15 +69,22 @@ export const CONTENT_RELATIONS: Record<string, RelatedContentLink[]> = {
         'Qué hay detrás del término "impresora 3D" y qué imprime realmente sobre la uña.',
     },
     {
+      href: '/es/impresoras-unas-3d/precio/',
+      title: 'Qué determina el precio',
+      description:
+        'Qué factores mueven el precio de una impresora de uñas 3D, sin cifras inventadas.',
+    },
+    {
+      href: '/es/impresoras-unas-3d/profesionales/',
+      title: 'Para profesionales',
+      description:
+        'Qué pesa más en un salón con varias clientas al día frente a un uso doméstico.',
+    },
+    {
       href: '/es/impresoras-unas-3d/4800-vs-12000-dpi/',
       title: '4800 vs 12000 DPI',
       description:
         'Qué cambia realmente la resolución indicada en el resultado final.',
-    },
-    {
-      href: '/es/impresoras-unas-3d/cartuchos-y-consumibles/',
-      title: 'Cartuchos y consumibles',
-      description: 'Qué gastas de verdad más allá del precio de la máquina.',
     },
     {
       href: '/es/calculadora-rentabilidad-impresora-unas/',
@@ -82,6 +98,12 @@ export const CONTENT_RELATIONS: Record<string, RelatedContentLink[]> = {
       title: 'Ver la comparativa',
       description:
         'Vuelve al Top 3 y a la comparación completa de impresoras investigadas.',
+    },
+    {
+      href: '/es/impresoras-unas-3d/precio/',
+      title: 'Qué determina el precio',
+      description:
+        'Ya sabes qué hace: esto es lo que mueve su precio en Amazon.es.',
     },
     {
       href: '/es/impresoras-unas-3d/4800-vs-12000-dpi/',
@@ -122,6 +144,12 @@ export const CONTENT_RELATIONS: Record<string, RelatedContentLink[]> = {
         'Compara las impresoras investigadas por formato y funciones.',
     },
     {
+      href: '/es/impresoras-unas-3d/precio/',
+      title: 'Qué determina el precio',
+      description:
+        'Qué factores mueven el precio antes de presupuestar el equipo del salón.',
+    },
+    {
       href: '/es/calculadora-rentabilidad-impresora-unas/',
       title: 'Calculadora de rentabilidad',
       description: 'Calcula el margen y las semanas para amortizar la máquina.',
@@ -138,6 +166,12 @@ export const CONTENT_RELATIONS: Record<string, RelatedContentLink[]> = {
       title: 'Ver la comparativa',
       description:
         'Compara los modelos investigados con cada resolución indicada.',
+    },
+    {
+      href: '/es/impresoras-unas-3d/precio/',
+      title: 'Qué determina el precio',
+      description:
+        'La resolución es uno de los factores que mueven el precio; aquí están los demás.',
     },
     {
       href: '/es/impresoras-unas-3d/como-funcionan/',
@@ -169,6 +203,12 @@ export const CONTENT_RELATIONS: Record<string, RelatedContentLink[]> = {
       href: '/es/impresoras-unas-3d/',
       title: 'Ver la comparativa',
       description: 'Compara las impresoras investigadas antes de decidir.',
+    },
+    {
+      href: '/es/impresoras-unas-3d/precio/',
+      title: 'Qué determina el precio',
+      description:
+        'Para afinar la inversión que acabas de introducir en la calculadora.',
     },
     {
       href: '/es/impresoras-unas-3d/cartuchos-y-consumibles/',

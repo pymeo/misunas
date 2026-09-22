@@ -1,7 +1,15 @@
 ---
+/**
+ * Guía "cómo elegir" de una categoría. Cada punto puede llevar un enlace
+ * contextual a la página del cluster que desarrolla ese punto en detalle
+ * (`link`), en vez de repetir bloques de enlaces genéricos: el enlace sale
+ * del párrafo que lo justifica, con un anchor descriptivo y no una keyword
+ * suelta. Es opcional — un punto sin página propia no lleva enlace.
+ */
 interface Topic {
   title: string;
   body: string;
+  link?: { href: string; label: string };
 }
 interface Props {
   heading: string;
@@ -23,6 +31,11 @@ const { heading, intro, topics } = Astro.props;
             {index + 1}. {topic.title}
           </strong>
           <p class="mt-2 text-muted">{topic.body}</p>
+          {topic.link && (
+            <p class="mt-2">
+              <a href={topic.link.href}>{topic.link.label}</a>
+            </p>
+          )}
         </li>
       ))
     }
