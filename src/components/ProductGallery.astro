@@ -1,0 +1,125 @@
+---
+import ProductImage from '@/components/ProductImage.astro';
+
+/**
+ * Galería pequeña para la ficha individual: imagen principal de Amazon más
+ * las variantes oficiales que devuelve Creators API.
+ *
+ * Solo se usa en `/es/productos/[slug]/`. En grids y comparativas se sigue
+ * pintando únicamente la principal: multiplicar imágenes en una parrilla de
+ * 8 productos costaría LCP y ancho de banda sin aportar nada a la decisión.
+ *
+ * Detalles que no son accidentales:
+ *  - La principal lleva `width`/`height` reales de la API y la miniatura
+ *    también, así que no hay salto de layout (CLS) al cargar ni al cambiar.
+ *  - La principal es la única candidata a LCP (`eager`); las miniaturas son
+ *    siempre `lazy`.
+ *  - El intercambio es progresivo: sin JavaScript se ve la imagen principal
+ *    y las miniaturas como imágenes normales, que ya informan por sí solas.
+ *  - Si la imagen remota falla, `ProductImage` revela el fallback editorial
+ *    y el script oculta la tira de miniaturas para no dejar restos.
+ */
+interface GalleryImage {
+  url: string;
+  width: number;
+  height: number;
+}
+interface Props {
+  productId: string;
+  alt: string;
+  primary: GalleryImage;
+  variants: GalleryImage[];
+  fallbackTargetId: string;
+  eager?: boolean;
+}
+const {
+  productId,
+  alt,
+  primary,
+  variants,
+  fallbackTargetId,
+  eager = false,
+} = Astro.props;
+const mainId = `gallery-main-${productId}`;
+const stripId = `gallery-strip-${productId}`;
+const views = [primary, ...variants];
+---
+
+<div data-product-gallery={stripId}>
+  <ProductImage
+    src={primary.url}
+    {alt}
+    width={primary.width}
+    height={primary.height}
+    {eager}
+    {fallbackTargetId}
+    imageId={mainId}
+  />
+  <ul
+    id={stripId}
+    class="mt-3 flex list-none gap-2 overflow-x-auto p-0"
+    aria-label={`Más vistas del producto (${String(views.length)})`}
+  >
+    {
+      views.map((view, index) => (
+        <li class="shrink-0">
+          <button
+            type="button"
+            class="block size-16 overflow-hidden rounded-lg border-2 border-border bg-cream p-1 aria-pressed:border-primary sm:size-20"
+            data-gallery-target={mainId}
+            data-gallery-src={view.url}
+            data-gallery-width={view.width}
+            data-gallery-height={view.height}
+            aria-pressed={index === 0 ? 'true' : 'false'}
+          >
+            <img
+              src={view.url}
+              alt={`Vista ${String(index + 1)} de ${alt}`}
+              width={view.width}
+              height={view.height}
+              loading="lazy"
+              decoding="async"
+              class="block size-full object-contain"
+            />
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  for (const strip of document.querySelectorAll<HTMLElement>(
+    '[data-product-gallery]',
+  )) {
+    const buttons = strip.querySelectorAll<HTMLButtonElement>(
+      'button[data-gallery-target]',
+    );
+    for (const button of buttons)
+      button.addEventListener('click', () => {
+        const { galleryTarget, gallerySrc, galleryWidth, galleryHeight } =
+          button.dataset;
+        if (!galleryTarget || !gallerySrc) return;
+        const main = document.getElementById(galleryTarget);
+        if (!(main instanceof HTMLImageElement)) return;
+        main.src = gallerySrc;
+        if (galleryWidth) main.width = Number(galleryWidth);
+        if (galleryHeight) main.height = Number(galleryHeight);
+        for (const other of buttons)
+          other.setAttribute('aria-pressed', String(other === button));
+      });
+
+    /**
+     * Si la imagen principal no llega a cargar, ProductImage ya revela la
+     * ilustración editorial; aquí solo se retira la tira de miniaturas, que
+     * apuntarían a las mismas URLs fallidas.
+     */
+    const main = strip.querySelector<HTMLImageElement>(
+      'img[id^="gallery-main-"]',
+    );
+    main?.addEventListener('error', () => {
+      const list = strip.querySelector('ul');
+      if (list) list.hidden = true;
+    });
+  }
+</script>
