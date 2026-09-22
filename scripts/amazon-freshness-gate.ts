@@ -74,6 +74,17 @@ if (age > CREATORS_API_CACHE_TTL_MS)
     `el snapshot se generó hace ${hours(age)} h, por encima de la TTL de ${hours(CREATORS_API_CACHE_TTL_MS)} h. Ejecuta "npm run amazon:sync".`,
   );
 
+/**
+ * No bloquea: un sitio con fallback editorial es válido, y bloquear aquí
+ * dejaría el despliegue rehén de una caída de Amazon. Pero que se consulte
+ * Amazon y no quede ni una imagen es casi siempre un problema de credencial
+ * o de partnerTag, así que se avisa en voz alta.
+ */
+if (loaded.snapshot.entries.length === 0)
+  console.warn(
+    'amazon:gate — AVISO: se consultó Amazon y no quedó ninguna entrada. Todo el catálogo usará el fallback editorial. Revisa el informe de "npm run amazon:sync" (credencial sin acceso a Creators API, partnerTag que no corresponde o marketplace no autorizado son las causas habituales).',
+  );
+
 console.log(
   `amazon:gate — OK: ${String(loaded.snapshot.entries.length)} entrada(s) de Amazon, generadas hace ${hours(age)} h (límite ${hours(CREATORS_API_CACHE_TTL_MS)} h).`,
 );

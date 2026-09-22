@@ -172,7 +172,7 @@ async function main(): Promise<number> {
     if (outcome.failure) {
       /** Fallo COMPLETO del lote: ningún item devuelto. */
       for (const asin of outcome.asins) {
-        answered.add(asin);
+        answered.add(asin.toUpperCase());
         const product = productByAsin.get(asin);
         const stillFresh = previous.byAsin.get(asin.toUpperCase());
         if (stillFresh && product && stillFresh.productId === product.id) {
