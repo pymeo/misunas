@@ -1,9 +1,11 @@
 ---
 import NailPrinterIllustration from '@/components/NailPrinterIllustration.astro';
 import NailStylePreview from '@/components/NailStylePreview.astro';
+import ProductGallery from '@/components/ProductGallery.astro';
 import ProductImage from '@/components/ProductImage.astro';
 import ToolIllustration from '@/components/ToolIllustration.astro';
 import {
+  getAmazonImageVariants,
   getMediaSrc,
   getProductMedia,
 } from '@/application/productMediaResolver';
@@ -11,34 +13,82 @@ import type { Product } from '@/domain/product';
 interface Props {
   product: Product;
   compact?: boolean;
+  /**
+   * Marca esta imagen como candidata real a LCP: carga `eager` y
+   * `fetchpriority="high"`. Reservado a la imagen destacada que está sobre
+   * el fold (el pick nº 1 de una categoría, o el héroe de una ficha). Nunca
+   * se activa en parrillas ni comparativas.
+   */
   eager?: boolean;
+  /**
+   * Permite la pequeña galería de variantes oficiales. Solo la ficha
+   * individual la activa; en grids y comparativas se pinta la principal.
+   */
+  gallery?: boolean;
 }
-const { product, compact = false, eager = false } = Astro.props;
+const {
+  product,
+  compact = false,
+  eager = false,
+  gallery = false,
+} = Astro.props;
 const resolved = getProductMedia(product);
 const isMachinery =
   product.productType === 'nail_drill' ||
   product.productType === 'nail_dust_collector';
 const isNailPrinter = product.productType === 'nail_printer_3d';
 const fallbackId = `visual-fallback-${product.id}`;
+/**
+ * La galería solo tiene sentido sobre la imagen remota de Amazon: es la
+ * única fuente que trae variantes oficiales, y `width`/`height` conocidos
+ * para todas ellas.
+ */
+const variants =
+  gallery &&
+  resolved.kind === 'image' &&
+  resolved.media.delivery === 'remote' &&
+  resolved.media.width !== undefined &&
+  resolved.media.height !== undefined
+    ? getAmazonImageVariants(product)
+    : [];
+const showGallery =
+  variants.length > 0 &&
+  resolved.kind === 'image' &&
+  resolved.media.width !== undefined &&
+  resolved.media.height !== undefined;
 ---
 
 <div class="relative min-w-0">
   {
-    resolved.kind === 'image' && (
-      <ProductImage
-        src={getMediaSrc(resolved.media)}
-        alt={resolved.media.alt}
-        {compact}
-        {eager}
-        fallbackTargetId={fallbackId}
-        {...(resolved.media.width === undefined
-          ? {}
-          : { width: resolved.media.width })}
-        {...(resolved.media.height === undefined
-          ? {}
-          : { height: resolved.media.height })}
-      />
-    )
+    resolved.kind === 'image' &&
+      (showGallery ? (
+        <ProductGallery
+          productId={product.id}
+          alt={resolved.media.alt}
+          primary={{
+            url: getMediaSrc(resolved.media),
+            width: resolved.media.width ?? 0,
+            height: resolved.media.height ?? 0,
+          }}
+          {variants}
+          fallbackTargetId={fallbackId}
+          {eager}
+        />
+      ) : (
+        <ProductImage
+          src={getMediaSrc(resolved.media)}
+          alt={resolved.media.alt}
+          {compact}
+          {eager}
+          fallbackTargetId={fallbackId}
+          {...(resolved.media.width === undefined
+            ? {}
+            : { width: resolved.media.width })}
+          {...(resolved.media.height === undefined
+            ? {}
+            : { height: resolved.media.height })}
+        />
+      ))
   }
   <div id={fallbackId} hidden={resolved.kind === 'image'}>
     {

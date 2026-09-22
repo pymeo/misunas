@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
+import { AMAZON_IMAGE_HOSTS } from '@/config/amazonCreators';
 
 const clientRoot = resolve('dist/client');
 const parseJson = (value: string): unknown => JSON.parse(value) as unknown;
@@ -331,16 +332,26 @@ describe('SEO production smoke tests', () => {
     }
   });
 
-  it('keeps the image CSP allowlist explicit (self/data: only) until Creators API is really connected', () => {
+  /**
+   * Antes esta prueba exigía que `img-src` fuese solo `'self' data:`, porque
+   * no había ninguna imagen remota. Con Amazon Creators API conectada sí la
+   * hay, así que lo que se protege ahora es que la lista siga siendo una
+   * ALLOWLIST CERRADA: exactamente los hosts declarados en
+   * `AMAZON_IMAGE_HOSTS`, sin comodín ni `https:` abierto. La igualdad
+   * estricta con esa constante la comprueba
+   * `tests/unit/amazon-secret-hygiene.test.ts`.
+   */
+  it('keeps the image CSP a closed allowlist: self/data: plus only the documented Amazon host', () => {
     const headers = readFileSync(resolve('public/_headers'), 'utf8');
     const cspLine = headers
       .split('\n')
-      .find((line) => line.includes('Content-Security-Policy:'));
+      .find((line) => line.trim().startsWith('Content-Security-Policy:'));
     expect(cspLine).toBeDefined();
     expect(cspLine).toContain("img-src 'self' data:");
     expect(cspLine).not.toMatch(/img-src[^;]*https:(?!\/\/)/);
     expect(cspLine).not.toMatch(/img-src[^;]*\*/);
-    expect(cspLine).not.toContain('media-amazon.com');
+    for (const host of AMAZON_IMAGE_HOSTS)
+      expect(cspLine).toContain(`https://${host}`);
   });
 
   it('renders the printer ROI calculator with editable defaults and no invented market prices', () => {
