@@ -202,6 +202,38 @@ Recursos solicitados: `images.primary.large`, `images.variants.large`,
   añade; si falla el host o el ASIN, se descarta y el enlace cae al
   constructor por ASIN.
 
+## Estado de la cuenta: `AssociateNotEligible`
+
+Creators API exige que la cuenta de Afiliados cumpla el requisito de ventas
+cualificadas (10 ventas / 30 días; antes eran 3). Mientras no lo cumpla,
+`GetItems` responde:
+
+```
+HTTP 403 AccessDeniedException
+reason:  AssociateNotEligible
+message: Your account does not currently meet the eligibility requirements.
+```
+
+Comprobado el 2026-09-22 con credenciales v3.2 reales. Es un estado de la
+cuenta, no un fallo de la integración, y el sync lo trata como tal: lo informa
+sin ambigüedad, **no reintenta** (una decisión de autorización no mejora
+reintentando) y **sale con 0**, de modo que el despliegue sigue adelante con el
+fallback editorial en vez de quedar bloqueado indefinidamente.
+
+Cómo distinguirlo de un problema real, con lo que imprime el propio sync:
+
+| Síntoma                                | Significado                                                             |
+| -------------------------------------- | ----------------------------------------------------------------------- |
+| Token 200 + `403 AssociateNotEligible` | Todo correcto salvo la elegibilidad de la cuenta. Esperar.              |
+| Token 4xx                              | Credential ID/Secret incorrectos, o región de credencial equivocada.    |
+| `400 InvalidAssociate`                 | La credencial no está vinculada a ese partner tag para ese marketplace. |
+| `400 FieldValidationFailed`            | Petición mal formada (falta un campo obligatorio).                      |
+| `403` sin `reason`                     | Amazon no detalló el motivo; revisar la cuenta en Associates Central.   |
+
+El diagnóstico clave es que `InvalidAssociate` aparece **solo** si se envía un
+marketplace distinto: con `www.amazon.es` + `tusunas-21` Amazon valida el
+emparejamiento sin quejarse, lo que descarta el tag y el mercado como causa.
+
 ## Errores
 
 `GetItems` distingue dos situaciones, y el sync las trata distinto:

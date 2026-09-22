@@ -88,6 +88,47 @@ export const creatorsApiErrorSchema = z.object({
 
 export type CreatorsApiError = z.infer<typeof creatorsApiErrorSchema>;
 
+/**
+ * Sobre de error de la API (distinto de los `errors` por ASIN): lo devuelve
+ * Coral en los 4xx con `type`, `reason` y un `message` legible. Es la única
+ * fuente fiable del MOTIVO de un 403, así que se parsea en vez de adivinar.
+ *
+ * Ejemplo real de un 403 con cuenta de Afiliados sin acceso todavía:
+ *   {"message":"Your account does not currently meet the eligibility
+ *    requirements.","reason":"AssociateNotEligible",
+ *    "type":"AccessDeniedException"}
+ */
+export const creatorsApiFaultSchema = z.object({
+  message: z.string().min(1).optional(),
+  reason: z.string().min(1).optional(),
+  type: z.string().min(1).optional(),
+});
+
+export type CreatorsApiFault = z.infer<typeof creatorsApiFaultSchema>;
+
+/**
+ * `reason` que Amazon devuelve cuando la credencial y el partner tag son
+ * correctos pero la cuenta de Afiliados todavía no cumple el requisito de
+ * ventas cualificadas. No es un fallo de la integración: es un estado de la
+ * cuenta, y el sync lo trata como tal.
+ */
+export const ASSOCIATE_NOT_ELIGIBLE = 'AssociateNotEligible';
+
+/** Extrae el fault de un cuerpo de error, o `null` si no tiene esa forma. */
+export function parseCreatorsApiFault(body: string): CreatorsApiFault | null {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    return null;
+  }
+  const result = creatorsApiFaultSchema.safeParse(parsed);
+  if (!result.success) return null;
+  return result.data.reason === undefined && result.data.message === undefined
+    ? null
+    : result.data;
+}
+
 const itemResultsSchema = z.object({
   items: z.array(creatorsApiItemSchema).optional(),
 });

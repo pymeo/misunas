@@ -7,6 +7,7 @@ import {
 } from '@/config/amazonCreators';
 import {
   creatorsApiGetItemsResponseSchema,
+  parseCreatorsApiFault,
   type CreatorsApiError,
   type CreatorsApiItem,
 } from '@/domain/amazonCreators';
@@ -37,6 +38,15 @@ export interface BatchFailure {
   kind: BatchFailureKind;
   message: string;
   status?: number;
+  /**
+   * `reason` tal cual lo devuelve Amazon (p. ej. `AssociateNotEligible`,
+   * `InvalidAssociate`, `FieldValidationFailed`). Es el dato que permite
+   * distinguir "la cuenta aún no es elegible" de "la credencial es
+   * incorrecta" sin adivinar, así que se propaga en vez de resumirlo.
+   */
+  amazonReason?: string;
+  /** Mensaje legible de Amazon, si la respuesta lo trae. */
+  amazonMessage?: string;
   /** Número de intentos realizados (1 = sin reintentos). */
   attempts: number;
 }
@@ -170,15 +180,31 @@ export function createCreatorsApiClient(
       }
 
       if (response.status === 401 || response.status === 403) {
-        /** Token posiblemente revocado: se invalida y se reintenta una vez. */
+        const fault = parseCreatorsApiFault(
+          await response.text().catch(() => ''),
+        );
+        /**
+         * Un 401 puede ser un token revocado, así que se invalida y se
+         * reintenta una vez. Un 403 con un `reason` explícito no mejora
+         * reintentando: es una decisión de autorización, no un fallo
+         * transitorio.
+         */
         tokenProvider.invalidate();
         lastFailure = {
           kind: 'auth',
-          message: `Amazon rechazó la petición (HTTP ${String(response.status)}). Credencial sin acceso a Creators API, marketplace no autorizado o partnerTag que no corresponde a la cuenta.`,
+          message:
+            fault?.message ??
+            `Amazon rechazó la petición (HTTP ${String(response.status)}) sin detallar el motivo.`,
           status: response.status,
+          ...(fault?.reason === undefined
+            ? {}
+            : { amazonReason: fault.reason }),
+          ...(fault?.message === undefined
+            ? {}
+            : { amazonMessage: fault.message }),
           attempts: attempt,
         };
-        if (attempt === 1 && maxRetries > 1) {
+        if (fault?.reason === undefined && attempt === 1 && maxRetries > 1) {
           await sleep(backoffDelay(attempt));
           continue;
         }
@@ -204,10 +230,21 @@ export function createCreatorsApiClient(
       }
 
       if (!response.ok) {
+        const fault = parseCreatorsApiFault(
+          await response.text().catch(() => ''),
+        );
         lastFailure = {
           kind: 'http',
-          message: `Amazon respondió HTTP ${String(response.status)} (no reintentable).`,
+          message: fault?.message
+            ? `Amazon respondió HTTP ${String(response.status)}: ${fault.message}`
+            : `Amazon respondió HTTP ${String(response.status)} (no reintentable).`,
           status: response.status,
+          ...(fault?.reason === undefined
+            ? {}
+            : { amazonReason: fault.reason }),
+          ...(fault?.message === undefined
+            ? {}
+            : { amazonMessage: fault.message }),
           attempts: attempt,
         };
         break;

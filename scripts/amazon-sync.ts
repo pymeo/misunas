@@ -36,11 +36,15 @@ import {
   CREATORS_API_ENV_VARS,
   CREATORS_API_MARKETPLACE_HOSTS,
   CREATORS_API_MAX_ITEM_IDS,
+  CREATORS_API_TOKEN_ENDPOINTS,
 } from '../src/config/amazonCreators';
 import { AMAZON_CONFIG } from '../src/config/site';
 import { loadAmazonMediaSnapshot } from '../src/data/amazonMediaSnapshot';
 import { PRODUCTS } from '../src/data/products';
-import { errorItemId } from '../src/domain/amazonCreators';
+import {
+  ASSOCIATE_NOT_ELIGIBLE,
+  errorItemId,
+} from '../src/domain/amazonCreators';
 import type {
   AmazonMediaSnapshot,
   AmazonMediaSnapshotEntry,
@@ -157,12 +161,16 @@ async function main(): Promise<number> {
   let productsWithVariants = 0;
   /** Recuento por código/tipo de fallo, para diagnosticar 401/403/429 de un vistazo. */
   const failureKinds = new Map<string, number>();
+  /** `reason` devueltos por Amazon, la fuente fiable del motivo de un 403. */
+  const amazonReasons = new Set<string>();
 
   for (const outcome of outcomes) {
     requestCount += outcome.attempts;
     if (outcome.failure) {
       /** Fallo COMPLETO del lote: ningún item devuelto. */
-      const label = `${outcome.failure.kind}${outcome.failure.status === undefined ? '' : ` (HTTP ${String(outcome.failure.status)})`}`;
+      const reason = outcome.failure.amazonReason;
+      if (reason !== undefined) amazonReasons.add(reason);
+      const label = `${reason ?? outcome.failure.kind}${outcome.failure.status === undefined ? '' : ` (HTTP ${String(outcome.failure.status)})`}`;
       failureKinds.set(label, (failureKinds.get(label) ?? 0) + 1);
       for (const asin of outcome.asins) {
         answered.add(asin.toUpperCase());
@@ -289,6 +297,40 @@ async function main(): Promise<number> {
   if (warnings.length > 0) {
     console.log('AVISOS:');
     for (const warning of [...new Set(warnings)]) console.log(`  · ${warning}`);
+    console.log('');
+  }
+
+  /**
+   * Caso especial, y el más probable en una cuenta nueva: la credencial y el
+   * partner tag son correctos, pero la cuenta de Afiliados todavía no cumple
+   * el requisito de ventas cualificadas. No es un fallo de la integración, así
+   * que no se devuelve error: se informa sin ambigüedad y el sitio sigue con
+   * el fallback editorial. En cuanto la cuenta sea elegible, el mismo comando
+   * empieza a devolver imágenes sin tocar una línea de código.
+   */
+  if (amazonReasons.has(ASSOCIATE_NOT_ELIGIBLE) && withImage.length === 0) {
+    console.log('DIAGNÓSTICO: la cuenta de Afiliados aún no es elegible');
+    console.log('');
+    console.log(
+      `Amazon devolvió HTTP 403 con reason "${ASSOCIATE_NOT_ELIGIBLE}" en todos los lotes.`,
+    );
+    console.log('Lo que esto descarta, con evidencia de esta misma ejecución:');
+    console.log(
+      '  · Credential ID / Secret: CORRECTOS — Login with Amazon devolvió un token válido con scope creatorsapi::default.',
+    );
+    console.log(
+      `  · Versión/región de la credencial: CORRECTA — el token se obtuvo de ${CREATORS_API_TOKEN_ENDPOINTS[credentialsResult.credentials.version]}.`,
+    );
+    console.log(
+      `  · Partner tag y marketplace: CORRECTOS — Amazon valida ese emparejamiento y no se queja de "${MARKETPLACE}" + "${AMAZON_CONFIG.affiliateTag}"; solo devuelve InvalidAssociate si se le envía otro mercado.`,
+    );
+    console.log(
+      '  · Forma de la petición: CORRECTA — la validación de campos pasa (un campo ausente sí produce ValidationException).',
+    );
+    console.log('');
+    console.log(
+      'Lo que queda: el acceso a Creators API depende del requisito de ventas cualificadas de Amazon Afiliados (10 ventas en 30 días). No hay nada que corregir en el código.',
+    );
     console.log('');
   }
 

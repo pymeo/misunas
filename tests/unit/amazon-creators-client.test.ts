@@ -9,6 +9,10 @@ import {
   createCreatorsApiClient,
 } from '@/infrastructure/amazon/creatorsApiClient';
 import {
+  ASSOCIATE_NOT_ELIGIBLE,
+  parseCreatorsApiFault,
+} from '@/domain/amazonCreators';
+import {
   CreatorsApiAuthError,
   type TokenProvider,
 } from '@/infrastructure/amazon/tokenProvider';
@@ -375,5 +379,90 @@ describe('getItems — throttling y reintentos', () => {
     expect(getToken).toHaveBeenCalledTimes(1);
     expect(fetchImpl).not.toHaveBeenCalled();
     expect(outcome?.failure?.kind).toBe('auth');
+  });
+});
+
+describe('parseCreatorsApiFault', () => {
+  it('extrae reason y message del cuerpo de error real de un 403', () => {
+    const fault = parseCreatorsApiFault(
+      '{"message":"Your account does not currently meet the eligibility requirements.","reason":"AssociateNotEligible","type":"AccessDeniedException"}',
+    );
+    expect(fault?.reason).toBe(ASSOCIATE_NOT_ELIGIBLE);
+    expect(fault?.message).toContain('eligibility requirements');
+    expect(fault?.type).toBe('AccessDeniedException');
+  });
+
+  it('extrae el motivo de un partner tag no vinculado al marketplace', () => {
+    const fault = parseCreatorsApiFault(
+      '{"message":"Your credential is not linked to the partner tag in the request for the given Marketplace.","reason":"InvalidAssociate","type":"ValidationException"}',
+    );
+    expect(fault?.reason).toBe('InvalidAssociate');
+  });
+
+  it('devuelve null si el cuerpo no es JSON o no tiene forma de fault', () => {
+    expect(parseCreatorsApiFault('<html>503</html>')).toBeNull();
+    expect(parseCreatorsApiFault('{}')).toBeNull();
+    expect(parseCreatorsApiFault('')).toBeNull();
+  });
+});
+
+describe('motivo real de Amazon en los fallos de autorización', () => {
+  const notEligible = () =>
+    new Response(
+      '{"message":"Your account does not currently meet the eligibility requirements.","reason":"AssociateNotEligible","type":"AccessDeniedException"}',
+      { status: 403, headers: { 'content-type': 'application/json' } },
+    );
+
+  it('propaga reason y message de Amazon en vez de una lista de sospechosos', async () => {
+    const { client } = harness([notEligible()]);
+    const [outcome] = await client.getItems(['B000000001']);
+
+    expect(outcome?.failure?.kind).toBe('auth');
+    expect(outcome?.failure?.status).toBe(403);
+    expect(outcome?.failure?.amazonReason).toBe(ASSOCIATE_NOT_ELIGIBLE);
+    expect(outcome?.failure?.message).toContain('eligibility requirements');
+  });
+
+  it('NO reintenta un 403 con motivo explícito: es una decisión permanente', async () => {
+    const { client, fetchImpl, sleep } = harness([notEligible()]);
+    const [outcome] = await client.getItems(['B000000001']);
+
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(sleep).not.toHaveBeenCalled();
+    expect(outcome?.attempts).toBe(1);
+  });
+
+  it('un 401 SIN motivo sí se reintenta una vez (token posiblemente revocado)', async () => {
+    const { client, fetchImpl } = harness([
+      new Response('', { status: 401 }),
+      new Response('', { status: 401 }),
+    ]);
+    await client.getItems(['B000000001']);
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it('un 4xx no reintentable también expone el mensaje de Amazon', async () => {
+    const { client } = harness([
+      new Response(
+        '{"message":"1 validation error detected","reason":"FieldValidationFailed","type":"ValidationException"}',
+        { status: 400 },
+      ),
+    ]);
+    const [outcome] = await client.getItems(['B000000001']);
+
+    expect(outcome?.failure?.kind).toBe('http');
+    expect(outcome?.failure?.amazonReason).toBe('FieldValidationFailed');
+    expect(outcome?.failure?.message).toContain('validation error');
+  });
+
+  it('un 403 sin cuerpo legible sigue produciendo un fallo claro', async () => {
+    const { client } = harness([
+      new Response('<html>Forbidden</html>', { status: 403 }),
+      new Response('<html>Forbidden</html>', { status: 403 }),
+    ]);
+    const [outcome] = await client.getItems(['B000000001']);
+    expect(outcome?.failure?.kind).toBe('auth');
+    expect(outcome?.failure?.amazonReason).toBeUndefined();
+    expect(outcome?.failure?.message).toContain('sin detallar el motivo');
   });
 });

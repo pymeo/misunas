@@ -86,7 +86,7 @@ if (age > CREATORS_API_CACHE_TTL_MS)
  */
 if (loaded.snapshot.entries.length === 0)
   console.warn(
-    'amazon:gate — AVISO: se consultó Amazon y no quedó ninguna entrada. Todo el catálogo usará el fallback editorial. Revisa el informe de "npm run amazon:sync" (credencial sin acceso a Creators API, partnerTag que no corresponde o marketplace no autorizado son las causas habituales).',
+    'amazon:gate — AVISO: se consultó Amazon y no quedó ninguna entrada. Todo el catálogo usará el fallback editorial. El motivo exacto lo da "npm run amazon:sync", que imprime el `reason` que devuelve Amazon (p. ej. AssociateNotEligible) en vez de adivinarlo.',
   );
 
 console.log(
