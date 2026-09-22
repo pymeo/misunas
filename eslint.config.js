@@ -6,7 +6,16 @@ import astro from 'eslint-plugin-astro';
 const typedFiles = ['**/*.{ts,tsx,mts,cts}'];
 
 export default defineConfig(
-  { ignores: ['.astro/', 'dist/', '.wrangler/', 'coverage/'] },
+  {
+    ignores: [
+      '.astro/',
+      'dist/',
+      '.wrangler/',
+      'coverage/',
+      // Generado por "npm run amazon:sync" (ver .gitignore).
+      'src/data/generated/',
+    ],
+  },
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked.map((config) => ({
     ...config,
