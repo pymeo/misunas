@@ -17,6 +17,10 @@
  *
  * Nunca imprime, ni parcialmente, el credential id ni el secreto.
  */
+// Primer import a propósito: deja `.dev.vars` en process.env antes de que
+// cualquier otro módulo lea AMAZON_CREATORS_API_ENABLED al evaluarse.
+import './lib/devVars';
+
 import {
   existsSync,
   mkdirSync,
@@ -147,11 +151,19 @@ async function main(): Promise<number> {
   const reusedFromCache: string[] = [];
   const answered = new Set<string>();
   let requestCount = 0;
+  /** Items que Amazon devolvió, antes de nuestras validaciones. */
+  let itemsReturned = 0;
+  let variantCount = 0;
+  let productsWithVariants = 0;
+  /** Recuento por código/tipo de fallo, para diagnosticar 401/403/429 de un vistazo. */
+  const failureKinds = new Map<string, number>();
 
   for (const outcome of outcomes) {
     requestCount += outcome.attempts;
     if (outcome.failure) {
       /** Fallo COMPLETO del lote: ningún item devuelto. */
+      const label = `${outcome.failure.kind}${outcome.failure.status === undefined ? '' : ` (HTTP ${String(outcome.failure.status)})`}`;
+      failureKinds.set(label, (failureKinds.get(label) ?? 0) + 1);
       for (const asin of outcome.asins) {
         answered.add(asin.toUpperCase());
         const product = productByAsin.get(asin);
@@ -174,12 +186,14 @@ async function main(): Promise<number> {
     const errorByAsin = new Map<string, string>();
     const globalErrors: string[] = [];
     for (const error of outcome.errors) {
+      failureKinds.set(error.code, (failureKinds.get(error.code) ?? 0) + 1);
       const id = errorItemId(error);
       if (id)
         errorByAsin.set(id.toUpperCase(), `${error.code}: ${error.message}`);
       else globalErrors.push(`${error.code}: ${error.message}`);
     }
 
+    itemsReturned += outcome.items.length;
     for (const item of outcome.items) {
       const product = productByAsin.get(item.asin.toUpperCase());
       answered.add(item.asin.toUpperCase());
@@ -205,6 +219,8 @@ async function main(): Promise<number> {
       warnings.push(...mapped.warnings);
       entries.push(mapped.entry);
       withImage.push(mapped.entry.asin);
+      variantCount += mapped.entry.variants.length;
+      if (mapped.entry.variants.length > 0) productsWithVariants += 1;
     }
 
     for (const asin of outcome.asins) {
@@ -235,19 +251,32 @@ async function main(): Promise<number> {
 
   console.log('RESULTADO');
   console.log('');
-  console.log(`ASINs consultados: ${String(asins.length)}`);
+  console.log(`ASINs elegibles en el catálogo: ${String(eligible.length)}`);
+  console.log(`ASINs enviados a GetItems: ${String(asins.length)}`);
   console.log(
-    `Peticiones HTTP a GetItems (incl. reintentos): ${String(requestCount)}`,
+    `Lotes: ${String(outcomes.length)} · peticiones HTTP realizadas (incl. reintentos): ${String(requestCount)}`,
   );
-  console.log(`Con imagen oficial nueva: ${String(withImage.length)}`);
+  console.log(`Items devueltos por Amazon: ${String(itemsReturned)}`);
+  console.log(`Imágenes primarias obtenidas: ${String(withImage.length)}`);
+  console.log(
+    `Imágenes variantes obtenidas: ${String(variantCount)} (en ${String(productsWithVariants)} producto(s))`,
+  );
+  console.log(
+    `detailPageURL oficiales válidas: ${String(entries.filter((entry) => entry.detailPageURL).length)}`,
+  );
   console.log(
     `Reutilizados del snapshot fresco anterior: ${String(reusedFromCache.length)}`,
   );
-  console.log(`Sin imagen utilizable: ${String(failures.length)}`);
   console.log(
-    `Con detailPageURL oficial válida: ${String(entries.filter((entry) => entry.detailPageURL).length)}`,
+    `Productos rechazados / sin imagen utilizable: ${String(failures.length)}`,
   );
   console.log('');
+  if (failureKinds.size > 0) {
+    console.log('ERRORES POR CÓDIGO/TIPO:');
+    for (const [kind, count] of [...failureKinds].sort((a, b) => b[1] - a[1]))
+      console.log(`  · ${kind}: ${String(count)}`);
+    console.log('');
+  }
 
   if (failures.length > 0) {
     console.log('PRODUCTOS SIN IMAGEN (usarán fallback editorial):');
